@@ -47,7 +47,6 @@ export default OnboardingComponent;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "space-between",
     alignItems: "center",
   },
   title: {
@@ -55,6 +54,7 @@ const styles = StyleSheet.create({
     fontFamily: CUSTOM_FONTS.PROXIMA_BOLD,
     textAlign: "center",
     width: moderateScale(width * 0.8),
+    marginVertical: moderateScale(22),
   },
   description: {
     fontSize: moderateScale(17),
