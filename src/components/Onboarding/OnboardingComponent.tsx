@@ -1,6 +1,8 @@
 import * as React from "react";
 import { View, StyleSheet, Text } from "react-native";
-import { moderateScale } from "src/utils/scale";
+
+import { CUSTOM_FONTS } from "src/constants/fonts";
+import { moderateScale, width } from "src/utils/scale";
 
 import * as OnboardingAssets from "../Svgs/Onboarding";
 import { SvgWrapper } from "../Svgs/SvgWrapper";
@@ -34,8 +36,8 @@ const OnboardingComponent: React.FC<OnboardingComponentProps> = ({ step }) => {
   return (
     <View style={styles.container}>
       <SvgWrapper size={moderateScale(280)}>{svgs[step]}</SvgWrapper>
-      <Text>{content[step].title}</Text>
-      <Text>{content[step].text}</Text>
+      <Text style={styles.title}>{content[step].title}</Text>
+      <Text style={styles.description}>{content[step].text}</Text>
     </View>
   );
 };
@@ -47,5 +49,17 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-between",
     alignItems: "center",
+  },
+  title: {
+    fontSize: moderateScale(26),
+    fontFamily: CUSTOM_FONTS.PROXIMA_BOLD,
+    textAlign: "center",
+    width: moderateScale(width * 0.8),
+  },
+  description: {
+    fontSize: moderateScale(17),
+    fontFamily: CUSTOM_FONTS.PROXIMA_REGULAR,
+    textAlign: "center",
+    width: moderateScale(width * 0.8),
   },
 });
