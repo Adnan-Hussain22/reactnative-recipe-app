@@ -1,13 +1,14 @@
 import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { HomeScreen } from "src/features";
+import Onboarding from "src/features/Onboarding";
 
 const Stack = createStackNavigator();
 
 const UnAuthenticatedStack = () => {
   return (
-    <Stack.Navigator headerMode="none" initialRouteName="Login">
-      <Stack.Screen name="Login" component={HomeScreen} />
+    <Stack.Navigator headerMode="none" initialRouteName="Onboarding">
+      {/* <Stack.Screen name="Login" component={HomeScreen} /> */}
+      <Stack.Screen name="Onboarding" component={Onboarding} />
     </Stack.Navigator>
   );
 };

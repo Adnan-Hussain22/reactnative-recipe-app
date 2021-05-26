@@ -1,3 +1,4 @@
 import HomeScreen from "./Home";
+import Onboarding from "./Onboarding";
 
-export { HomeScreen };
+export { HomeScreen, Onboarding };
