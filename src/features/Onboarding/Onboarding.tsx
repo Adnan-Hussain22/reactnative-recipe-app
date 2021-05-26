@@ -6,24 +6,70 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from "react-native";
+import Swiper from "react-native-swiper";
+import Dot from "src/components/Dot";
 
 import OnboardingComponent from "src/components/Onboarding/OnboardingComponent";
 import { COLORS } from "src/constants/colors";
 import { CUSTOM_FONTS } from "src/constants/fonts";
-import { moderateScale } from "src/utils/scale";
+import { height, moderateScale } from "src/utils/scale";
 
 interface OnboardingProps {}
 
 const Onboarding: React.FC<OnboardingProps> = () => {
+  const [activeIndex, setActiveIndex] = React.useState(0);
+  const swiperRef = React.useRef<Swiper>(null);
+
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity style={styles.skipBtn}>
         <Text style={styles.skipTxt}>SKIP</Text>
       </TouchableOpacity>
-      <View style={{ flex: 0.67 }}>
-        <OnboardingComponent step={2} />
+      <View
+        style={{
+          flex: 0.8,
+          paddingTop: moderateScale(10),
+        }}
+      >
+        <Swiper
+          index={activeIndex}
+          style={{ flexGrow: 1 }}
+          scrollEnabled={false}
+          loop
+          // eslint-disable-next-line no-return-assign
+          ref={(e) => (swiperRef.current = e)}
+          dot={
+            <Dot
+              color={COLORS.dotgrey}
+              size={moderateScale(9)}
+              spacing={moderateScale(6)}
+            />
+          }
+          activeDot={
+            <Dot
+              color={COLORS.primaryRed}
+              size={moderateScale(13)}
+              spacing={moderateScale(6)}
+            />
+          }
+          paginationStyle={{
+            bottom: 12,
+          }}
+          onIndexChanged={(index) => setActiveIndex(index)}
+        >
+          <OnboardingComponent step={0} />
+          <OnboardingComponent step={1} />
+          <OnboardingComponent step={2} />
+        </Swiper>
       </View>
-      <View style={{ flex: 0.2 }} />
+      <TouchableOpacity
+        style={styles.nextBtn}
+        onPress={() => {
+          swiperRef.current?.scrollBy(1);
+        }}
+      >
+        <Text style={styles.nextTxt}>Next</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
@@ -38,12 +84,23 @@ const styles = StyleSheet.create({
   },
   skipBtn: {
     alignItems: "flex-end",
-    flex: 0.13,
+    flex: 0.1,
     justifyContent: "flex-end",
+    paddingBottom: 20,
   },
   skipTxt: {
     fontSize: moderateScale(16),
     fontFamily: CUSTOM_FONTS.PROXIMA_SEMIBOLD,
     color: COLORS.primaryRed,
+  },
+  nextBtn: {
+    position: "absolute",
+    bottom: height * 0.12 - 5,
+    right: moderateScale(35),
+  },
+  nextTxt: {
+    fontSize: moderateScale(16),
+    fontFamily: CUSTOM_FONTS.PROXIMA_SEMIBOLD,
+    color: "#5b5b5b",
   },
 });
