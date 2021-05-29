@@ -43,6 +43,5 @@ const styles = StyleSheet.create({
     borderRadius: moderateScale(25),
     paddingHorizontal: moderateScale(15),
     paddingVertical: moderateScale(8),
-    marginVertical: moderateScale(8),
   },
 });

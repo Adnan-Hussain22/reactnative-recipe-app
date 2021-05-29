@@ -20,6 +20,7 @@ interface ButtonProps extends TypographyProps {
   center?: boolean;
   text?: string;
   textStyle?: TextStyle;
+  onPress: () => void;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -32,6 +33,7 @@ const Button: React.FC<ButtonProps> = ({
   text,
   style,
   textStyle,
+  onPress,
   ...typoGraphyStyles
 }) => {
   return (
@@ -46,6 +48,7 @@ const Button: React.FC<ButtonProps> = ({
         },
         style,
       ]}
+      onPress={onPress}
     >
       {icon ? (
         <View style={styles.iconWrapper}>

@@ -7,58 +7,71 @@ import Button, { IconRoundButton } from "../Button";
 import Icon from "../Icon";
 import Typography from "../Typography";
 
-interface SignupButtonBoxProps {}
+interface SignupButtonBoxProps {
+  onCreate: () => void;
+  onGmail: () => void;
+  onFacebook: () => void;
+}
 
-export const SignupButtonBox = (props: SignupButtonBoxProps) => {
-  return (
-    <View style={styles.container}>
-      <Button
-        background={COLORS.primaryRed}
-        icon={
-          <Icon
-            type="MaterialIcons"
-            name="keyboard-arrow-right"
-            style={iconStyles.iosChevron}
-          />
-        }
-        iconRight
-        round
-        center
-        width={moderateScale(150)}
-        style={styles.createBtn}
-        text="CREATE"
-        textStyle={styles.createTxt}
-      />
-      <Typography
-        variant="BodyLight"
-        {...styles.signupTxt}
-        marginBottom={moderateScale(12)}
-      >
-        Sign up now
-      </Typography>
-      <View style={styles.socialIconContainer}>
-        <IconRoundButton
-          icon={
-            <Icon name="google" type="FontAwesome" style={styles.socialIcon} />
-          }
-          background={COLORS.googleOrange}
-          size={moderateScale(45)}
-        />
-        <IconRoundButton
+export const SignupButtonBox: React.FC<SignupButtonBoxProps> = React.memo(
+  ({ onCreate, onGmail, onFacebook }) => {
+    return (
+      <View style={styles.container}>
+        <Button
+          background={COLORS.primaryRed}
           icon={
             <Icon
-              name="facebook-f"
-              type="FontAwesome"
-              style={styles.socialIcon}
+              type="MaterialIcons"
+              name="keyboard-arrow-right"
+              style={iconStyles.iosChevron}
             />
           }
-          background={COLORS.fbBlue}
-          size={moderateScale(45)}
+          iconRight
+          round
+          center
+          width={moderateScale(150)}
+          style={styles.createBtn}
+          text="CREATE"
+          textStyle={styles.createTxt}
+          onPress={onCreate}
         />
+        <Typography
+          variant="BodyLight"
+          {...styles.signupTxt}
+          marginBottom={moderateScale(12)}
+        >
+          Sign up now
+        </Typography>
+        <View style={styles.socialIconContainer}>
+          <IconRoundButton
+            icon={
+              <Icon
+                name="google"
+                type="FontAwesome"
+                style={styles.socialIcon}
+              />
+            }
+            background={COLORS.googleOrange}
+            size={moderateScale(45)}
+            onPress={onGmail}
+          />
+          <IconRoundButton
+            icon={
+              <Icon
+                name="facebook-f"
+                type="FontAwesome"
+                style={styles.socialIcon}
+              />
+            }
+            background={COLORS.fbBlue}
+            size={moderateScale(45)}
+            onPress={onFacebook}
+          />
+        </View>
       </View>
-    </View>
-  );
-};
+    );
+  }
+);
 
 const styles = StyleSheet.create({
   container: {
@@ -66,7 +79,7 @@ const styles = StyleSheet.create({
   },
   createBtn: {
     marginTop: moderateScale(20),
-    paddingHorizontal: moderateScale(18),
+    paddingHorizontal: moderateScale(30),
     paddingVertical: moderateScale(12),
   },
   createTxt: { color: COLORS.white, letterSpacing: moderateScale(2) },
