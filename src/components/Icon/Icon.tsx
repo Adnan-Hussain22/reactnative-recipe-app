@@ -1,5 +1,5 @@
 import * as React from "react";
-import { TextStyle } from "react-native";
+import { StyleProp, TextStyle } from "react-native";
 
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Entypo from "@expo/vector-icons/Entypo";
@@ -51,7 +51,7 @@ interface IIconPayload {
 export interface IconProps {
   type: keyof IIconPayload;
   name: string;
-  style?: TextStyle;
+  style?: StyleProp<TextStyle>;
 }
 
 const Icon = ({ type, ...props }: IconProps) => {

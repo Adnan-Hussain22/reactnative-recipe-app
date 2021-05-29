@@ -1,6 +1,7 @@
 import * as React from "react";
 import { View, StyleSheet } from "react-native";
 import { COLORS } from "src/constants/colors";
+import { iconStyles } from "src/constants/globalStyles";
 import { height, moderateScale } from "src/utils/scale";
 import Button, { IconRoundButton } from "../Button";
 import Icon from "../Icon";
@@ -17,13 +18,13 @@ export const SignupButtonBox = (props: SignupButtonBoxProps) => {
           <Icon
             type="MaterialIcons"
             name="keyboard-arrow-right"
-            style={{ color: COLORS.white, fontSize: moderateScale(25) }}
+            style={iconStyles.iosChevron}
           />
         }
         iconRight
         round
         center
-        width={moderateScale(140)}
+        width={moderateScale(150)}
         style={styles.createBtn}
         text="CREATE"
         textStyle={styles.createTxt}
