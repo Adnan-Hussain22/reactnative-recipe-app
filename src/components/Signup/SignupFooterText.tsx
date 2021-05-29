@@ -1,6 +1,7 @@
 import * as React from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { COLORS } from "src/constants/colors";
+import { height } from "src/utils/scale";
 import Typography from "../Typography";
 
 interface SignupFooterTextProps {}
@@ -22,7 +23,7 @@ export const SignupFooterText = (props: SignupFooterTextProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 0.08,
+    height: height * 0.08,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",

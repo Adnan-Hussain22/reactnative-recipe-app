@@ -16,7 +16,7 @@ export const SignupLogo = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 0.25,
+    height: height * 0.25,
     alignItems: "center",
     justifyContent: "center",
   },

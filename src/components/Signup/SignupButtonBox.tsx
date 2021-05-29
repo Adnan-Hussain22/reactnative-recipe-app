@@ -1,7 +1,7 @@
 import * as React from "react";
 import { View, StyleSheet } from "react-native";
 import { COLORS } from "src/constants/colors";
-import { moderateScale } from "src/utils/scale";
+import { height, moderateScale } from "src/utils/scale";
 import Button, { IconRoundButton } from "../Button";
 import Icon from "../Icon";
 import Typography from "../Typography";
@@ -61,7 +61,7 @@ export const SignupButtonBox = (props: SignupButtonBoxProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 0.27,
+    height: height * 0.27,
   },
   createBtn: {
     marginTop: moderateScale(20),
