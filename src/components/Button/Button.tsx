@@ -50,13 +50,13 @@ const Button: React.FC<ButtonProps> = ({
       {icon ? (
         <View style={styles.iconWrapper}>
           {!iconRight ? icon : null}
-          <Typography {...typoGraphyStyles} style={textStyle}>
+          <Typography {...typoGraphyStyles} {...textStyle}>
             {text}
           </Typography>
           {iconRight ? icon : null}
         </View>
       ) : (
-        <Typography {...typoGraphyStyles} style={textStyle}>
+        <Typography {...typoGraphyStyles} {...textStyle}>
           {text}
         </Typography>
       )}

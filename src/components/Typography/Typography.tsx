@@ -5,15 +5,14 @@ import { moderateScale } from "src/utils/scale";
 
 type variant = "H1" | "H2" | "BodyBold" | "BodySemiBold" | "Body" | "BodyLight";
 
-export interface TypographyProps {
-  style?: TextStyle;
+export interface TypographyProps extends TextStyle {
   variant?: variant;
 }
 
 const Typography: React.FC<TypographyProps> = ({
   children,
-  style,
   variant = "Body",
+  ...style
 }) => {
   return <Text style={[styles[variant], style]}>{children}</Text>;
 };
