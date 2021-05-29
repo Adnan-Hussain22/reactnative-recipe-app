@@ -7,7 +7,7 @@ import { SvgWrapper } from "src/components/Svgs/SvgWrapper";
 import TextInput from "src/components/TextInput";
 import Typography from "src/components/Typography/Typography";
 import { COLORS } from "src/constants/colors";
-import { moderateScale } from "src/utils/scale";
+import { height, moderateScale } from "src/utils/scale";
 import Icon from "src/components/Icon";
 import IconRoundButton from "src/components/Button/IconRoundButton";
 
@@ -18,63 +18,92 @@ const Signup: React.FC<SignupProps> = () => {
     <View style={styles.container}>
       <View
         style={{
-          justifyContent: "center",
+          flex: 0.25,
           alignItems: "center",
-          marginTop: moderateScale(55),
-          marginBottom: moderateScale(10),
+          justifyContent: "center",
         }}
       >
-        <SvgWrapper size={130}>
+        <SvgWrapper size={height * 0.2}>
           <Logo />
         </SvgWrapper>
       </View>
-      <Typography variant="H1">Create an account</Typography>
-      <View>
-        <TextInput placeholder="E-mail" />
-        <TextInput placeholder="Password" />
-        <TextInput placeholder="Verify Password" />
+      <View
+        style={{
+          flex: 0.4,
+          //  backgroundColor: "blue",
+          justifyContent: "center",
+        }}
+      >
+        <Typography variant="H1">Create an account</Typography>
+        <View>
+          <TextInput placeholder="E-mail" />
+          <TextInput placeholder="Password" />
+          <TextInput placeholder="Verify Password" />
+        </View>
       </View>
-      <Button
-        background={COLORS.primaryRed}
-        icon={
-          <Icon
-            type="MaterialIcons"
-            name="keyboard-arrow-right"
-            style={{ color: COLORS.white, fontSize: moderateScale(25) }}
-          />
-        }
-        iconRight
-        round
-        center
-        width={moderateScale(140)}
-        style={styles.createBtn}
-        text="CREATE"
-        textStyle={styles.createTxt}
-      />
-      <Typography variant="BodyLight" {...styles.signupTxt}>
-        Sign up now
-      </Typography>
-      <View style={styles.socialIconContainer}>
-        <IconRoundButton
-          icon={
-            <Icon name="google" type="FontAwesome" style={styles.socialIcon} />
-          }
-          background={COLORS.googleOrange}
-          size={moderateScale(45)}
-        />
-        <IconRoundButton
+      <View
+        style={{
+          flex: 0.27,
+        }}
+      >
+        <Button
+          background={COLORS.primaryRed}
           icon={
             <Icon
-              name="facebook-f"
-              type="FontAwesome"
-              style={styles.socialIcon}
+              type="MaterialIcons"
+              name="keyboard-arrow-right"
+              style={{ color: COLORS.white, fontSize: moderateScale(25) }}
             />
           }
-          background={COLORS.fbBlue}
-          size={moderateScale(45)}
+          iconRight
+          round
+          center
+          width={moderateScale(140)}
+          style={styles.createBtn}
+          text="CREATE"
+          textStyle={styles.createTxt}
         />
+        <Typography
+          variant="BodyLight"
+          {...styles.signupTxt}
+          marginBottom={moderateScale(12)}
+        >
+          Sign up now
+        </Typography>
+        <View style={styles.socialIconContainer}>
+          <IconRoundButton
+            icon={
+              <Icon
+                name="google"
+                type="FontAwesome"
+                style={styles.socialIcon}
+              />
+            }
+            background={COLORS.googleOrange}
+            size={moderateScale(45)}
+          />
+          <IconRoundButton
+            icon={
+              <Icon
+                name="facebook-f"
+                type="FontAwesome"
+                style={styles.socialIcon}
+              />
+            }
+            background={COLORS.fbBlue}
+            size={moderateScale(45)}
+          />
+        </View>
       </View>
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <View
+        style={{
+          flex: 0.08,
+          // backgroundColor: "yellow",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <Typography variant="BodyLight" color={COLORS.textGrey} marginRight={8}>
           Have an account?
         </Typography>
