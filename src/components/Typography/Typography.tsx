@@ -13,9 +13,7 @@ const Typography: React.FC<TypographyProps> = ({
   children,
   variant = "P",
   ...style
-}) => {
-  return <Text style={[styles[variant], style]}>{children}</Text>;
-};
+}) => <Text style={[styles[variant], style]}>{children}</Text>;
 
 export default Typography;
 
