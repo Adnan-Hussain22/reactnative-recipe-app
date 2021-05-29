@@ -48,16 +48,17 @@ interface IIconPayload {
   SimpleLineIcons: string;
 }
 
-interface IIcon {
+export interface IconProps {
   type: keyof IIconPayload;
   name: string;
   style?: TextStyle;
 }
 
-const Icon = ({ type, ...props }: IIcon) => {
+const Icon = ({ type, ...props }: IconProps) => {
   const GetIcon = IconPayload[type] as any;
   return <GetIcon {...props} />;
 };
 
 export type IconTypes = keyof IIconPayload;
+
 export default Icon;
