@@ -1,4 +1,5 @@
 import { moderateScale } from "src/utils/scale";
+import { COLORS } from "./colors";
 import { CUSTOM_FONTS } from "./fonts";
 
 export const typographyStyles = {
@@ -33,3 +34,11 @@ export const typographyStyles = {
 };
 
 export type typographyVariant = keyof typeof typographyStyles;
+
+export const iconStyles = {
+  iosChevron: {
+    color: COLORS.white,
+    fontSize: moderateScale(25),
+    marginRight: -6,
+  },
+};
