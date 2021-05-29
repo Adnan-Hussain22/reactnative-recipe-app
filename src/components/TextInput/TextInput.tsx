@@ -1,33 +1,21 @@
 import * as React from "react";
 import {
-  StyleSheet,
   TextInput as NativeInput,
   TextInputProps as NativeProps,
-  View,
+  ViewStyle,
 } from "react-native";
-import { COLORS } from "src/constants/colors";
-import { moderateScale } from "src/utils/scale";
+import InputWrapper from "../InputWrapper/InputWrapper";
 
-interface TextInputProps extends NativeProps {}
+interface TextInputProps extends NativeProps {
+  containerStyle?: ViewStyle;
+}
 
-const TextInput: React.FC<TextInputProps> = (props) => {
+const TextInput: React.FC<TextInputProps> = ({ containerStyle, ...props }) => {
   return (
-    <View style={styles.container}>
+    <InputWrapper style={containerStyle}>
       <NativeInput {...props} />
-    </View>
+    </InputWrapper>
   );
 };
 
 export default TextInput;
-
-const styles = StyleSheet.create({
-  container: {
-    width: "100%",
-    borderWidth: 1,
-    borderColor: COLORS.inputBorder,
-    borderRadius: moderateScale(25),
-    paddingHorizontal: moderateScale(15),
-    paddingVertical: moderateScale(8),
-    marginVertical: moderateScale(8),
-  },
-});
