@@ -1,7 +1,7 @@
 import * as React from "react";
 import Svg, { SvgProps, Image } from "react-native-svg";
 
-export function Icon(props: SvgProps) {
+export function Logo(props: SvgProps) {
   return (
     <Svg
       xmlns="http://www.w3.org/2000/svg"
