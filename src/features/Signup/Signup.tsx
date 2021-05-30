@@ -48,13 +48,12 @@ const Signup: React.FC = () => {
           });
           return true;
         }
-        if (formErrors.email) {
-          setFormErrors((prevState) => {
-            const newState = { ...prevState };
-            newState.email = "";
-            return newState;
-          });
-        }
+        setFormErrors((prevState) => {
+          if (!prevState.email) return prevState;
+          const newState = { ...prevState };
+          newState.email = "";
+          return newState;
+        });
         return false;
       case "password":
         if (!validateStrongPassword(value)) {
@@ -65,13 +64,12 @@ const Signup: React.FC = () => {
           });
           return true;
         }
-        if (formErrors.password) {
-          setFormErrors((prevState) => {
-            const newState = { ...prevState };
-            newState.password = "";
-            return newState;
-          });
-        }
+        setFormErrors((prevState) => {
+          if (!prevState.password) return prevState;
+          const newState = { ...prevState };
+          newState.password = "";
+          return newState;
+        });
         return false;
       case "verifyPassword":
         if (!matchValue(form.password, value)) {
@@ -82,16 +80,15 @@ const Signup: React.FC = () => {
           });
           return true;
         }
-        if (formErrors.verifyPassword) {
-          setFormErrors((prevState) => {
-            const newState = { ...prevState };
-            newState.verifyPassword = "";
-            return newState;
-          });
-        }
+        setFormErrors((prevState) => {
+          if (!prevState.verifyPassword) return prevState;
+          const newState = { ...prevState };
+          newState.verifyPassword = "";
+          return newState;
+        });
         return false;
       default:
-        break;
+        return false;
     }
   };
 
@@ -111,7 +108,7 @@ const Signup: React.FC = () => {
     // let count = 0;
     const formValues = Object.entries(form);
     // let hasError: boolean | undefined;
-    const erros = [
+    const errors = [
       handleValidate(formValues[0][0], formValues[0][1]),
       handleValidate(formValues[1][0], formValues[1][1]),
       handleValidate(formValues[2][0], formValues[2][1]),
@@ -121,21 +118,9 @@ const Signup: React.FC = () => {
         resolve(null);
       }, 200);
     });
-    if (erros.includes(true)) return;
-    // await new Promise((resolve) => {
-    //   const interval = setInterval(() => {
-    //     if (count === 3) {
-    //       clearInterval(interval);
-    //       resolve(null);
-    //     } else {
-    //       const [key, value] = formValues[count];
-    //       hasError = handleValidate(key, value) || hasError;
-    //       count += 1;
-    //     }
-    //   }, 100);
-    // });
-    // console.log("create maro==>", hasError);
-  }, []);
+    if (errors.includes(true)) return;
+    console.log("create==>", errors);
+  }, [form]);
 
   const handleOnSignupGmail = React.useCallback(() => {
     console.log("Signup Gmail");

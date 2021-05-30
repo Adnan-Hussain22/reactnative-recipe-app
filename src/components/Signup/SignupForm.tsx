@@ -53,6 +53,7 @@ export const SignupForm: React.FC<SignupFormProps> = React.memo((props) => {
         value={email}
         error={props.errors.email}
         onChangeText={(text) => handleChange("email", text)}
+        autoCapitalize="none"
       />
       <TextInput
         placeholder="Password"
@@ -60,6 +61,7 @@ export const SignupForm: React.FC<SignupFormProps> = React.memo((props) => {
         value={password}
         error={props.errors.password}
         onChangeText={(text) => handleChange("password", text)}
+        autoCapitalize="none"
       />
       <TextInput
         placeholder="Verify Password"
@@ -67,6 +69,7 @@ export const SignupForm: React.FC<SignupFormProps> = React.memo((props) => {
         value={verifyPassword}
         error={props.errors.verifyPassword}
         onChangeText={(text) => handleChange("verifyPassword", text)}
+        autoCapitalize="none"
       />
     </View>
   );

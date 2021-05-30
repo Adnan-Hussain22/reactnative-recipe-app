@@ -40,7 +40,7 @@ export const SignupButtonBox: React.FC<SignupButtonBoxProps> = React.memo(
           {...styles.signupTxt}
           marginBottom={moderateScale(12)}
         >
-          Sign up now
+          Sign up with
         </Typography>
         <View style={styles.socialIconContainer}>
           <IconRoundButton
@@ -60,7 +60,7 @@ export const SignupButtonBox: React.FC<SignupButtonBoxProps> = React.memo(
               <Icon
                 name="facebook-f"
                 type="FontAwesome"
-                style={styles.socialIcon}
+                style={[styles.socialIcon, { marginTop: 3 }]}
               />
             }
             background={COLORS.fbBlue}
