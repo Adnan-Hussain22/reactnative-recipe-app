@@ -1,75 +1,86 @@
 import * as React from "react";
 import { View, StyleSheet } from "react-native";
+import { Control, Controller, DeepMap, FieldError } from "react-hook-form";
+import * as yup from "yup";
+
 import { COLORS } from "src/constants/colors";
+import { ERRORS } from "src/constants/errors";
 import { typographyStyles } from "src/constants/globalStyles";
 import { height, moderateScale } from "src/utils/scale";
 import TextInput from "../TextInput";
 import Typography from "../Typography/Typography";
 
-interface Form {
+export interface FormFields {
   email: string;
   password: string;
   verifyPassword: string;
 }
 
-export type SignupFormFields = keyof Form;
+export const validationSchema = yup.object().shape({
+  email: yup.string().email(ERRORS.EMAIL).required(ERRORS.EMAIL),
+  password: yup.string().length(6).required(ERRORS.STRONG_PASSWORD),
+  verifyPassword: yup
+    .string()
+    .oneOf([yup.ref("password"), null], ERRORS.PASSWORD_NOTMATCH)
+    .required(),
+});
+
+export type SignupFormFields = keyof FormFields;
 
 interface SignupFormProps {
-  // eslint-disable-next-line no-unused-vars
-  onChange: (key: SignupFormFields, value: string) => void;
-  errors: Form;
+  errors: DeepMap<FormFields, FieldError>;
+  control: Control<FormFields>;
 }
 
 export const SignupForm: React.FC<SignupFormProps> = React.memo((props) => {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [verifyPassword, setVerifyPassword] = React.useState("");
-
-  const handleChange = (key: SignupFormFields, value: string) => {
-    switch (key) {
-      case "email":
-        setEmail(value);
-        break;
-      case "password":
-        setPassword(value);
-        break;
-      case "verifyPassword":
-        setVerifyPassword(value);
-        break;
-      default:
-        break;
-    }
-    props.onChange(key, value);
-  };
-
   return (
     <View style={styles.container}>
       <Typography variant="H1" marginBottom={moderateScale(15)}>
         Create an account
       </Typography>
-      <TextInput
-        placeholder="E-mail"
-        style={styles.input}
-        value={email}
-        error={props.errors.email}
-        onChangeText={(text) => handleChange("email", text)}
-        autoCapitalize="none"
+      <Controller
+        control={props.control}
+        name="email"
+        render={({ field: { value, onChange } }) => (
+          <TextInput
+            placeholder="E-mail"
+            style={styles.input}
+            value={value}
+            onChangeText={onChange}
+            error={props.errors.email?.message || ""}
+            autoCapitalize="none"
+          />
+        )}
       />
-      <TextInput
-        placeholder="Password"
-        style={styles.input}
-        value={password}
-        error={props.errors.password}
-        onChangeText={(text) => handleChange("password", text)}
-        autoCapitalize="none"
+      <Controller
+        control={props.control}
+        name="password"
+        render={({ field: { value, onChange } }) => (
+          <TextInput
+            secureTextEntry
+            placeholder="Password"
+            style={styles.input}
+            value={value}
+            onChangeText={onChange}
+            error={props.errors.password?.message || ""}
+            autoCapitalize="none"
+          />
+        )}
       />
-      <TextInput
-        placeholder="Verify Password"
-        style={styles.input}
-        value={verifyPassword}
-        error={props.errors.verifyPassword}
-        onChangeText={(text) => handleChange("verifyPassword", text)}
-        autoCapitalize="none"
+      <Controller
+        control={props.control}
+        name="verifyPassword"
+        render={({ field: { value, onChange } }) => (
+          <TextInput
+            secureTextEntry
+            placeholder="Verify Password"
+            style={styles.input}
+            value={value}
+            onChangeText={onChange}
+            error={props.errors.verifyPassword?.message || ""}
+            autoCapitalize="none"
+          />
+        )}
       />
     </View>
   );
