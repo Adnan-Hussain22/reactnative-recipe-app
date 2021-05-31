@@ -23,13 +23,16 @@
   },
   "plugins": ["prettier"],
   "rules": {
-    "no-nested-ternary": 1,
     "import/prefer-default-export": 0,
     "@typescript-eslint/explicit-function-return-type": 0,
     "@typescript-eslint/ban-ts-ignore": 0,
     "@typescript-eslint/no-empty-function": 0,
     "no-console": "warn",
-    "no-unused-vars": "error"
+    "no-unused-vars": "error",
+    "@typescript-eslint/no-use-before-define": 0,
+    "react/jsx-props-no-spreading": 0,
+    "no-nested-ternary": 0,
+    "react/no-unused-prop-types": 0
   },
   "settings": {
     "react": {
@@ -37,7 +40,8 @@
     },
     "import/resolver": {
       "node": {
-        "paths": ["src"]
+        "moduleDirectory": ["node_modules", "src"],
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
       }
     }
   }
