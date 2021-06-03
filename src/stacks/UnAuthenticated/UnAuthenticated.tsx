@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import Signup, { PersonalInfo, ProfileInfo } from "src/features/Signup";
 import { UNAUHTENTICATED_ROUTES } from "src/constants/Routes";
+import Login from "src/features/Login";
 
 const Stack = createStackNavigator();
 
@@ -13,6 +14,7 @@ const UnAuthenticatedStack = () => {
       initialRouteName={UNAUHTENTICATED_ROUTES.SIGNUP}
     >
       <Stack.Screen name={UNAUHTENTICATED_ROUTES.SIGNUP} component={Signup} />
+      <Stack.Screen name={UNAUHTENTICATED_ROUTES.LOGIN} component={Login} />
       <Stack.Screen
         name={UNAUHTENTICATED_ROUTES.PERSONAL_INFO}
         component={PersonalInfo}
