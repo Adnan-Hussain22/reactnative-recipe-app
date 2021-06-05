@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
   container: {
     height: height * 0.4,
     justifyContent: "center",
+    maxHeight: 290,
   },
   input: {
     ...typographyStyles.P,

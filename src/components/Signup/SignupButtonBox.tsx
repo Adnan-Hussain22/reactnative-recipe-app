@@ -76,6 +76,7 @@ export const SignupButtonBox: React.FC<SignupButtonBoxProps> = React.memo(
 const styles = StyleSheet.create({
   container: {
     height: height * 0.27,
+    maxHeight: 200,
   },
   createBtn: {
     marginTop: moderateScale(20),

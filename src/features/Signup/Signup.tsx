@@ -73,9 +73,8 @@ const Signup: React.FC = () => {
 export default Signup;
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: { flex: 1, backgroundColor: COLORS.white },
   main: {
     paddingHorizontal: moderateScale(15),
-    backgroundColor: COLORS.white,
   },
 });

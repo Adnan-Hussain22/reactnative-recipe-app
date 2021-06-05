@@ -63,7 +63,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ control, errors }) => {
 export default LoginForm;
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.white,
+  },
   input: {
     ...typographyStyles.P,
     color: COLORS.textGrey,

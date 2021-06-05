@@ -1,20 +1,35 @@
+import { useNavigation } from "@react-navigation/core";
 import * as React from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { COLORS } from "src/constants/colors";
-import { height } from "src/utils/scale";
+import { UNAUHTENTICATED_ROUTES } from "src/constants/Routes";
 import Typography from "../Typography";
 
-interface SignupFooterTextProps {}
+interface SignupFooterTextProps {
+  type?: "signup" | "signin";
+}
 
-export const SignupFooterText = (props: SignupFooterTextProps) => {
+export const SignupFooterText: React.FC<SignupFooterTextProps> = ({
+  type = "signup",
+}) => {
+  const navigation = useNavigation();
+
+  const handleNavigate = () => {
+    navigation.navigate(
+      type === "signin"
+        ? UNAUHTENTICATED_ROUTES.SIGNUP
+        : UNAUHTENTICATED_ROUTES.LOGIN
+    );
+  };
+
   return (
     <View style={styles.container}>
       <Typography variant="BodyLight" color={COLORS.textGrey} marginRight={8}>
-        Have an account?
+        {type === "signin" ? "Don't" : ""} Have an account?
       </Typography>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={handleNavigate}>
         <Typography variant="Body" color={COLORS.primaryRed}>
-          Sign In
+          {type === "signin" ? "Sign Up" : "Sign In"}
         </Typography>
       </TouchableOpacity>
     </View>
@@ -23,9 +38,8 @@ export const SignupFooterText = (props: SignupFooterTextProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: height * 0.08,
     flexDirection: "row",
-    alignItems: "center",
+    paddingTop: 15,
     justifyContent: "center",
   },
 });

@@ -10,16 +10,16 @@ import {
 } from "react-native";
 import * as yup from "yup";
 
-import { SignupLogo } from "src/components/Signup";
+import { SignupFooterText, SignupLogo } from "src/components/Signup";
 import { COLORS } from "src/constants/colors";
 import LoginForm from "src/features/Login/LoginForm";
 import { usePlateform } from "src/hooks/usePlateform";
 import { moderateScale } from "src/utils/scale";
-import { FormFields } from "./LoginForm";
 import { ERRORS } from "src/constants/errors";
 import Icon from "src/components/Icon";
 import { iconStyles } from "src/constants/globalStyles";
 import Button from "src/components/Button";
+import { FormFields } from "./LoginForm";
 
 interface LoginProps {}
 
@@ -49,7 +49,6 @@ const Login: React.FC<LoginProps> = () => {
   return (
     <View style={styles.container}>
       <SafeAreaView style={styles.container}>
-        {/* <Text>Login</Text> */}
         <KeyboardAvoidingView
           style={styles.container}
           behavior={isIos ? "padding" : undefined}
@@ -75,6 +74,7 @@ const Login: React.FC<LoginProps> = () => {
               textStyle={styles.createTxt}
               onPress={handleSubmit(onLogin)}
             />
+            <SignupFooterText type="signin" />
           </ScrollView>
         </KeyboardAvoidingView>
       </SafeAreaView>
