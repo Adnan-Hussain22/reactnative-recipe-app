@@ -6,7 +6,8 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@hookform/resolvers": "^2.5.2",
@@ -40,8 +41,14 @@
     "eslint-config-airbnb-typescript-prettier": "^4.2.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
+    "husky": ">=4",
+    "lint-staged": "^11.0.0",
     "prettier": "^2.3.0",
     "typescript": "~4.0.0"
   },
-  "private": true
+  "private": true,
+  "lint-staged": {
+    "*.{ts,tsx,js}": "eslint --cache --fix",
+    "*.js": "eslint --cache --fix"
+  }
 }
