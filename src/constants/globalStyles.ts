@@ -1,3 +1,4 @@
+import { StyleSheet } from "react-native";
 import { moderateScale } from "src/utils/scale";
 import { COLORS } from "./colors";
 import { CUSTOM_FONTS } from "./fonts";
@@ -42,3 +43,9 @@ export const iconStyles = {
     marginRight: -6,
   },
 };
+
+export const formStyles = StyleSheet.create({
+  inputContainer: {
+    paddingVertical: moderateScale(13),
+  },
+});
