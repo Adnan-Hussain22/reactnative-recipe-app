@@ -6,9 +6,7 @@ import { IconRoundButton } from "../Button";
 import Icon from "../Icon";
 import Typography from "../Typography";
 
-interface ProfileImageBoxProps {}
-
-export const ProfileImageBox: React.FC<ProfileImageBoxProps> = () => {
+export const ProfileImageBox: React.FC = () => {
   return (
     <View style={styles.container}>
       <IconRoundButton
@@ -24,6 +22,7 @@ export const ProfileImageBox: React.FC<ProfileImageBoxProps> = () => {
         }
         background={COLORS.dotgrey}
         size={moderateScale(height * 0.25)}
+        onPress={() => {}}
       />
       <Typography
         variant="BodyBold"

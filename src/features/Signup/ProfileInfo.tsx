@@ -9,9 +9,7 @@ import { useKeyboard } from "src/hooks/useKeyboard";
 import { usePlateform } from "src/hooks/usePlateform";
 import { moderateScale } from "src/utils/scale";
 
-interface ProfileInfoProps {}
-
-const ProfileInfo: React.FC<ProfileInfoProps> = () => {
+const ProfileInfo: React.FC = () => {
   const { isIos } = usePlateform();
   const { keyboardHeight } = useKeyboard();
   const bottom = keyboardHeight ? (isIos ? keyboardHeight + 20 : 20) : 50;
@@ -36,6 +34,7 @@ const ProfileInfo: React.FC<ProfileInfoProps> = () => {
             style={iconStyles.iosChevron}
           />
         }
+        onPress={() => {}}
       />
     </SafeAreaView>
   );

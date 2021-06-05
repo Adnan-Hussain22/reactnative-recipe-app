@@ -14,9 +14,7 @@ import { COLORS } from "src/constants/colors";
 import { CUSTOM_FONTS } from "src/constants/fonts";
 import { height, moderateScale } from "src/utils/scale";
 
-interface OnboardingProps {}
-
-const Onboarding: React.FC<OnboardingProps> = () => {
+const Onboarding: React.FC = () => {
   const [activeIndex, setActiveIndex] = React.useState(0);
   const swiperRef = React.useRef<Swiper>(null);
 
@@ -36,7 +34,6 @@ const Onboarding: React.FC<OnboardingProps> = () => {
           style={{ flexGrow: 1 }}
           scrollEnabled={false}
           loop
-          // eslint-disable-next-line no-return-assign
           ref={(e) => (swiperRef.current = e)}
           dot={
             <Dot

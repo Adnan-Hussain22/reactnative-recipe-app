@@ -7,9 +7,7 @@ import { height, moderateScale } from "src/utils/scale";
 import TextInput from "../TextInput";
 import Typography from "../Typography";
 
-interface UsernameBoxProps {}
-
-export const UsernameBox: React.FC<UsernameBoxProps> = () => {
+export const UsernameBox: React.FC = () => {
   return (
     <View style={styles.formContainer}>
       <Typography variant="H1">Create a username</Typography>

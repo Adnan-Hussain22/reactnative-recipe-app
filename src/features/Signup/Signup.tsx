@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import * as React from "react";
 import {
   StyleSheet,
@@ -40,7 +39,7 @@ const Signup: React.FC = () => {
   });
   const navigation = useNavigation();
 
-  const handleCreate = React.useCallback(async (data: FormFields) => {
+  const handleCreate = React.useCallback(async (data: SignupFormFields) => {
     console.log("create==>", data);
     navigation.navigate(UNAUHTENTICATED_ROUTES.PERSONAL_INFO);
   }, []);

@@ -36,7 +36,6 @@ export const useKeyboard = () => {
         keyboardDidHide
       );
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return { keyboardHeight, isKeyboardOpen };

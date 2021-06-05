@@ -17,8 +17,6 @@ import { moderateScale, width } from "src/utils/scale";
 import { ERRORS } from "src/constants/errors";
 import { GENDER } from "src/constants/common";
 
-interface PersonalInfoProps {}
-
 export const validationSchema = yup.object().shape({
   firstName: yup.string().required(ERRORS.REQUIRED_FIRSTNAME),
   dateOfBirth: yup
@@ -29,7 +27,7 @@ export const validationSchema = yup.object().shape({
     .oneOf([GENDER.MALE, GENDER.FEMALE], ERRORS.OPTION_REQUIRED),
 });
 
-const PersonalInfo: React.FC<PersonalInfoProps> = () => {
+const PersonalInfo: React.FC = () => {
   const { control, handleSubmit } = useForm<PersonalInfoFormFields>({
     defaultValues: {
       firstName: "",
@@ -41,7 +39,7 @@ const PersonalInfo: React.FC<PersonalInfoProps> = () => {
     resolver: yupResolver(validationSchema),
   });
 
-  const handleNext = React.useCallback((data: PersonalInfoFormFields) => {
+  const handleNext = React.useCallback(() => {
     //
   }, []);
 

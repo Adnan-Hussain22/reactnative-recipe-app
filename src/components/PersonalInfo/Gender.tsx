@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-fragments */
 import * as React from "react";
 import { View, StyleSheet } from "react-native";
 import { COLORS } from "src/constants/colors";

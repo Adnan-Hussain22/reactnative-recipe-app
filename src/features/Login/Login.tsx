@@ -21,14 +21,12 @@ import { iconStyles } from "src/constants/globalStyles";
 import Button from "src/components/Button";
 import { FormFields } from "./LoginForm";
 
-interface LoginProps {}
-
 export const validationSchema = yup.object().shape({
   email: yup.string().email(ERRORS.EMAIL).required(ERRORS.EMAIL),
   password: yup.string().length(6).required(ERRORS.STRONG_PASSWORD),
 });
 
-const Login: React.FC<LoginProps> = () => {
+const Login: React.FC = () => {
   const onLogin = React.useCallback(async (data: FormFields) => {
     console.log("login==>", data);
   }, []);
