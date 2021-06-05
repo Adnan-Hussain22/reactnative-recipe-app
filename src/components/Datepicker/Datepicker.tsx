@@ -1,21 +1,28 @@
 import * as React from "react";
-import { View, StyleSheet } from "react-native";
 import moment from "moment";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
 import { COLORS } from "src/constants/colors";
-import { moderateScale } from "src/utils/scale";
+import { formStyles } from "src/constants/globalStyles";
 import InputWrapper from "../InputWrapper/InputWrapper";
 import Typography from "../Typography";
 
-interface DatePickerProps {}
+interface DatePickerProps {
+  // eslint-disable-next-line no-unused-vars
+  onChange: (newDate: Date) => void;
+  date: Date;
+}
 
-const DatePicker = () => {
+const DatePicker: React.FC<DatePickerProps> = ({
+  date,
+  onChange: propDateChange,
+}) => {
   const [showPicker, setShowPicker] = React.useState(false);
-  const [date, setDate] = React.useState(new Date());
 
   const onChange = (_, selectedDate?: Date) => {
-    if (selectedDate) setDate(selectedDate);
+    if (selectedDate) {
+      propDateChange(selectedDate);
+    }
     setShowPicker(false);
   };
 
@@ -24,10 +31,10 @@ const DatePicker = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <>
       <InputWrapper
         touchable
-        style={{ paddingVertical: moderateScale(16) }}
+        style={formStyles.inputContainer}
         onPress={handleOnPicker}
       >
         <Typography variant="P" color={COLORS.textGrey}>
@@ -42,12 +49,8 @@ const DatePicker = () => {
           onChange={onChange}
         />
       ) : null}
-    </View>
+    </>
   );
 };
 
 export default DatePicker;
-
-const styles = StyleSheet.create({
-  container: {},
-});

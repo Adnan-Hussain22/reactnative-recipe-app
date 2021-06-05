@@ -1,24 +1,48 @@
 import * as React from "react";
+import { Control, Controller } from "react-hook-form";
 import { View, StyleSheet } from "react-native";
 import { COLORS } from "src/constants/colors";
-import { typographyStyles } from "src/constants/globalStyles";
+import { formStyles, typographyStyles } from "src/constants/globalStyles";
+import { PersonalInfoFormFields } from "src/typings/signup";
 import { width } from "src/utils/scale";
 import TextInput from "../TextInput";
 
-interface PersonalInfoNameBoxProps {}
+interface PersonalInfoNameBoxProps {
+  control: Control<PersonalInfoFormFields>;
+}
 
-export const PersonalInfoNameBox = (props: PersonalInfoNameBoxProps) => {
+export const PersonalInfoNameBox: React.FC<PersonalInfoNameBoxProps> = ({
+  control,
+}) => {
   return (
     <View style={styles.nameContainer}>
-      <TextInput
-        placeholder="First Name"
-        containerStyle={styles.name}
-        style={styles.input}
+      <Controller
+        control={control}
+        name="firstName"
+        render={({ field: { value, onChange }, formState: { errors } }) => (
+          <TextInput
+            placeholder="First Name"
+            containerStyle={styles.name}
+            style={styles.input}
+            onChangeText={onChange}
+            value={value}
+            error={errors.firstName?.message}
+          />
+        )}
       />
-      <TextInput
-        placeholder="Last Name"
-        containerStyle={styles.name}
-        style={styles.input}
+      <Controller
+        control={control}
+        name="firstName"
+        render={({ field: { value, onChange }, formState: { errors } }) => (
+          <TextInput
+            placeholder="Last Name"
+            containerStyle={styles.name}
+            style={styles.input}
+            onChangeText={onChange}
+            value={value}
+            error={errors.lastName?.message}
+          />
+        )}
       />
     </View>
   );
@@ -26,7 +50,10 @@ export const PersonalInfoNameBox = (props: PersonalInfoNameBoxProps) => {
 
 const styles = StyleSheet.create({
   nameContainer: { flexDirection: "row", justifyContent: "space-between" },
-  name: { width: width * 0.4, marginVertical: 12 },
+  name: {
+    ...formStyles.inputContainer,
+    width: width * 0.4,
+  },
   input: {
     ...typographyStyles.P,
     color: COLORS.textGrey,

@@ -10,13 +10,13 @@ import { height, moderateScale } from "src/utils/scale";
 import TextInput from "../TextInput";
 import Typography from "../Typography/Typography";
 
-export interface FormFields {
+export interface SignupFormFields {
   email: string;
   password: string;
   verifyPassword: string;
 }
 
-export const validationSchema = yup.object().shape({
+export const signupValidationSchema = yup.object().shape({
   email: yup.string().email(ERRORS.EMAIL).required(ERRORS.EMAIL),
   password: yup.string().length(6).required(ERRORS.STRONG_PASSWORD),
   verifyPassword: yup
@@ -25,11 +25,9 @@ export const validationSchema = yup.object().shape({
     .required(),
 });
 
-export type SignupFormFields = keyof FormFields;
-
 interface SignupFormProps {
-  errors: DeepMap<FormFields, FieldError>;
-  control: Control<FormFields>;
+  errors: DeepMap<SignupFormFields, FieldError>;
+  control: Control<SignupFormFields>;
 }
 
 export const SignupForm: React.FC<SignupFormProps> = React.memo((props) => {

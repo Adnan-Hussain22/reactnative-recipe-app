@@ -14,12 +14,14 @@ import {
   SignupForm,
   SignupButtonBox,
   SignupFooterText,
-  validationSchema,
-  FormFields,
+  signupValidationSchema,
+  SignupFormFields,
 } from "src/components/Signup";
 import { COLORS } from "src/constants/colors";
 import { usePlateform } from "src/hooks/usePlateform";
 import { moderateScale } from "src/utils/scale";
+import { useNavigation } from "@react-navigation/core";
+import { UNAUHTENTICATED_ROUTES } from "src/constants/Routes";
 
 const Signup: React.FC = () => {
   const { isIos } = usePlateform();
@@ -27,18 +29,20 @@ const Signup: React.FC = () => {
     control,
     formState: { errors },
     handleSubmit,
-  } = useForm<FormFields>({
+  } = useForm<SignupFormFields>({
     defaultValues: {
       email: "",
       password: "",
       verifyPassword: "",
     },
     mode: "onChange",
-    resolver: yupResolver(validationSchema),
+    resolver: yupResolver(signupValidationSchema),
   });
+  const navigation = useNavigation();
 
   const handleCreate = React.useCallback(async (data: FormFields) => {
     console.log("create==>", data);
+    navigation.navigate(UNAUHTENTICATED_ROUTES.PERSONAL_INFO);
   }, []);
 
   const handleOnSignupGmail = React.useCallback(() => {
