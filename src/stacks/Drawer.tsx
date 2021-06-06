@@ -3,7 +3,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import DrawerComponent from "src/components/Drawer";
 
 // Authenticated Stack
-import AuthenticatedStack from "./Authenticated";
+import AuthenticatedNavigator from "./AuthenticatedNavigator";
 
 const Drawer = createDrawerNavigator();
 
@@ -17,7 +17,7 @@ const DrawerStack = () => {
         width: 250,
       }}
     >
-      <Drawer.Screen name="Home" component={AuthenticatedStack} />
+      <Drawer.Screen name="Home" component={AuthenticatedNavigator} />
     </Drawer.Navigator>
   );
 };
