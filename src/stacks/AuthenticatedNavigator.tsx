@@ -1,26 +1,18 @@
 import * as React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { AUHTENTICATED_ROUTES } from "src/constants/Routes";
-import TabBarIcon from "src/components/TabIcon";
-import { tabBarOptions } from "src/constants/navigatorOptions";
 import { SafeAreaView } from "react-native";
+
+import DicoverScreen from "src/features/Discover";
+import TabBarIcon from "src/components/TabIcon";
 import Typography from "src/components/Typography";
+import { AUHTENTICATED_ROUTES } from "src/constants/Routes";
+import { tabBarOptions } from "src/constants/navigatorOptions";
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 // const getRouteName = (route: Route<string, object | undefined>) =>
 //   getFocusedRouteNameFromRoute(route) ?? AUHTENTICATED_ROUTES.DISCOVER;
 
 const { Navigator, Screen } = createBottomTabNavigator();
-
-const DiscoverScreen = () => {
-  return (
-    <SafeAreaView
-      style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-    >
-      <Typography>Discover Screen</Typography>
-    </SafeAreaView>
-  );
-};
 
 const SearchScreen = () => {
   return (
@@ -77,7 +69,7 @@ const AuthenticatedNavigator = () => {
         ...tabBarOptions,
       }}
     >
-      <Screen name={AUHTENTICATED_ROUTES.DISCOVER} component={DiscoverScreen} />
+      <Screen name={AUHTENTICATED_ROUTES.DISCOVER} component={DicoverScreen} />
       <Screen name={AUHTENTICATED_ROUTES.SEARCH} component={SearchScreen} />
       <Screen name={AUHTENTICATED_ROUTES.SCAN} component={ScanScreen} />
       <Screen
