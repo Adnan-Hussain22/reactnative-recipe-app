@@ -1,3 +1,10 @@
+import {
+  americanCusine,
+  chineseCusine,
+  desiCusine,
+  italianCusine,
+  japanesCusine,
+} from "src/assets/images";
 import { IDiscoverList } from "src/typings/discover";
 
 export const DISCOVER_DATA: IDiscoverList[] = [
@@ -72,24 +79,24 @@ export const DISCOVER_DATA: IDiscoverList[] = [
     type: 1,
     data: [
       {
-        title: "Hampden-Sydney",
-        image:
-          "https://www.foodies.pk/wp-content/uploads/2020/04/italian-cuisine-italian-food-scaled.jpeg",
+        title: "Desi",
+        image: desiCusine,
       },
       {
-        title: "Hampden-Sydney",
-        image:
-          "https://www.foodies.pk/wp-content/uploads/2020/04/italian-cuisine-italian-food-scaled.jpeg",
+        title: "Japanese",
+        image: japanesCusine,
       },
       {
-        title: "Hampden-Sydney",
-        image:
-          "https://www.foodies.pk/wp-content/uploads/2020/04/italian-cuisine-italian-food-scaled.jpeg",
+        title: "American",
+        image: americanCusine,
       },
       {
-        title: "Hampden-Sydney",
-        image:
-          "https://www.foodies.pk/wp-content/uploads/2020/04/italian-cuisine-italian-food-scaled.jpeg",
+        title: "Italian",
+        image: italianCusine,
+      },
+      {
+        title: "Chinese",
+        image: chineseCusine,
       },
     ],
   },
