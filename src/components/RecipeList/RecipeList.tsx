@@ -20,7 +20,9 @@ const RecipeList: React.FC<RecipeListProps> = ({ title }) => {
       <FlatList
         data={new Array(5).fill(0)}
         renderItem={() => <RecipeItem />}
+        showsVerticalScrollIndicator={false}
         keyExtractor={(_, index) => `__recipeList${index}__`}
+        ListFooterComponent={() => <View style={{ height: 40 }} />}
       />
     </>
   );
