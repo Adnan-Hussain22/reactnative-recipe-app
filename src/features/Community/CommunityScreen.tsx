@@ -1,8 +1,11 @@
 import * as React from "react";
 import { useCallback } from "react";
 import { SafeAreaView, StyleSheet, FlatList, ScrollView } from "react-native";
-import { CommunityUserItem, RecipeRequestItem } from "src/components/Community";
-import RecipeRequestButton from "src/components/Community/RecipeRequestButton";
+import {
+  CommunityUserItem,
+  RecipeRequestItem,
+  RecipeRequestButton,
+} from "src/components/Community";
 import DiscoverListHorizontal from "src/components/Discover/DiscoverListHorizontal";
 import { DiscoverListTitle } from "src/components/Discover/DiscoverListTitle";
 import Spacer from "src/components/Spacer";
