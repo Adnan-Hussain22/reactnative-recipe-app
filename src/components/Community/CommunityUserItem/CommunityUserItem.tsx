@@ -13,11 +13,11 @@ const CommunityUserItem: React.FC = () => {
   return (
     <View style={styles.container}>
       <UserAvatar
-        size={100}
+        size={90}
         name="Ahmed Ali"
         src="https://www.pngkey.com/png/detail/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png"
         key={Math.random()}
-        style={{ width: 100 }}
+        style={{ width: 90 }}
       />
       <Typography
         variant="Body"
@@ -51,7 +51,7 @@ export default CommunityUserItem;
 
 const styles = StyleSheet.create({
   container: {
-    width: 130,
+    width: 125,
     alignItems: "center",
   },
   followBtn: {
