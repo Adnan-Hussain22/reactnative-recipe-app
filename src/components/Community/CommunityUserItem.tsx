@@ -1,10 +1,9 @@
 import * as React from "react";
 import { View, StyleSheet } from "react-native";
 import UserAvatar from "react-native-user-avatar";
-import Button from "src/components/Button";
+import FollowButton from "src/components/Button/FollowButton";
 import Typography from "src/components/Typography";
 import { COLORS } from "src/constants/colors";
-import { typographyStyles } from "src/constants/globalStyles";
 import { moderateScale } from "src/utils/scale";
 
 // interface CommunityUserItemProps {}
@@ -29,20 +28,7 @@ const CommunityUserItem: React.FC = () => {
       <Typography color={COLORS.textGrey} textAlign="center">
         ahMedai
       </Typography>
-      <Button
-        icon={{
-          type: "AntDesign",
-          name: "plus",
-          style: { color: COLORS.primaryRed, fontSize: moderateScale(13) },
-        }}
-        round
-        center
-        width={moderateScale(90)}
-        style={styles.followBtn}
-        text="Follow"
-        textStyle={styles.follow}
-        onPress={() => {}}
-      />
+      <FollowButton onPress={() => {}} />
     </View>
   );
 };
@@ -53,17 +39,5 @@ const styles = StyleSheet.create({
   container: {
     width: 125,
     alignItems: "center",
-  },
-  followBtn: {
-    paddingVertical: moderateScale(5),
-    paddingHorizontal: moderateScale(14),
-    borderWidth: 1,
-    borderColor: COLORS.primaryYellow,
-    marginTop: moderateScale(8),
-  },
-  follow: {
-    ...typographyStyles.BodySemiBold,
-    color: COLORS.primaryRed,
-    fontSize: 15,
   },
 });
