@@ -3,7 +3,7 @@ import { View, StyleSheet, TextInput } from "react-native";
 import Icon from "src/components/Icon";
 import { COLORS } from "src/constants/colors";
 import { typographyStyles } from "src/constants/globalStyles";
-import { moderateScale } from "src/utils/scale";
+import { moderateScale, width } from "src/utils/scale";
 
 interface SearchInputProps {
   value: string;
@@ -41,5 +41,6 @@ const styles = StyleSheet.create({
     ...typographyStyles.P,
     marginLeft: moderateScale(8),
     paddingVertical: moderateScale(10),
+    width: width - 115,
   },
 });

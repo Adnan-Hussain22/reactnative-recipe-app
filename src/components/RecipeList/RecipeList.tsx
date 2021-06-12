@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginTop: moderateScale(20),
+    paddingBottom: moderateScale(10),
   },
   iconDown: { color: COLORS.primaryRed, fontSize: moderateScale(20) },
 });
