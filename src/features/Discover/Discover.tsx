@@ -1,9 +1,7 @@
 import * as React from "react";
-import { SafeAreaView, View, FlatList, SectionList } from "react-native";
-import {
-  DiscoverListTitle,
-  DiscoverListHorizontalItem,
-} from "src/components/Discover";
+import { SafeAreaView, View, SectionList } from "react-native";
+import { DiscoverListTitle } from "src/components/Discover";
+import DiscoverListHorizontal from "src/components/Discover/DiscoverListHorizontal";
 import { DISCOVER_DATA } from "src/features/Discover/data";
 import { styles } from "./style";
 
@@ -25,20 +23,9 @@ const DiscoverScreen: React.FC = () => {
                 onPress={() => {}}
               />
               {section.horizontal ? (
-                <FlatList
+                <DiscoverListHorizontal
                   data={section.data}
-                  keyExtractor={(_, index) => `${index}`}
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  renderItem={({ index, item }) => (
-                    <DiscoverListHorizontalItem
-                      title={item.title}
-                      subTitle={item.subTitle}
-                      image={item.image}
-                      type={section.type}
-                      isLast={index === section.data.length - 1}
-                    />
-                  )}
+                  type={section.type}
                 />
               ) : null}
             </>
