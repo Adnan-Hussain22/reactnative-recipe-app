@@ -1,7 +1,8 @@
 import * as React from "react";
 import { useMemo } from "react";
 import { SafeAreaView, StyleSheet, View } from "react-native";
-import NoRecipes from "src/components/Profile/NoRecipes";
+// import NoRecipes from "src/components/Profile/NoRecipes";
+import ProfileRequest from "src/components/Profile/ProfileRequest";
 import ProfileStatsList from "src/components/Profile/ProfileStatsList";
 import UserInfo from "src/components/Profile/UserInfo";
 
@@ -29,7 +30,8 @@ const ProfileScreen: React.FC = () => {
           location="Washington, DC"
         />
         <ProfileStatsList data={stats} />
-        <NoRecipes />
+        <ProfileRequest />
+        {/* <NoRecipes /> */}
       </View>
     </SafeAreaView>
   );
