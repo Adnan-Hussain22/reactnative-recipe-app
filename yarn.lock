@@ -6549,6 +6549,11 @@ react-native-screens@~3.0.0:
   resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-3.0.0.tgz#ee4c2d69abf7411603868b57214feec5e8f637fa"
   integrity sha512-35II5oxTaVp3OP8y0eLPOPpQkxG4fRKQ+dL1YSE1we5kCZFOU0l/Rn0T79HbyUu1LPwUZr6lZupPs0ULnRyMuQ==
 
+react-native-shadow-generator@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/react-native-shadow-generator/-/react-native-shadow-generator-1.1.2.tgz#9a60cbb98b1e1378587f3aa7bdb35165db566bfb"
+  integrity sha512-WfeBx/lHsEq2AwjeEm+4/n8F3Tbl/rl1EeEQkl8lMAsCVmYVBPc4XmXgjo9HQuN5sWt5MdAOrJOBiZBKZNrnZA==
+
 react-native-svg@12.1.0:
   version "12.1.0"
   resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-12.1.0.tgz#acfe48c35cd5fca3d5fd767abae0560c36cfc03d"
