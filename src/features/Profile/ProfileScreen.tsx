@@ -2,13 +2,14 @@ import * as React from "react";
 import { useMemo } from "react";
 import { SafeAreaView, StyleSheet, View } from "react-native";
 // import NoRecipes from "src/components/Profile/NoRecipes";
-import RecipeRequestModal from "src/components/Profile/RecipeRequestModal";
+// import RecipeRequestModal from "src/components/Profile/RecipeRequestModal";
 import ProfileStatsList from "src/components/Profile/ProfileStatsList";
 import UserInfo from "src/components/Profile/UserInfo";
 
 import { COLORS } from "src/constants/colors";
 import { moderateScale, width } from "src/utils/scale";
-import ProfileRequestItem from "src/components/Profile/ProfileRequestItem";
+// import ProfileRequestItem from "src/components/Profile/ProfileRequestItem";
+import RecipeItem from "src/components/RecipeItem";
 
 const ProfileScreen: React.FC = () => {
   const stats = useMemo(
@@ -31,14 +32,15 @@ const ProfileScreen: React.FC = () => {
           location="Washington, DC"
         />
         <ProfileStatsList data={stats} />
-        <RecipeRequestModal />
+        <RecipeItem bookmark />
+        {/* <RecipeRequestModal />
         <ProfileRequestItem
           name="Grace bee"
           username="gracebee"
           avatar="https://www.pngkey.com/png/detail/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png"
           description="something very very special that i cannot describe :P"
           likes={56}
-        />
+        /> */}
         {/* <NoRecipes /> */}
       </View>
     </SafeAreaView>
