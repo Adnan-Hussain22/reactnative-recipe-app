@@ -42,6 +42,7 @@ interface IIconPayload {
   MaterialIcons: string;
   FontAwesome: string;
   FontAwesome5: string;
+  Foundation: string;
   Fontisto: string;
   Ionicons: string;
   Octicons: string;
