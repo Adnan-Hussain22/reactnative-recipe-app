@@ -9,7 +9,9 @@ import UserInfo from "src/components/Profile/UserInfo";
 import { COLORS } from "src/constants/colors";
 import { moderateScale, width } from "src/utils/scale";
 // import ProfileRequestItem from "src/components/Profile/ProfileRequestItem";
-import RecipeItem from "src/components/RecipeItem";
+// import RecipeItem from "src/components/RecipeItem";
+// import Typography from "src/components/Typography";
+import ProfileTabBar from "src/components/Profile/TabBar/ProfileTabBar";
 
 const ProfileScreen: React.FC = () => {
   const stats = useMemo(
@@ -32,7 +34,8 @@ const ProfileScreen: React.FC = () => {
           location="Washington, DC"
         />
         <ProfileStatsList data={stats} />
-        <RecipeItem bookmark />
+        <ProfileTabBar />
+        {/* <RecipeItem bookmark /> */}
         {/* <RecipeRequestModal />
         <ProfileRequestItem
           name="Grace bee"
