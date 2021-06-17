@@ -1,5 +1,6 @@
 import * as React from "react";
 import { SafeAreaView, View, SectionList } from "react-native";
+
 import { DiscoverListTitle } from "src/components/Discover";
 import DiscoverListHorizontal from "src/components/Discover/DiscoverListHorizontal";
 import { DISCOVER_DATA } from "src/features/Discover/data";
@@ -13,7 +14,7 @@ const DiscoverScreen: React.FC = () => {
         keyboardShouldPersistTaps="never"
         stickySectionHeadersEnabled={false}
         showsVerticalScrollIndicator={false}
-        keyExtractor={(item, index) => `__discoverItem__${index}`}
+        keyExtractor={(_, index) => `__discoverItem__${index}`}
         renderSectionHeader={({ section }) => {
           return (
             <>
