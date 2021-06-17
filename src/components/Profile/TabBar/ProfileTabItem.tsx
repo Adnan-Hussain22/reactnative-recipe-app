@@ -7,12 +7,24 @@ import { moderateScale } from "src/utils/scale";
 interface ProfileTabItemProps {
   title: string;
   active?: boolean;
+  routeKey: string;
+  // eslint-disable-next-line no-unused-vars
+  onPress: (key: string) => void;
 }
 
-const ProfileTabItem: React.FC<ProfileTabItemProps> = ({ title, active }) => {
+const ProfileTabItem: React.FC<ProfileTabItemProps> = ({
+  title,
+  active,
+  routeKey,
+  onPress,
+}) => {
   return (
     <View style={[styles.container, { width: "32.7%" }]}>
-      <TouchableOpacity style={styles.container} disabled={active}>
+      <TouchableOpacity
+        style={styles.container}
+        disabled={active}
+        onPress={() => onPress(routeKey)}
+      >
         <Typography
           variant="Body"
           color={active ? COLORS.primaryRed : COLORS.statsGreySecondary}
