@@ -5,6 +5,7 @@ import { SafeAreaView } from "react-native";
 import DicoverScreen from "src/features/Discover";
 import SearchScreen from "src/features/Search";
 import CommunityScreen from "src/features/Community";
+import ProfileScreen from "src/features/Profile";
 import TabBarIcon from "src/components/TabIcon";
 import Typography from "src/components/Typography";
 import { AUHTENTICATED_ROUTES } from "src/constants/Routes";
@@ -21,16 +22,6 @@ const ScanScreen = () => {
       style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
     >
       <Typography>Scan Screen</Typography>
-    </SafeAreaView>
-  );
-};
-
-const ProfileScreen = () => {
-  return (
-    <SafeAreaView
-      style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-    >
-      <Typography>Profile Screen</Typography>
     </SafeAreaView>
   );
 };
