@@ -18,8 +18,7 @@ const FollowButton: React.FC<FollowButtonProps> = ({ onPress }) => {
         style: styles.icon,
       }}
       round
-      center
-      width={moderateScale(90)}
+      width={moderateScale(95)}
       style={styles.followBtn}
       text="Follow"
       textStyle={styles.follow}
@@ -41,7 +40,7 @@ const styles = StyleSheet.create({
   follow: {
     ...typographyStyles.BodySemiBold,
     color: COLORS.primaryRed,
-    fontSize: 15,
+    fontSize: moderateScale(15),
   },
-  icon: { color: COLORS.primaryRed, fontSize: moderateScale(13) },
+  icon: { color: COLORS.primaryRed, fontSize: moderateScale(14) },
 });

@@ -8,18 +8,26 @@ import { desiCusine } from "src/assets/images";
 import { normalizeImageSrc } from "src/utils/image";
 import { moderateScale } from "src/utils/scale";
 import { COLORS } from "src/constants/colors";
+import Icon from "src/components/Icon";
 
 interface RecipeItemProps {
   title: string;
   subTitle: string;
   rating: number;
+  bookmark?: boolean;
 }
 
-const RecipeItem: React.FC<RecipeItemProps> = () => {
+const RecipeItem: React.FC<RecipeItemProps> = ({ bookmark }) => {
   return (
     <View style={styles.itemContainer}>
       <Image source={normalizeImageSrc(desiCusine)} style={styles.itemImage} />
-      <View style={styles.itemContent}>
+      <View
+        style={
+          bookmark
+            ? styles.itemContentWithBookmark
+            : styles.itemContentWithoutBookmark
+        }
+      >
         <Typography variant="BodySemiBold" color={COLORS.listTitle}>
           Chicken Panini
         </Typography>
@@ -40,6 +48,11 @@ const RecipeItem: React.FC<RecipeItemProps> = () => {
           </Typography>
         </View>
       </View>
+      {bookmark ? (
+        <View style={styles.bookmark}>
+          <Icon name="bookmark" type="Foundation" style={styles.bookmarkIcon} />
+        </View>
+      ) : null}
     </View>
   );
 };
@@ -47,11 +60,6 @@ const RecipeItem: React.FC<RecipeItemProps> = () => {
 export default RecipeItem;
 
 const styles = StyleSheet.create({
-  ratingContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: moderateScale(5),
-  },
   itemContainer: {
     marginTop: moderateScale(20),
     backgroundColor: COLORS.primaryGrey,
@@ -66,7 +74,23 @@ const styles = StyleSheet.create({
     width: widthPercentageToDP("25%"),
     borderRadius: widthPercentageToDP("2.5%"),
   },
-  itemContent: {
-    width: widthPercentageToDP("56%"),
+  itemContentWithoutBookmark: {
+    width: widthPercentageToDP("58%"),
   },
+  itemContentWithBookmark: {
+    width: widthPercentageToDP("45%"),
+  },
+  ratingContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: moderateScale(5),
+  },
+  bookmark: {
+    width: widthPercentageToDP("10%"),
+    alignItems: "center",
+    justifyContent: "flex-start",
+    alignSelf: "flex-start",
+    marginTop: 10,
+  },
+  bookmarkIcon: { fontSize: moderateScale(25), color: COLORS.primaryRed },
 });

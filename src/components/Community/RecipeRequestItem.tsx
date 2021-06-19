@@ -1,7 +1,8 @@
 import * as React from "react";
 import { Image, View, StyleSheet } from "react-native";
+import { generateShadow } from "react-native-shadow-generator";
 import UserAvatar from "react-native-user-avatar";
-import Icon from "src/components/Icon";
+import LikeBox from "src/components/LikeBox";
 
 import Typography from "src/components/Typography";
 import { COLORS } from "src/constants/colors";
@@ -36,16 +37,7 @@ const RecipeRequestItem: React.FC = () => {
           style={styles.image}
         />
       </View>
-      <View style={styles.likeContainer}>
-        <Icon type="AntDesign" name="like1" style={styles.likeIcon} />
-        <Typography
-          color={COLORS.textGrey}
-          marginLeft={moderateScale(10)}
-          fontSize={moderateScale(14)}
-        >
-          56 Likes
-        </Typography>
-      </View>
+      <LikeBox likes={56} />
     </View>
   );
 };
@@ -61,14 +53,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     paddingTop: 10,
     marginRight: 15,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    ...generateShadow(4),
   },
   contentWrapper: { padding: 10, marginBottom: 5 },
   userInfo: {
@@ -79,11 +64,4 @@ const styles = StyleSheet.create({
   avatar: { width: moderateScale(30), marginRight: moderateScale(8) },
   imageWrapper: { height: "47%", width: "100%" },
   image: { height: "100%", width: "100%" },
-  likeContainer: {
-    paddingHorizontal: moderateScale(15),
-    height: 40,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  likeIcon: { color: COLORS.primaryRed, fontSize: moderateScale(18) },
 });
