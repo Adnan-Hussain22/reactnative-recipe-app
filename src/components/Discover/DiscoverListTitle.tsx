@@ -5,9 +5,9 @@ import { COLORS } from "src/constants/colors";
 import { moderateScale } from "src/utils/scale";
 
 interface DiscoverListTitleProps {
-  sectionIndex: number;
+  sectionIndex?: number;
   title: string;
-  onPress: () => void;
+  onPress?: () => void;
 }
 
 export const DiscoverListTitle: React.FC<DiscoverListTitleProps> = ({
@@ -17,7 +17,10 @@ export const DiscoverListTitle: React.FC<DiscoverListTitleProps> = ({
 }) => {
   return (
     <View
-      style={[styles.container, sectionIndex > 0 ? styles.spacingTop : null]}
+      style={[
+        styles.container,
+        sectionIndex && sectionIndex > 0 ? styles.spacingTop : null,
+      ]}
     >
       <Typography variant="H1">{title}</Typography>
       <Typography onPress={onPress} variant="P" color={COLORS.primaryRed}>

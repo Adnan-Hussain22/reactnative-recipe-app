@@ -3,13 +3,14 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { SafeAreaView } from "react-native";
 
 import DicoverScreen from "src/features/Discover";
+import SearchScreen from "src/features/Search";
+import CommunityScreen from "src/features/Community";
+import ProfileScreen from "src/features/Profile";
 import TabBarIcon from "src/components/TabIcon";
 import Typography from "src/components/Typography";
 import { AUHTENTICATED_ROUTES } from "src/constants/Routes";
 import { tabBarOptions } from "src/constants/navigatorOptions";
-import SearchScreen from "src/features/Search";
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 // const getRouteName = (route: Route<string, object | undefined>) =>
 //   getFocusedRouteNameFromRoute(route) ?? AUHTENTICATED_ROUTES.DISCOVER;
 
@@ -21,26 +22,6 @@ const ScanScreen = () => {
       style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
     >
       <Typography>Scan Screen</Typography>
-    </SafeAreaView>
-  );
-};
-
-const CommunityScreen = () => {
-  return (
-    <SafeAreaView
-      style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-    >
-      <Typography>Community Screen</Typography>
-    </SafeAreaView>
-  );
-};
-
-const ProfileScreen = () => {
-  return (
-    <SafeAreaView
-      style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-    >
-      <Typography>Profile Screen</Typography>
     </SafeAreaView>
   );
 };
