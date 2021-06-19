@@ -1,36 +1,20 @@
 import * as React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { AUHTENTICATED_ROUTES } from "src/constants/Routes";
-import TabBarIcon from "src/components/TabIcon";
-import { tabBarOptions } from "src/constants/navigatorOptions";
 import { SafeAreaView } from "react-native";
-import Typography from "src/components/Typography";
 
-// eslint-disable-next-line @typescript-eslint/ban-types
+import DicoverScreen from "src/features/Discover";
+import SearchScreen from "src/features/Search";
+import CommunityScreen from "src/features/Community";
+import ProfileScreen from "src/features/Profile";
+import TabBarIcon from "src/components/TabIcon";
+import Typography from "src/components/Typography";
+import { AUHTENTICATED_ROUTES } from "src/constants/Routes";
+import { tabBarOptions } from "src/constants/navigatorOptions";
+
 // const getRouteName = (route: Route<string, object | undefined>) =>
 //   getFocusedRouteNameFromRoute(route) ?? AUHTENTICATED_ROUTES.DISCOVER;
 
 const { Navigator, Screen } = createBottomTabNavigator();
-
-const DiscoverScreen = () => {
-  return (
-    <SafeAreaView
-      style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-    >
-      <Typography>Discover Screen</Typography>
-    </SafeAreaView>
-  );
-};
-
-const SearchScreen = () => {
-  return (
-    <SafeAreaView
-      style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-    >
-      <Typography>Search Screen</Typography>
-    </SafeAreaView>
-  );
-};
 
 const ScanScreen = () => {
   return (
@@ -38,26 +22,6 @@ const ScanScreen = () => {
       style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
     >
       <Typography>Scan Screen</Typography>
-    </SafeAreaView>
-  );
-};
-
-const CommunityScreen = () => {
-  return (
-    <SafeAreaView
-      style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-    >
-      <Typography>Community Screen</Typography>
-    </SafeAreaView>
-  );
-};
-
-const ProfileScreen = () => {
-  return (
-    <SafeAreaView
-      style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-    >
-      <Typography>Profile Screen</Typography>
     </SafeAreaView>
   );
 };
@@ -77,7 +41,7 @@ const AuthenticatedNavigator = () => {
         ...tabBarOptions,
       }}
     >
-      <Screen name={AUHTENTICATED_ROUTES.DISCOVER} component={DiscoverScreen} />
+      <Screen name={AUHTENTICATED_ROUTES.DISCOVER} component={DicoverScreen} />
       <Screen name={AUHTENTICATED_ROUTES.SEARCH} component={SearchScreen} />
       <Screen name={AUHTENTICATED_ROUTES.SCAN} component={ScanScreen} />
       <Screen
