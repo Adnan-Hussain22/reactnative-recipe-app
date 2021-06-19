@@ -12,6 +12,7 @@ const ProfileRequestList: React.FC<ProfileRequestListProps> = () => {
     <View style={styles.container}>
       <FlatList
         data={[1]}
+        contentContainerStyle={styles.contentContainerStyle}
         ListHeaderComponent={() => <RecipeRequestModal />}
         showsVerticalScrollIndicator={false}
         renderItem={() => (
@@ -31,5 +32,6 @@ const ProfileRequestList: React.FC<ProfileRequestListProps> = () => {
 export default ProfileRequestList;
 
 const styles = StyleSheet.create({
-  container: { flex: 1, paddingHorizontal: 10 },
+  container: { flex: 1 },
+  contentContainerStyle: { paddingHorizontal: 10 },
 });

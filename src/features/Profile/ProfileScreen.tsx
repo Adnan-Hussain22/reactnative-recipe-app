@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useMemo } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -16,16 +15,20 @@ import { moderateScale, width } from "src/utils/scale";
 import ProfileRecipeList from "src/components/Profile/ProfileRecipeList";
 import ProfileRequestList from "src/components/Profile/ProfileRequestList";
 import ProfileBookmarkList from "src/components/Profile/ProfileBookmarkList";
+import { useCallback } from "react";
 
 const ProfileScreen: React.FC = () => {
   const layout = useWindowDimensions();
   const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
-    { key: "RECIPE", title: "Recipe" },
-    { key: "REQUEST", title: "Request" },
-    { key: "BOOKMARK", title: "Bookmark" },
-  ]);
-  const stats = useMemo(
+  const routes = React.useMemo(
+    () => [
+      { key: "RECIPE", title: "Recipe" },
+      { key: "REQUEST", title: "Request" },
+      { key: "BOOKMARK", title: "Bookmark" },
+    ],
+    []
+  );
+  const stats = React.useMemo(
     () => [
       { title: "Follower", stats: 5 },
       { title: "Following", stats: 25 },
@@ -35,10 +38,25 @@ const ProfileScreen: React.FC = () => {
     []
   );
 
+  const renderRecipe = useCallback(
+    () => <ProfileRecipeList recipes={[]} />,
+    []
+  );
+
+  const renderRequest = useCallback(
+    () => <ProfileRequestList requests={[]} />,
+    []
+  );
+
+  const renderBookmark = useCallback(
+    () => <ProfileBookmarkList bookmarks={[]} />,
+    []
+  );
+
   const renderScene = SceneMap({
-    RECIPE: ProfileRecipeList,
-    REQUEST: ProfileRequestList,
-    BOOKMARK: ProfileBookmarkList,
+    RECIPE: renderRecipe,
+    REQUEST: renderRequest,
+    BOOKMARK: renderBookmark,
   });
 
   return (
