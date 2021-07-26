@@ -2,9 +2,11 @@ import * as React from "react";
 import { Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
+import { RelayEnvironmentProvider } from "react-relay";
 
-import RootStackScreen from "./stacks/Decider";
-import { CUSTOM_FONTS } from "./constants/fonts";
+import RootStackScreen from "src/stacks/Decider";
+import { CUSTOM_FONTS } from "src/constants/fonts";
+import { relayEnvironment } from "src/services/graphql/relayEnvironment";
 
 export default function App() {
   const [userToken, setUserToken] = React.useState("");
@@ -26,8 +28,10 @@ export default function App() {
   if (!loaded || loading) return <Text>Loading...</Text>;
 
   return (
-    <NavigationContainer>
-      <RootStackScreen userToken={userToken} />
-    </NavigationContainer>
+    <RelayEnvironmentProvider environment={relayEnvironment}>
+      <NavigationContainer>
+        <RootStackScreen userToken={userToken} />
+      </NavigationContainer>
+    </RelayEnvironmentProvider>
   );
 }
