@@ -47,14 +47,13 @@
     "eslint-config-airbnb-typescript-prettier": "^4.2.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
-    "husky": ">=4",
+    "husky": "^7.0.1",
     "lint-staged": "^11.0.0",
     "prettier": "^2.3.0",
     "typescript": "~4.0.0"
   },
   "private": true,
   "lint-staged": {
-    "*.{ts,tsx,js}": "eslint --cache --fix",
-    "*.js": "eslint --cache --fix"
+    "*.{ts,tsx,js}": "eslint --cache --fix"
   }
 }
