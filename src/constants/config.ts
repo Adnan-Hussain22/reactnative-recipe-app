@@ -1,6 +1,14 @@
 /* eslint-disable no-unused-vars */
-import Env from "react-native-config";
 import _ from "lodash-es";
+import {
+  PROD,
+  BASE_URL_PROD,
+  BASE_URL_DEV,
+  SOCKET_URL_PROD,
+  SOCKET_URL_DEV,
+  GRAPHQL_ENDPOINT,
+  REST_API_ENDPOINT,
+} from "@env";
 
 export enum ConfigEnum {
   BASE_URL = "BASE_URL",
@@ -10,23 +18,38 @@ export enum ConfigEnum {
   PROD = "PROD",
 }
 
-const BASE_URL = Env.PROD ? Env.BASE_URL_PROD : Env.BASE_URL_DEV;
-
-const SOCKET_URL = Env.PROD ? Env.SOCKET_URL_PROD : Env.SOCKET_URL_DEV;
-
-const requiredEnv = {
-  [ConfigEnum.BASE_URL]: BASE_URL,
-  [ConfigEnum.GRAPHQL_URL]: Env.GRAPHQL_URL,
-  [ConfigEnum.SOCKET_URL]: SOCKET_URL,
+const Env: any = {
+  PROD,
+  BASE_URL_PROD,
+  BASE_URL_DEV,
+  SOCKET_URL_PROD,
+  SOCKET_URL_DEV,
+  GRAPHQL_ENDPOINT,
+  REST_API_ENDPOINT,
 };
 
+const BASE_URL = PROD ? BASE_URL_PROD : BASE_URL_DEV;
+
+const SOCKET_URL = PROD ? SOCKET_URL_PROD : SOCKET_URL_DEV;
+
+const requiredEnv = [
+  "BASE_URL_PROD",
+  "BASE_URL_DEV",
+  "SOCKET_URL_PROD",
+  "SOCKET_URL_DEV",
+  "REST_API_ENDPOINT",
+  "GRAPHQL_ENDPOINT",
+];
+
 const config = {
-  ...requiredEnv,
-  [ConfigEnum.REST_API_URL]: `${BASE_URL}${Env.REST_API_ENDPOINT}`,
+  [ConfigEnum.GRAPHQL_URL]: `${BASE_URL}${GRAPHQL_ENDPOINT}`,
+  [ConfigEnum.SOCKET_URL]: SOCKET_URL,
+  [ConfigEnum.BASE_URL]: BASE_URL,
+  [ConfigEnum.REST_API_URL]: `${BASE_URL}${REST_API_ENDPOINT}`,
 };
 
 const ensureEnvVars = () => {
-  const missingKeys = Object.keys(requiredEnv).filter(
+  const missingKeys = requiredEnv.filter(
     (requiredKey) => !_.has(Env, requiredKey) || _.isEmpty(Env[requiredKey])
   );
   if (missingKeys.length) {
