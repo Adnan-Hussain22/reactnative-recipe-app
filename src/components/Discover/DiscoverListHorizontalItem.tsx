@@ -5,13 +5,10 @@ import { graphql, useFragment } from "react-relay";
 import Typography from "src/components/Typography";
 import { COLORS } from "src/constants/colors";
 import { DiscoverListHorizontalItem_recipe$key } from "src/services/graphql/__generated__/DiscoverListHorizontalItem_recipe.graphql";
-import { INormalizeImageProps, normalizeImageSrc } from "src/utils/image";
+import { normalizeImageSrc } from "src/utils/image";
 import { moderateScale } from "src/utils/scale";
 
 interface DiscoverListHorizontalItemProps {
-  // image: INormalizeImageProps;
-  // title: string;
-  // subTitle?: string;
   type: number;
   isLast: boolean;
   recipe: DiscoverListHorizontalItem_recipe$key;
@@ -58,7 +55,11 @@ export const DiscoverListHorizontalItem: React.FC<DiscoverListHorizontalItemProp
             type === 0 ? styles.imageRectangle : styles.imageSquared,
           ]}
         />
-        <Typography fontSize={moderateScale(19)} marginTop={moderateScale(12)}>
+        <Typography
+          fontSize={moderateScale(19)}
+          marginTop={moderateScale(12)}
+          numberOfLines={2}
+        >
           {name}
         </Typography>
         {description ? (
@@ -66,6 +67,7 @@ export const DiscoverListHorizontalItem: React.FC<DiscoverListHorizontalItemProp
             fontSize={moderateScale(14)}
             marginTop={moderateScale(5)}
             color={COLORS.textGrey}
+            numberOfLines={2}
           >
             {description}
           </Typography>

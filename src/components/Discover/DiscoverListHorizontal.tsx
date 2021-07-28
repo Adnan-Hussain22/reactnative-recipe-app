@@ -36,13 +36,15 @@ const DiscoverListHorizontal: React.FC<DiscoverListHorizontalProps> = ({
         keyExtractor={(_, listIndex) => `recipesList_${index}_${listIndex}`}
         horizontal
         showsHorizontalScrollIndicator={false}
-        renderItem={({ index, item }) => (
-          <DiscoverListHorizontalItem
-            recipe={item as DiscoverListHorizontalItem_recipe$key}
-            type={type}
-            isLast={index === data.length - 1}
-          />
-        )}
+        renderItem={({ index, item }) => {
+          return (
+            <DiscoverListHorizontalItem
+              recipe={item as DiscoverListHorizontalItem_recipe$key}
+              type={type}
+              isLast={index === data.length - 1}
+            />
+          );
+        }}
       />
     </>
   );

@@ -10,7 +10,6 @@ import {
 
 import { DiscoverListTitle } from "src/components/Discover";
 import DiscoverListHorizontal from "src/components/Discover/DiscoverListHorizontal";
-// import { DISCOVER_DATA } from "src/features/Discover/data";
 import { DiscoverListHorizontalItem_recipe$key } from "src/services/graphql/__generated__/DiscoverListHorizontalItem_recipe.graphql";
 import { DiscoverScreenQuery } from "src/services/graphql/__generated__/DiscoverScreenQuery.graphql";
 import { styles } from "./style";
@@ -22,6 +21,9 @@ const discoverScreenQuery = graphql`
         ...DiscoverListHorizontalItem_recipe
       }
       recent {
+        ...DiscoverListHorizontalItem_recipe
+      }
+      cusines {
         ...DiscoverListHorizontalItem_recipe
       }
     }
@@ -99,20 +101,27 @@ const DiscoverScreenContainer = ({
         type: 0,
         data: data.recipes?.recent ?? [],
       },
-      // { ...DISCOVER_DATA[2] },
+      {
+        index: 2,
+        title: "By Cuisine",
+        horizontal: true,
+        type: 1,
+        data: data.recipes?.cusines ?? [],
+      },
     ];
     return discoverList;
   }, [data]);
-  console.log("data==>", data.recipes);
-  return null;
-  // <Discover discoverList={discoverList} />;
+
+  return <Discover discoverList={discoverList} />;
 };
 const DiscoverScreen = () => {
   const [queryRef, loadQuery] =
     useQueryLoader<DiscoverScreenQuery>(discoverScreenQuery);
 
   React.useEffect(() => {
-    loadQuery({}, { fetchPolicy: "network-only" });
+    if (!queryRef) {
+      loadQuery({}, { fetchPolicy: "network-only" });
+    }
   }, [queryRef, loadQuery]);
 
   if (!queryRef) {
