@@ -3,6 +3,7 @@ import { Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { RelayEnvironmentProvider } from "react-relay";
+import { RecoilRoot } from "recoil";
 
 import RootStackScreen from "src/stacks/Decider";
 import { CUSTOM_FONTS } from "src/constants/fonts";
@@ -28,10 +29,12 @@ export default function App() {
   if (!loaded || loading) return <Text>Loading...</Text>;
 
   return (
-    <RelayEnvironmentProvider environment={relayEnvironment}>
-      <NavigationContainer>
-        <RootStackScreen userToken={userToken} />
-      </NavigationContainer>
-    </RelayEnvironmentProvider>
+    <RecoilRoot>
+      <RelayEnvironmentProvider environment={relayEnvironment}>
+        <NavigationContainer>
+          <RootStackScreen userToken={userToken} />
+        </NavigationContainer>
+      </RelayEnvironmentProvider>
+    </RecoilRoot>
   );
 }
