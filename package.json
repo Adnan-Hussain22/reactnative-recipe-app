@@ -43,6 +43,7 @@
     "react-native-web": "~0.13.12",
     "react-relay": "^11.0.2",
     "react-relay-network-modern": "^6.0.0",
+    "recoil": "^0.3.1",
     "relay-runtime": "^11.0.2",
     "yup": "^0.32.9"
   },
