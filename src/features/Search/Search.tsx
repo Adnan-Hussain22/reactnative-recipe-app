@@ -1,17 +1,23 @@
 import * as React from "react";
-import {
-  StyleSheet,
-  SafeAreaView,
-  View,
-  useWindowDimensions,
-} from "react-native";
+import { SafeAreaView, View, useWindowDimensions } from "react-native";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
+import { atom, useRecoilState } from "recoil";
 
 import RecipeList from "src/components/RecipeList";
 
 import SearchInput from "src/components/SearchInput/SearchInput";
 import { COLORS } from "src/constants/colors";
+import { SearchRecipes } from "src/features/Search/SearchRecipes";
 import { moderateScale } from "src/utils/scale";
+import { styles } from "./style";
+
+export const searchRecipesAtom = atom({
+  key: "searchScreenQuery",
+  default: {
+    type: "Recipe" || "Restaurant",
+    query: "",
+  },
+});
 
 const SearchScreen: React.FC = () => {
   const layout = useWindowDimensions();
@@ -20,20 +26,33 @@ const SearchScreen: React.FC = () => {
     { key: "Recipe", title: "Recipe" },
     { key: "Restaurant", title: "Restaurant" },
   ]);
+  const [searchQuery, setSearchQuery] = useRecoilState(searchRecipesAtom);
 
-  const Recipe = () => <RecipeList title="Top Rated" />;
+  const Restaurant = React.useCallback(
+    () => <RecipeList title="Restaurants nearby" />,
+    []
+  );
 
-  const Restaurant = () => <RecipeList title="Restaurants nearby" />;
+  const handleSetSearch = React.useCallback(
+    (text: string) => {
+      setSearchQuery((prev) => ({ ...prev, query: text }));
+    },
+    [setSearchQuery]
+  );
 
-  const renderScene = SceneMap({
-    Recipe,
-    Restaurant,
-  });
+  const renderScene = React.useMemo(
+    () =>
+      SceneMap({
+        Recipe: SearchRecipes,
+        Restaurant,
+      }),
+    []
+  );
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.main}>
-        <SearchInput />
+        <SearchInput value={searchQuery} onChange={handleSetSearch} />
         <TabView
           style={{ marginTop: moderateScale(10) }}
           navigationState={{ index, routes }}
@@ -57,31 +76,3 @@ const SearchScreen: React.FC = () => {
 };
 
 export default SearchScreen;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.white,
-  },
-  main: {
-    flex: 1,
-    paddingHorizontal: moderateScale(20),
-    paddingTop: moderateScale(20),
-  },
-  indicatorContainer: {
-    backgroundColor: COLORS.white,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  indicator: {
-    width: moderateScale(80),
-    alignSelf: "center",
-    height: 3,
-    left: moderateScale(52),
-  },
-  indicatorLabel: {
-    fontSize: moderateScale(15),
-    fontWeight: "bold",
-    textTransform: "capitalize",
-  },
-});
