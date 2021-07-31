@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ListRenderItemInfo } from "react-native";
+import { ListRenderItemInfo, RefreshControl } from "react-native";
 import { View, StyleSheet, FlatList } from "react-native";
 import Icon from "src/components/Icon";
 import RecipeItem from "src/components/RecipeItem";
@@ -10,9 +10,18 @@ import { moderateScale } from "src/utils/scale";
 interface RecipeListProps {
   title: string;
   data: any[];
+  isLoadingNext: boolean;
+  refresh: () => void;
+  loadMore: () => void;
 }
 
-const RecipeList: React.FC<RecipeListProps> = ({ title, data }) => {
+const RecipeList: React.FC<RecipeListProps> = ({
+  title,
+  data,
+  isLoadingNext,
+  refresh,
+  loadMore,
+}) => {
   const { keyExtractor, footer } = React.useMemo(() => {
     const keyExtractor = (item: any, index: number) => {
       return `__recipeList${index}__${item.node.id}`;
@@ -52,6 +61,11 @@ const RecipeList: React.FC<RecipeListProps> = ({ title, data }) => {
         showsVerticalScrollIndicator={false}
         keyExtractor={keyExtractor}
         ListFooterComponent={footer}
+        onEndReached={loadMore}
+        onEndReachedThreshold={0.5}
+        refreshControl={
+          <RefreshControl onRefresh={refresh} refreshing={isLoadingNext} />
+        }
       />
     </>
   );

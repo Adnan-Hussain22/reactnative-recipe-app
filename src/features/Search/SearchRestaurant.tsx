@@ -49,10 +49,11 @@ const paginationQuery = graphql`
 const SearchRestaurantListContainer: React.FC<{
   queryRef: SearchRestaurants_restaurant$key;
 }> = ({ queryRef }) => {
-  const { data, refetch } = usePaginationFragment<
-    SearchRestaurantListQuery,
-    SearchRestaurants_restaurant$key
-  >(paginationQuery, queryRef);
+  const { data, hasNext, isLoadingNext, loadNext, refetch } =
+    usePaginationFragment<
+      SearchRestaurantListQuery,
+      SearchRestaurants_restaurant$key
+    >(paginationQuery, queryRef);
 
   const searchQuery = useRecoilValue(searchRecipesAtom);
 
@@ -71,7 +72,26 @@ const SearchRestaurantListContainer: React.FC<{
     }
   }, [searchQuery]);
 
-  return <RestaurantList data={data} title="Restaurants Nearby" />;
+  const loadMore = React.useCallback(() => {
+    if (!hasNext || isLoadingNext) {
+      return;
+    }
+    setTimeout(loadNext, 1000);
+  }, [hasNext, isLoadingNext, loadNext]);
+
+  const handleRefresh = React.useCallback(() => {
+    refetch({ queryString: "" });
+  }, []);
+
+  return (
+    <RestaurantList
+      data={data}
+      title="Restaurants Nearby"
+      isLoadingNext={isLoadingNext}
+      refresh={handleRefresh}
+      loadMore={loadMore}
+    />
+  );
 };
 
 const SearchRestaurantContainer: React.FC<{

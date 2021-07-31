@@ -46,10 +46,11 @@ const query = graphql`
 
 const RecipesListContainer: React.FC<{ queryRef: SearchRecipes_recipe$key }> =
   ({ queryRef }) => {
-    const { data, refetch } = usePaginationFragment<
-      SearchRecipesListQuery,
-      SearchRecipes_recipe$key
-    >(paginationQuery, queryRef);
+    const { data, hasNext, isLoadingNext, loadNext, refetch } =
+      usePaginationFragment<SearchRecipesListQuery, SearchRecipes_recipe$key>(
+        paginationQuery,
+        queryRef
+      );
     const searchQuery = useRecoilValue(searchRecipesAtom);
     const { val: previousQuery, setVal: setPreviousQuery } = usePrevious({
       type: "Recipe",
@@ -60,6 +61,17 @@ const RecipesListContainer: React.FC<{ queryRef: SearchRecipes_recipe$key }> =
       () => data?.searchRecipes?.edges ?? [],
       [data]
     );
+
+    const loadMore = React.useCallback(() => {
+      if (!hasNext || isLoadingNext) {
+        return;
+      }
+      setTimeout(loadNext, 1000);
+    }, [hasNext, isLoadingNext, loadNext]);
+
+    const handleRefresh = React.useCallback(() => {
+      refetch({ queryString: "" });
+    }, []);
 
     React.useEffect(() => {
       if (
@@ -73,7 +85,13 @@ const RecipesListContainer: React.FC<{ queryRef: SearchRecipes_recipe$key }> =
 
     return (
       <React.Suspense fallback={<ScreenCenterSpinner />}>
-        <RecipeList title="Top Rated" data={recipes} />
+        <RecipeList
+          title="Top Rated"
+          data={recipes}
+          isLoadingNext={isLoadingNext}
+          refresh={handleRefresh}
+          loadMore={loadMore}
+        />
       </React.Suspense>
     );
   };
