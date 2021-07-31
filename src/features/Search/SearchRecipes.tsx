@@ -63,8 +63,8 @@ const RecipesListContainer: React.FC<{ queryRef: SearchRecipes_recipe$key }> =
 
     React.useEffect(() => {
       if (
-        searchQuery.query !== previousQuery.query ||
-        searchQuery.type !== previousQuery.type
+        searchQuery.type === "Recipe" &&
+        searchQuery.query !== previousQuery.query
       ) {
         setPreviousQuery(searchQuery);
         refetch({ queryString: searchQuery.query });
@@ -98,6 +98,7 @@ export const SearchRecipes: React.FC = () => {
   if (!queryRef) {
     return null;
   }
+
   return (
     <React.Suspense fallback={<ScreenCenterSpinner />}>
       <SearchRecipesContainer queryRef={queryRef} />

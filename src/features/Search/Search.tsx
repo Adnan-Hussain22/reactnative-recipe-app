@@ -1,11 +1,12 @@
 import * as React from "react";
 import { SafeAreaView, useWindowDimensions, View } from "react-native";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
-import { atom, useRecoilState } from "recoil";
+import { atom, useRecoilState, useSetRecoilState } from "recoil";
 
 import SearchInput from "src/components/SearchInput/SearchInput";
 import { COLORS } from "src/constants/colors";
 import { SearchRecipes } from "src/features/Search/SearchRecipes";
+import { SearchRestaurant } from "src/features/Search/SearchRestaurant";
 import { moderateScale } from "src/utils/scale";
 import { styles } from "./style";
 
@@ -32,20 +33,27 @@ const RecipeFilter = () => {
 const SearchScreen: React.FC = () => {
   const layout = useWindowDimensions();
   const [index, setIndex] = React.useState(0);
+  const setQuery = useSetRecoilState(searchRecipesAtom);
   const [routes] = React.useState([
     { key: "Recipe", title: "Recipe" },
     { key: "Restaurant", title: "Restaurant" },
   ]);
 
-  const Restaurant = React.useCallback(() => null, []);
-
   const renderScene = React.useMemo(
     () =>
       SceneMap({
         Recipe: SearchRecipes,
-        Restaurant,
+        Restaurant: SearchRestaurant,
       }),
     []
+  );
+
+  const handleChange = React.useCallback(
+    (newIndex) => {
+      setQuery((prev) => ({ ...prev, type: routes[newIndex]?.key }));
+      setIndex(newIndex);
+    },
+    [setQuery]
   );
 
   return (
@@ -56,7 +64,7 @@ const SearchScreen: React.FC = () => {
           style={{ marginTop: moderateScale(10) }}
           navigationState={{ index, routes }}
           renderScene={renderScene}
-          onIndexChange={setIndex}
+          onIndexChange={handleChange}
           initialLayout={{ width: layout.width }}
           renderTabBar={(props) => (
             <TabBar
