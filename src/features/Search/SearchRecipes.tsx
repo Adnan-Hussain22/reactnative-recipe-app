@@ -70,7 +70,7 @@ const RecipesListContainer: React.FC<{ queryRef: SearchRecipes_recipe$key }> =
     }, [hasNext, isLoadingNext, loadNext]);
 
     const handleRefresh = React.useCallback(() => {
-      refetch({ queryString: "" });
+      refetch({ queryString: "" }, { fetchPolicy: "network-only" });
     }, []);
 
     React.useEffect(() => {

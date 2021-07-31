@@ -80,7 +80,7 @@ const SearchRestaurantListContainer: React.FC<{
   }, [hasNext, isLoadingNext, loadNext]);
 
   const handleRefresh = React.useCallback(() => {
-    refetch({ queryString: "" });
+    refetch({ queryString: "" }, { fetchPolicy: "network-only" });
   }, []);
 
   return (
