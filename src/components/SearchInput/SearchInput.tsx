@@ -11,7 +11,7 @@ interface SearchInputProps {
   onChange: (text: string) => void;
 }
 
-const SearchInput: React.FC<SearchInputProps> = () => {
+const SearchInput: React.FC<SearchInputProps> = ({ value, onChange }) => {
   return (
     <View style={styles.container}>
       <Icon
@@ -19,7 +19,12 @@ const SearchInput: React.FC<SearchInputProps> = () => {
         name="search1"
         style={{ fontSize: moderateScale(17), color: COLORS.primaryRed }}
       />
-      <TextInput placeholder="Search..." style={styles.input} />
+      <TextInput
+        placeholder="Search..."
+        style={styles.input}
+        value={value}
+        onChangeText={onChange}
+      />
     </View>
   );
 };
