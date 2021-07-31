@@ -75,7 +75,7 @@ const flexCenter: FlexStyle = {
   ...justifyContentCenter,
 };
 
-const styles = StyleSheet.create({
+const FlexStyles = StyleSheet.create({
   alignItemsCenter,
   alignItemsFlexEnd,
   alignItemsFlexStart,
@@ -96,4 +96,4 @@ const styles = StyleSheet.create({
   noFlex,
 });
 
-export default styles;
+export default FlexStyles;
