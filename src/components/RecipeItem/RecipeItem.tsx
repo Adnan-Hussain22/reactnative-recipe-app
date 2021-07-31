@@ -4,7 +4,6 @@ import { widthPercentageToDP } from "react-native-responsive-screen";
 
 import StartRating from "src/components/StarRating";
 import Typography from "src/components/Typography";
-import { desiCusine } from "src/assets/images";
 import { normalizeImageSrc } from "src/utils/image";
 import { moderateScale } from "src/utils/scale";
 import { COLORS } from "src/constants/colors";
@@ -14,13 +13,20 @@ interface RecipeItemProps {
   title: string;
   subTitle: string;
   rating: number;
+  image: string;
   bookmark?: boolean;
 }
 
-const RecipeItem: React.FC<RecipeItemProps> = ({ bookmark }) => {
+const RecipeItem: React.FC<RecipeItemProps> = ({
+  title,
+  subTitle,
+  rating,
+  image,
+  bookmark,
+}) => {
   return (
     <View style={styles.itemContainer}>
-      <Image source={normalizeImageSrc(desiCusine)} style={styles.itemImage} />
+      <Image source={normalizeImageSrc(image)} style={styles.itemImage} />
       <View
         style={
           bookmark
@@ -28,23 +34,28 @@ const RecipeItem: React.FC<RecipeItemProps> = ({ bookmark }) => {
             : styles.itemContentWithoutBookmark
         }
       >
-        <Typography variant="BodySemiBold" color={COLORS.listTitle}>
-          Chicken Panini
+        <Typography
+          variant="BodySemiBold"
+          color={COLORS.listTitle}
+          numberOfLines={2}
+        >
+          {title}
         </Typography>
         <Typography
           variant="P"
           color={COLORS.textGrey}
           marginTop={moderateScale(5)}
+          numberOfLines={2}
         >
-          Awesome Club Style
+          {subTitle}
         </Typography>
         <View style={styles.ratingContainer}>
-          <StartRating rating={4} />
+          <StartRating rating={rating} />
           <Typography
             fontSize={moderateScale(10)}
             marginLeft={moderateScale(5)}
           >
-            5.0
+            {rating}
           </Typography>
         </View>
       </View>

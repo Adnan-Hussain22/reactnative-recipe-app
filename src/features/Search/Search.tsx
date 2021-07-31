@@ -1,9 +1,7 @@
 import * as React from "react";
-import { SafeAreaView, View, useWindowDimensions } from "react-native";
+import { SafeAreaView, useWindowDimensions, View } from "react-native";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import { atom, useRecoilState } from "recoil";
-
-import RecipeList from "src/components/RecipeList";
 
 import SearchInput from "src/components/SearchInput/SearchInput";
 import { COLORS } from "src/constants/colors";
@@ -14,10 +12,22 @@ import { styles } from "./style";
 export const searchRecipesAtom = atom({
   key: "searchScreenQuery",
   default: {
-    type: "Recipe" || "Restaurant",
+    type: "Recipe",
     query: "",
   },
 });
+
+const RecipeFilter = () => {
+  const [searchQuery, setSearchQuery] = useRecoilState(searchRecipesAtom);
+
+  const handleSetSearch = React.useCallback(
+    (text: string) => {
+      setSearchQuery((prev) => ({ ...prev, query: text }));
+    },
+    [setSearchQuery]
+  );
+  return <SearchInput value={searchQuery.query} onChange={handleSetSearch} />;
+};
 
 const SearchScreen: React.FC = () => {
   const layout = useWindowDimensions();
@@ -26,19 +36,8 @@ const SearchScreen: React.FC = () => {
     { key: "Recipe", title: "Recipe" },
     { key: "Restaurant", title: "Restaurant" },
   ]);
-  const [searchQuery, setSearchQuery] = useRecoilState(searchRecipesAtom);
 
-  const Restaurant = React.useCallback(
-    () => <RecipeList title="Restaurants nearby" />,
-    []
-  );
-
-  const handleSetSearch = React.useCallback(
-    (text: string) => {
-      setSearchQuery((prev) => ({ ...prev, query: text }));
-    },
-    [setSearchQuery]
-  );
+  const Restaurant = React.useCallback(() => null, []);
 
   const renderScene = React.useMemo(
     () =>
@@ -52,7 +51,7 @@ const SearchScreen: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.main}>
-        <SearchInput value={searchQuery} onChange={handleSetSearch} />
+        <RecipeFilter />
         <TabView
           style={{ marginTop: moderateScale(10) }}
           navigationState={{ index, routes }}

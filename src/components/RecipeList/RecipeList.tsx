@@ -1,36 +1,22 @@
 import * as React from "react";
+import { ListRenderItemInfo } from "react-native";
 import { View, StyleSheet, FlatList } from "react-native";
-import { graphql, useQueryLoader } from "react-relay";
 import Icon from "src/components/Icon";
 import RecipeItem from "src/components/RecipeItem";
 import Typography from "src/components/Typography";
 import { COLORS } from "src/constants/colors";
 import { moderateScale } from "src/utils/scale";
 
-const recipesQuery = 
-
-const restaurantquery = graphql`
-  query RecipeListSearchRestaurantQuery($queryString: String) {
-    searchRestraunts(queryString: $queryString) {
-      count
-      edges {
-        node {
-          _id
-          name
-          tags
-        }
-      }
-    }
-  }
-`;
-
 interface RecipeListProps {
   title: string;
+  data: any[];
 }
 
-const List = ({ title, type }) => {
+const RecipeList: React.FC<RecipeListProps> = ({ title, data }) => {
   const { keyExtractor, footer } = React.useMemo(() => {
-    const keyExtractor = (_: any, index: number) => `__recipeList${index}__`;
+    const keyExtractor = (item: any, index: number) => {
+      return `__recipeList${index}__${item.node.id}`;
+    };
 
     const footer = () => <View style={{ height: 40 }} />;
 
@@ -40,7 +26,19 @@ const List = ({ title, type }) => {
     };
   }, []);
 
-  const renderItem = React.useCallback(() => <RecipeItem />, []);
+  const renderItem = React.useCallback(
+    ({ item: { node } }: ListRenderItemInfo<{ node: any }>) => {
+      return (
+        <RecipeItem
+          title={node.name}
+          subTitle={node.description}
+          image={node.image}
+          rating={node.totalRating}
+        />
+      );
+    },
+    [data]
+  );
 
   return (
     <>
@@ -49,42 +47,13 @@ const List = ({ title, type }) => {
         <Icon name="chevron-down" type="Entypo" style={styles.iconDown} />
       </View>
       <FlatList
-        data={new Array(5).fill(0)}
+        data={data}
         renderItem={renderItem}
         showsVerticalScrollIndicator={false}
         keyExtractor={keyExtractor}
         ListFooterComponent={footer}
       />
     </>
-  );
-};
-
-const RecipeListContainer = () => {};
-
-const RecipeList: React.FC<RecipeListProps> = ({ title, type }) => {
-  
-
-  const [restaurantQueryRef, loadRestaurantQuery] =
-    useQueryLoader<RecipeListSearchRestaurantQuery>(restaurantQuery);
-
-  React.useEffect(() => {
-    if (!queryRef) {
-      loadQuery({ queryString: "" });
-    }
-  }, [queryRef, loadQuery]);
-
-  if (!queryRef) return null;
-
-  return (
-    <React.Suspense
-      fallback={
-        <View>
-          <Text>Loading..</Text>
-        </View>
-      }
-    >
-      <RecipeListContainer queryRef={queryRef} />
-    </React.Suspense>
   );
 };
 
