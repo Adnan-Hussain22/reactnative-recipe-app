@@ -8,11 +8,11 @@ import {
 } from "react-relay";
 import { useRecoilValue } from "recoil";
 import ScreenCenterSpinner from "src/components/Spinner/ScreenCenterSpinner.react";
-import { searchRecipesAtom } from "src/features/Search/Search";
 import { usePrevious } from "src/hooks/usePrevious";
 import { SearchRestaurantListQuery } from "src/services/graphql/__generated__/SearchRestaurantListQuery.graphql";
 import { SearchRestaurantQuery } from "src/services/graphql/__generated__/SearchRestaurantQuery.graphql";
 import { SearchRestaurants_restaurant$key } from "src/services/graphql/__generated__/SearchRestaurants_restaurant.graphql";
+import { searchRecipesAtom } from "./searchRecipesAtom";
 import RestaurantList from "./RestaurantList.react";
 
 const query = graphql`

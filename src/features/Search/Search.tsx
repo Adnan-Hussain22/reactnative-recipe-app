@@ -1,22 +1,15 @@
 import * as React from "react";
 import { SafeAreaView, useWindowDimensions, View } from "react-native";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
-import { atom, useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 import SearchInput from "src/components/SearchInput/SearchInput";
 import { COLORS } from "src/constants/colors";
 import { SearchRecipes } from "src/features/Search/SearchRecipes";
 import { SearchRestaurant } from "src/features/Search/SearchRestaurant";
 import { moderateScale } from "src/utils/scale";
+import { searchRecipesAtom } from "./searchRecipesAtom";
 import { styles } from "./style";
-
-export const searchRecipesAtom = atom({
-  key: "searchScreenQuery",
-  default: {
-    type: "Recipe",
-    query: "",
-  },
-});
 
 const RecipeFilter = () => {
   const [searchQuery, setSearchQuery] = useRecoilState(searchRecipesAtom);
