@@ -7,13 +7,13 @@ import {
   useQueryLoader,
 } from "react-relay";
 import { useRecoilValue } from "recoil";
-import RecipeList from "src/components/RecipeList";
 import ScreenCenterSpinner from "src/components/Spinner/ScreenCenterSpinner.react";
 import { searchRecipesAtom } from "src/features/Search/Search";
 import { usePrevious } from "src/hooks/usePrevious";
 import { SearchRecipesListQuery } from "src/services/graphql/__generated__/SearchRecipesListQuery.graphql";
 import { SearchRecipesQuery } from "src/services/graphql/__generated__/SearchRecipesQuery.graphql";
 import { SearchRecipes_recipe$key } from "src/services/graphql/__generated__/SearchRecipes_recipe.graphql";
+import RecipeList from "./RecipeList.react";
 
 const paginationQuery = graphql`
   fragment SearchRecipes_recipe on Query

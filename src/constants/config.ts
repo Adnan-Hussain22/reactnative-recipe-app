@@ -48,6 +48,8 @@ const config = {
   [ConfigEnum.REST_API_URL]: `${BASE_URL}${REST_API_ENDPOINT}`,
 };
 
+console.log("BASE_URL==>", BASE_URL);
+
 const ensureEnvVars = () => {
   const missingKeys = requiredEnv.filter(
     (requiredKey) => !_.has(Env, requiredKey) || _.isEmpty(Env[requiredKey])
