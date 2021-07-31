@@ -5,8 +5,8 @@ import {
   urlMiddleware,
   MiddlewareNextFn,
   RelayRequestAny,
-  // errorMiddleware,
-  // loggerMiddleware,
+  errorMiddleware,
+  loggerMiddleware,
 } from "react-relay-network-modern";
 import { Config } from "src/constants/config";
 
@@ -36,8 +36,8 @@ const network = new RelayNetworkLayer(
       },
       prefix: "Bearer ",
     }),
-    // __DEV__ ? loggerMiddleware() : null,
-    // __DEV__ ? errorMiddleware() : null,
+    __DEV__ ? loggerMiddleware() : null,
+    __DEV__ ? errorMiddleware() : null,
     errorHandlerMiddleware,
   ],
   {}
