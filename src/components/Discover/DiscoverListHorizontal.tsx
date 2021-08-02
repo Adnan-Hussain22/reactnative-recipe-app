@@ -4,9 +4,11 @@ import {
   DiscoverListHorizontalItem,
   DiscoverListTitle,
 } from "src/components/Discover";
+import { DiscoverSectionDataType } from "src/features/Discover/Discover";
+import { DiscoverListHorizontalItem_recipe$key } from "src/services/graphql/__generated__/DiscoverListHorizontalItem_recipe.graphql";
 
 interface DiscoverListHorizontalProps {
-  data: any[];
+  data: DiscoverSectionDataType;
   type: number;
   title?: string;
   index?: number;
@@ -31,18 +33,18 @@ const DiscoverListHorizontal: React.FC<DiscoverListHorizontalProps> = ({
       ) : null}
       <FlatList
         data={data}
-        keyExtractor={(_, index) => `${index}`}
+        keyExtractor={(_, listIndex) => `recipesList_${index}_${listIndex}`}
         horizontal
         showsHorizontalScrollIndicator={false}
-        renderItem={({ index, item }) => (
-          <DiscoverListHorizontalItem
-            title={item.title}
-            subTitle={item.subTitle}
-            image={item.image}
-            type={type}
-            isLast={index === data.length - 1}
-          />
-        )}
+        renderItem={({ index, item }) => {
+          return (
+            <DiscoverListHorizontalItem
+              recipe={item as DiscoverListHorizontalItem_recipe$key}
+              type={type}
+              isLast={index === data.length - 1}
+            />
+          );
+        }}
       />
     </>
   );
