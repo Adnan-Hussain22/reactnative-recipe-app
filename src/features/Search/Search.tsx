@@ -1,44 +1,63 @@
 import * as React from "react";
-import {
-  StyleSheet,
-  SafeAreaView,
-  View,
-  useWindowDimensions,
-} from "react-native";
+import { SafeAreaView, useWindowDimensions, View } from "react-native";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
-
-import RecipeList from "src/components/RecipeList";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 import SearchInput from "src/components/SearchInput/SearchInput";
 import { COLORS } from "src/constants/colors";
+import { SearchRecipes } from "src/features/Search/SearchRecipes";
+import { SearchRestaurant } from "src/features/Search/SearchRestaurant";
 import { moderateScale } from "src/utils/scale";
+import { searchRecipesAtom } from "./searchRecipesAtom";
+import { styles } from "./style";
+
+const RecipeFilter = () => {
+  const [searchQuery, setSearchQuery] = useRecoilState(searchRecipesAtom);
+
+  const handleSetSearch = React.useCallback(
+    (text: string) => {
+      setSearchQuery((prev) => ({ ...prev, query: text }));
+    },
+    [setSearchQuery]
+  );
+  return <SearchInput value={searchQuery.query} onChange={handleSetSearch} />;
+};
 
 const SearchScreen: React.FC = () => {
   const layout = useWindowDimensions();
   const [index, setIndex] = React.useState(0);
+  const setQuery = useSetRecoilState(searchRecipesAtom);
   const [routes] = React.useState([
     { key: "Recipe", title: "Recipe" },
     { key: "Restaurant", title: "Restaurant" },
   ]);
 
-  const Recipe = () => <RecipeList title="Top Rated" />;
+  const renderScene = React.useMemo(
+    () =>
+      SceneMap({
+        Recipe: SearchRecipes,
+        Restaurant: SearchRestaurant,
+      }),
+    []
+  );
 
-  const Restaurant = () => <RecipeList title="Restaurants nearby" />;
-
-  const renderScene = SceneMap({
-    Recipe,
-    Restaurant,
-  });
+  const handleChange = React.useCallback(
+    (newIndex) => {
+      setQuery((prev) => ({ ...prev, type: routes[newIndex]?.key }));
+      setIndex(newIndex);
+    },
+    [setQuery]
+  );
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.main}>
-        <SearchInput />
+        <RecipeFilter />
         <TabView
           style={{ marginTop: moderateScale(10) }}
           navigationState={{ index, routes }}
           renderScene={renderScene}
-          onIndexChange={setIndex}
+          onIndexChange={handleChange}
           initialLayout={{ width: layout.width }}
           renderTabBar={(props) => (
             <TabBar
@@ -57,31 +76,3 @@ const SearchScreen: React.FC = () => {
 };
 
 export default SearchScreen;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.white,
-  },
-  main: {
-    flex: 1,
-    paddingHorizontal: moderateScale(20),
-    paddingTop: moderateScale(20),
-  },
-  indicatorContainer: {
-    backgroundColor: COLORS.white,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  indicator: {
-    width: moderateScale(80),
-    alignSelf: "center",
-    height: 3,
-    left: moderateScale(52),
-  },
-  indicatorLabel: {
-    fontSize: moderateScale(15),
-    fontWeight: "bold",
-    textTransform: "capitalize",
-  },
-});
