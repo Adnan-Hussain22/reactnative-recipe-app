@@ -12,7 +12,6 @@ import Icon from "src/components/Icon";
 import { RecipeItem_recipe$key } from "src/services/graphql/__generated__/RecipeItem_recipe.graphql";
 
 interface RecipeItemProps {
-  bookmark?: boolean;
   recipeRef: RecipeItem_recipe$key;
 }
 
@@ -23,10 +22,11 @@ const recipeFragment = graphql`
     description
     image
     totalRating
+    isBookmark
   }
 `;
 
-const RecipeItem: React.FC<RecipeItemProps> = ({ bookmark, recipeRef }) => {
+const RecipeItem: React.FC<RecipeItemProps> = ({ recipeRef }) => {
   const data = useFragment(recipeFragment, recipeRef);
 
   return (
@@ -34,7 +34,7 @@ const RecipeItem: React.FC<RecipeItemProps> = ({ bookmark, recipeRef }) => {
       <Image source={normalizeImageSrc(data?.image)} style={styles.itemImage} />
       <View
         style={
-          bookmark
+          data.isBookmark
             ? styles.itemContentWithBookmark
             : styles.itemContentWithoutBookmark
         }
@@ -64,7 +64,7 @@ const RecipeItem: React.FC<RecipeItemProps> = ({ bookmark, recipeRef }) => {
           </Typography>
         </View>
       </View>
-      {bookmark ? (
+      {data.isBookmark ? (
         <View style={styles.bookmark}>
           <Icon name="bookmark" type="Foundation" style={styles.bookmarkIcon} />
         </View>

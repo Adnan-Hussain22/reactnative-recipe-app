@@ -21,7 +21,5 @@ export const ProfileBookmarkItem: React.FC<ProfileBookmarkItemProps> = ({
 }) => {
   const data = useFragment(bookmarFragment, bookmarkRef);
 
-  return (
-    <RecipeItem recipeRef={data.recipe as RecipeItem_recipe$key} bookmark />
-  );
+  return <RecipeItem recipeRef={data.recipe as RecipeItem_recipe$key} />;
 };

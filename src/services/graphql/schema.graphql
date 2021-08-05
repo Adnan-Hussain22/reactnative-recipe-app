@@ -154,6 +154,7 @@ type Recipe {
   updatedAt: Date
   createdAt: Date
   totalRating: Float!
+  isBookmark: Boolean!
 }
 
 type User implements Node {
