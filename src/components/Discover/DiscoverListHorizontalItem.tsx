@@ -16,17 +16,9 @@ interface DiscoverListHorizontalItemProps {
 
 const RecipeFragment = graphql`
   fragment DiscoverListHorizontalItem_recipe on Recipe {
-    id
     name
     description
     image
-    tags
-    totalRating
-    ingredients {
-      amount
-      name
-      group
-    }
   }
 `;
 

@@ -1,4 +1,13 @@
 type Query {
+  """
+  Fetches an object that has globally unique ID among all types
+  """
+  node(
+    """
+    The globally unique ID among all types
+    """
+    id: ID!
+  ): Node
   recipes(
     top: Boolean
     recent: Boolean
@@ -111,6 +120,16 @@ type Query {
   ): RecipeRequestRecipeRequests
 }
 
+"""
+An object, that can be fetched by the globally unique ID among all types.
+"""
+interface Node {
+  """
+  The globally unique ID among all types.
+  """
+  id: ID!
+}
+
 type RecipeFeed {
   top: [Recipe]
   recent: [Recipe]
@@ -131,13 +150,13 @@ type Recipe {
   cookingTime: Float
   serving: Float
   calories: Float
+  _id: MongoID!
   updatedAt: Date
   createdAt: Date
-  id: ID!
   totalRating: Float!
 }
 
-type User {
+type User implements Node {
   email: String!
   firstName: String
   lastName: String
@@ -233,6 +252,11 @@ type User {
   ): BookmarkRecipeBookmarks
   noOfRecipes: Int
   likeRequests: Int!
+
+  """
+  The globally unique ID among all types
+  """
+  id: ID!
 }
 
 enum EnumUserGender {
