@@ -2,10 +2,12 @@ import * as React from "react";
 import { View, StyleSheet } from "react-native";
 import { generateShadow } from "react-native-shadow-generator";
 import UserAvatar from "react-native-user-avatar";
-import LikeBox from "src/components/LikeBox";
+import { graphql, useFragment } from "react-relay";
 
+import LikeBox from "src/components/LikeBox";
 import Typography from "src/components/Typography";
 import { COLORS } from "src/constants/colors";
+import { ProfileRequestItem_recipeRequest$key } from "src/services/graphql/__generated__/ProfileRequestItem_recipeRequest.graphql";
 import { moderateScale } from "src/utils/scale";
 
 interface ProfileRequestItemProps {
@@ -14,21 +16,41 @@ interface ProfileRequestItemProps {
   avatar: string;
   description: string;
   likes: number;
+  requestRef: ProfileRequestItem_recipeRequest$key;
 }
 
+const recipeRequestFragment = graphql`
+  fragment ProfileRequestItem_recipeRequest on RecipeRequest {
+    image
+    description
+    likes
+    user {
+      name
+      username
+      avatar
+    }
+  }
+`;
+
 const ProfileRequestItem: React.FC<ProfileRequestItemProps> = ({
-  name,
-  username,
-  avatar,
-  likes,
-  description,
+  requestRef,
 }) => {
+  const data = useFragment(recipeRequestFragment, requestRef);
+
+  const { avatar, description, likes, username } = React.useMemo(() => {
+    return {
+      ...data,
+      avatar: data.user?.avatar ?? "",
+      username: data.user?.username ?? "",
+    };
+  }, [data]);
+
   return (
     <View style={styles.container}>
       <View style={styles.userInfoContainer}>
         <UserAvatar
           size={styles.avatar.width}
-          name={name}
+          name={username}
           src={avatar}
           style={styles.avatar}
           key={Math.random()}
@@ -41,7 +63,7 @@ const ProfileRequestItem: React.FC<ProfileRequestItemProps> = ({
         <Typography variant="BodyLight" color={COLORS.statsGreySecondary}>
           {description}
         </Typography>
-        <LikeBox likes={likes} style={styles.likeIconBox} />
+        <LikeBox likes={likes?.length ?? 0} style={styles.likeIconBox} />
       </View>
     </View>
   );
