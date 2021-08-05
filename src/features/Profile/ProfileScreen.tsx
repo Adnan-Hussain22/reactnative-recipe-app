@@ -25,6 +25,7 @@ import {
 import { ProfileScreenQuery } from "src/services/graphql/__generated__/ProfileScreenQuery.graphql";
 import ScreenCenterSpinner from "src/components/Spinner/ScreenCenterSpinner.react";
 import { ProfileRecipes_recipes$key } from "src/services/graphql/__generated__/ProfileRecipes_recipes.graphql";
+import { ProfileBookmarkList_bookmarks$key } from "src/services/graphql/__generated__/ProfileBookmarkList_bookmarks.graphql";
 
 export const profileUserQuery = graphql`
   query ProfileScreenQuery($currentUserId: MongoID!) {
@@ -32,6 +33,7 @@ export const profileUserQuery = graphql`
       ...UserInfo_user
       ...ProfileStatsList_user
       ...ProfileRecipes_recipes
+      ...ProfileBookmarkList_bookmarks
     }
   }
 `;
@@ -79,8 +81,12 @@ const ProfileContainer: React.FC<{
   );
 
   const renderBookmark = useCallback(
-    () => <ProfileBookmarkList bookmarks={[]} />,
-    []
+    () => (
+      <ProfileBookmarkList
+        bookmarsRef={data.userById as ProfileBookmarkList_bookmarks$key}
+      />
+    ),
+    [data]
   );
 
   if (!data.userById) return null;

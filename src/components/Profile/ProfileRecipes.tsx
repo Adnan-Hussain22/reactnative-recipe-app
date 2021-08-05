@@ -20,7 +20,7 @@ const recipesFragment = graphql`
     cursor: { type: "String" }
   ) {
     recipes(first: $count, after: $cursor)
-      @connection(key: "rofileRecipesPagination_recipes") {
+      @connection(key: "ProfileRecipesPagination_recipes") {
       edges {
         node {
           _id
