@@ -15,7 +15,7 @@ import { COLORS } from "src/constants/colors";
 import LoginForm from "src/features/Login/LoginForm";
 import { usePlateform } from "src/hooks/usePlateform";
 import { moderateScale } from "src/utils/scale";
-import { ERRORS } from "src/constants/errors";
+import { ONBOARDING_VALIDATIONS as ERRORS } from "src/constants/Errors";
 import Icon from "src/components/Icon";
 import { iconStyles } from "src/constants/globalStyles";
 import Button from "src/components/Button";

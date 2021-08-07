@@ -4,7 +4,7 @@ import { Control, Controller, DeepMap, FieldError } from "react-hook-form";
 import * as yup from "yup";
 
 import { COLORS } from "src/constants/colors";
-import { ERRORS } from "src/constants/errors";
+import { ONBOARDING_VALIDATIONS as ERRORS } from "src/constants/Errors";
 import { typographyStyles } from "src/constants/globalStyles";
 import { height, moderateScale } from "src/utils/scale";
 import TextInput from "../TextInput";
