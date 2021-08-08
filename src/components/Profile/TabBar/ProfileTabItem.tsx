@@ -19,16 +19,16 @@ const ProfileTabItem: React.FC<ProfileTabItemProps> = ({
   onPress,
 }) => {
   return (
-    <View style={[styles.container, { width: "32.7%" }]}>
+    <View style={[styles.container, { width: "33%" }]}>
       <TouchableOpacity
-        style={styles.container}
+        style={[styles.container, { paddingLeft: 15 }]}
         disabled={active}
         onPress={() => onPress(routeKey)}
       >
         <Typography
           variant="Body"
           color={active ? COLORS.primaryRed : COLORS.statsGreySecondary}
-          fontSize={moderateScale(18)}
+          fontSize={moderateScale(17)}
         >
           {title}
         </Typography>

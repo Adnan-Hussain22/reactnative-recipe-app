@@ -1,5 +1,6 @@
 import * as React from "react";
-import { View, StyleSheet, Image } from "react-native";
+import { StyleSheet, Image, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/core";
 import Typography from "src/components/Typography";
 import { COLORS } from "src/constants/colors";
 import { INormalizeImageProps, normalizeImageSrc } from "src/utils/image";
@@ -15,8 +16,12 @@ interface DiscoverListHorizontalItemProps {
 
 export const DiscoverListHorizontalItem: React.FC<DiscoverListHorizontalItemProps> =
   ({ image, title, subTitle, type, isLast }) => {
+    const navigation = useNavigation();
+
+    const _navigator = () => navigation.navigate("Recipe");
     return (
-      <View
+      <TouchableOpacity
+        onPress={_navigator}
         style={[
           styles.container,
           type === 0 ? styles.itemRectangle : styles.itemSquare,
@@ -43,7 +48,7 @@ export const DiscoverListHorizontalItem: React.FC<DiscoverListHorizontalItemProp
             {subTitle}
           </Typography>
         ) : null}
-      </View>
+      </TouchableOpacity>
     );
   };
 

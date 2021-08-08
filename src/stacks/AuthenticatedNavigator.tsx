@@ -4,12 +4,13 @@ import { SafeAreaView } from "react-native";
 
 import DicoverScreen from "src/features/Discover";
 import SearchScreen from "src/features/Search";
-import CommunityScreen from "src/features/Community";
+
 import ProfileScreen from "src/features/Profile";
 import TabBarIcon from "src/components/TabIcon";
 import Typography from "src/components/Typography";
 import { AUHTENTICATED_ROUTES } from "src/constants/Routes";
 import { tabBarOptions } from "src/constants/navigatorOptions";
+import CommunityStack from "./Community";
 
 // const getRouteName = (route: Route<string, object | undefined>) =>
 //   getFocusedRouteNameFromRoute(route) ?? AUHTENTICATED_ROUTES.DISCOVER;
@@ -46,7 +47,7 @@ const AuthenticatedNavigator = () => {
       <Screen name={AUHTENTICATED_ROUTES.SCAN} component={ScanScreen} />
       <Screen
         name={AUHTENTICATED_ROUTES.COMMUNITY}
-        component={CommunityScreen}
+        component={CommunityStack}
       />
       <Screen name={AUHTENTICATED_ROUTES.PROFILE} component={ProfileScreen} />
     </Navigator>
