@@ -2,44 +2,41 @@ import * as React from "react";
 import { Image, View, StyleSheet } from "react-native";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 
-import StartRating from "src/components/StarRating";
 import Typography from "src/components/Typography";
 import { normalizeImageSrc } from "src/utils/image";
 import { moderateScale } from "src/utils/scale";
 import { COLORS } from "src/constants/colors";
-import Icon from "src/components/Icon";
+import FlexStyles from "src/components/FlexBox/FlexStyles";
 
 interface RecipeItemProps {
-  title: string;
-  subTitle: string;
-  rating: number;
+  name: string;
   image: string;
-  bookmark?: boolean;
+  street: string;
+  city: string;
+  distance: string;
+  priceRange: string;
+  tags: string[];
 }
 
 const RecipeItem: React.FC<RecipeItemProps> = ({
-  title,
-  subTitle,
-  rating,
+  name,
   image,
-  bookmark,
+  street,
+  city,
+  distance,
+  priceRange,
+  tags,
 }) => {
   return (
     <View style={styles.itemContainer}>
       <Image source={normalizeImageSrc(image)} style={styles.itemImage} />
-      <View
-        style={
-          bookmark
-            ? styles.itemContentWithBookmark
-            : styles.itemContentWithoutBookmark
-        }
-      >
+      <View style={styles.itemContentWithoutBookmark}>
         <Typography
           variant="BodySemiBold"
           color={COLORS.listTitle}
           numberOfLines={2}
         >
-          {title}
+          {name}
         </Typography>
         <Typography
           variant="P"
@@ -47,23 +44,21 @@ const RecipeItem: React.FC<RecipeItemProps> = ({
           marginTop={moderateScale(5)}
           numberOfLines={2}
         >
-          {subTitle}
+          {`${street}, ${city}`}
         </Typography>
-        <View style={styles.ratingContainer}>
-          <StartRating rating={rating} />
+        <View style={[FlexStyles.flexDirectionRow]}>
           <Typography
-            fontSize={moderateScale(10)}
-            marginLeft={moderateScale(5)}
+            variant="P"
+            color={COLORS.textGrey}
+            marginTop={moderateScale(5)}
+            numberOfLines={2}
           >
-            {rating}
+            {`${distance}${distance ? " | " : ""}${priceRange}${
+              priceRange ? " | " : ""
+            }${tags.slice(0, 3).join(", ")}`}
           </Typography>
         </View>
       </View>
-      {bookmark ? (
-        <View style={styles.bookmark}>
-          <Icon name="bookmark" type="Foundation" style={styles.bookmarkIcon} />
-        </View>
-      ) : null}
     </View>
   );
 };
@@ -81,12 +76,12 @@ const styles = StyleSheet.create({
     borderRadius: widthPercentageToDP("2.5%"),
   },
   itemImage: {
-    height: widthPercentageToDP("20%"),
-    width: widthPercentageToDP("25%"),
+    height: widthPercentageToDP("27%"),
+    width: widthPercentageToDP("25.5%"),
     borderRadius: widthPercentageToDP("2.5%"),
   },
   itemContentWithoutBookmark: {
-    width: widthPercentageToDP("58%"),
+    width: widthPercentageToDP("55.5%"),
   },
   itemContentWithBookmark: {
     width: widthPercentageToDP("45%"),

@@ -1,5 +1,10 @@
 type Query {
-  recipes(top: Boolean, recent: Boolean, cusines: Boolean, trending: Boolean): RecipeFeed
+  recipes(
+    top: Boolean
+    recent: Boolean
+    cusines: Boolean
+    trending: Boolean
+  ): RecipeFeed
   userById(_id: MongoID!): User
   searchRecipes(
     """
@@ -109,6 +114,7 @@ type Query {
 type RecipeFeed {
   top: [Recipe]
   recent: [Recipe]
+  cusines: [Recipe]
 }
 
 type Recipe {
