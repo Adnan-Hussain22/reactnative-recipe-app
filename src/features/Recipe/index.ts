@@ -1,3 +1,3 @@
-import CreateRecipeScreen from "./CreateRecipeScreen";
+import CreateRecipeScreen from "./CreateRecipe/CreateRecipeScreen";
 
 export { CreateRecipeScreen };
