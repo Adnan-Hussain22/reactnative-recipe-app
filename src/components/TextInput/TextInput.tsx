@@ -21,7 +21,7 @@ const TextInput: React.FC<TextInputProps> = ({
   ...props
 }) => {
   return (
-    <View style={{ marginVertical: moderateScale(5) }}>
+    <View style={{ marginVertical: moderateScale(2) }}>
       <InputWrapper style={containerStyle}>
         <NativeInput {...props} />
       </InputWrapper>
