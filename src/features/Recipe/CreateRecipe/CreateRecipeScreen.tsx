@@ -21,7 +21,7 @@ enum CreateRecipeSteps {
 
 const CreateRecipeScreen: React.FC = () => {
   const [step, setStep] = React.useState<CreateRecipeSteps>(
-    CreateRecipeSteps.RECIPE_INFO
+    CreateRecipeSteps.RECIPE_INGREDIANTS
   );
   const [formState, setFormState] = React.useState<
     [RecipeInfoForm | null, RecipeIngrediantsForm | null, ICookingForm | null]
@@ -65,7 +65,11 @@ const CreateRecipeScreen: React.FC = () => {
           </Typography>
         </View>
         <View style={styles.body}>
-          <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            nestedScrollEnabled
+            keyboardShouldPersistTaps="handled"
+          >
             {step === CreateRecipeSteps.RECIPE_INFO ? (
               <CreateRecipeInfo onSubmit={onStep} />
             ) : step === CreateRecipeSteps.RECIPE_INGREDIANTS ? (

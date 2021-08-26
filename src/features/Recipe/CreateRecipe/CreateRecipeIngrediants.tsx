@@ -6,7 +6,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import Typography from "src/components/Typography";
 import { COLORS } from "src/constants/colors";
-import { typographyStyles } from "src/constants/globalStyles";
 import { CREATE_RECIPE_VALIDATIONS } from "src/constants/Errors";
 import { styles } from "./styles";
 import { moderateScale } from "src/utils/scale";
@@ -14,9 +13,9 @@ import { StyleSheet } from "react-native";
 import { SearchDropdown } from "src/components/Form";
 import FlexStyles from "src/components/FlexBox/FlexStyles";
 import Icon from "src/components/Icon";
-import TextInput from "src/components/TextInput";
-import { widthPercentageToDP } from "react-native-responsive-screen";
-import CreateIngrediantInput from "src/features/Recipe/CreateRecipe/CreateIngrediantInput";
+import { CreateIngrediantGroup } from "./CreateIngrediantGroup";
+import { NextButton } from "./NextButton";
+import Spacer from "src/components/Spacer";
 
 const restaurants = [
   {
@@ -62,8 +61,10 @@ export type RecipeIngrediantsForm = {
   restaurant: string;
 };
 
-const CreateRecipeIngrediants: React.FC<CreateRecipeIngrediantsProps> = () => {
-  const { control } = useForm<RecipeIngrediantsForm>({
+const CreateRecipeIngrediants: React.FC<CreateRecipeIngrediantsProps> = ({
+  onSubmit,
+}) => {
+  const { control, handleSubmit } = useForm<RecipeIngrediantsForm>({
     defaultValues: {
       restaurant: "",
     },
@@ -106,7 +107,7 @@ const CreateRecipeIngrediants: React.FC<CreateRecipeIngrediantsProps> = () => {
             color={COLORS.statsGreySecondary}
             marginBottom={moderateScale(8)}
           >
-            Add Ingredients
+            Add Categorized Ingredients
           </Typography>
           <TouchableOpacity>
             <Icon
@@ -119,57 +120,10 @@ const CreateRecipeIngrediants: React.FC<CreateRecipeIngrediantsProps> = () => {
             />
           </TouchableOpacity>
         </View>
-        <View
-          style={{
-            marginTop: moderateScale(12),
-            borderWidth: 1,
-            borderColor: COLORS.dotgrey,
-            padding: moderateScale(8),
-          }}
-        >
-          <View
-            style={[
-              FlexStyles.flexDirectionRow,
-              FlexStyles.justifyContentSpaceBetween,
-            ]}
-          >
-            <TextInput
-              placeholder="Name of category"
-              containerStyle={{
-                ...styles.input,
-                borderBottomColor: COLORS.dotgrey,
-                // height: 40,
-                backgroundColor: "transparent",
-                width: widthPercentageToDP("90%") - 40,
-              }}
-              style={typographyStyles.P}
-              // value={value}
-              // onChangeText={onChange}
-            />
-            <TouchableOpacity>
-              <Icon
-                type="Feather"
-                name="plus-circle"
-                style={{
-                  color: COLORS.statsGreyPrimary,
-                  fontSize: moderateScale(18),
-                  top: 20,
-                }}
-              />
-            </TouchableOpacity>
-          </View>
-          <CreateIngrediantInput />
-        </View>
+        <CreateIngrediantGroup />
       </View>
-      {/* <Button
-        onPress={handleSubmit(onSubmit)}
-        iconRight
-        icon={{
-          type: "MaterialIcons",
-          name: "keyboard-arrow-right",
-          style: { ...iconStyles.iosChevron, fontSize: moderateScale(30) },
-        }}
-      /> */}
+      <Spacer size={20} scale />
+      <NextButton onPress={handleSubmit(onSubmit)} />
     </View>
   );
 };
