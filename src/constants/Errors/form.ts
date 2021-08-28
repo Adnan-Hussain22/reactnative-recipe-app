@@ -1,5 +1,9 @@
 export const CREATE_RECIPE_VALIDATIONS = {
   RECIPE_NAME: "Recipe name is required",
+  CATEGORY_NAME: "Please enter category name",
+  INGREDIANT_NAME: "Please enter recipe name",
+  INGREDIANT_AMOUNT: "Please enter amount",
+  INGREDIANT_SCALE: "Scale is required",
 };
 
 export const ONBOARDING_VALIDATIONS = {

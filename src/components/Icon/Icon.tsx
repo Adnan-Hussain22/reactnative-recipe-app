@@ -15,6 +15,8 @@ import Octicons from "@expo/vector-icons/Octicons";
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import Foundation from "@expo/vector-icons/Foundation";
 import Zocial from "@expo/vector-icons/Zocial";
+import { normalizeStyle } from "src/utils/styles";
+import { moderateScale } from "src/utils/scale";
 
 const IconPayload: any = {
   AntDesign,
@@ -53,11 +55,18 @@ export interface IconProps {
   type: keyof IIconPayload;
   name: string;
   style?: StyleProp<TextStyle>;
+  size?: number;
+  color?: string;
 }
 
-const Icon = ({ type, ...props }: IconProps) => {
+const Icon = ({ type, style, size = 8, color, ...props }: IconProps) => {
   const GetIcon = IconPayload[type] as any;
-  return <GetIcon {...props} />;
+  return (
+    <GetIcon
+      {...props}
+      style={normalizeStyle(style, { fontSize: moderateScale(size), color })}
+    />
+  );
 };
 
 export type IconTypes = keyof IIconPayload;
