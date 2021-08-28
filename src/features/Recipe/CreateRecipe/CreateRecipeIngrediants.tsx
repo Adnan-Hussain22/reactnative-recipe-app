@@ -13,9 +13,13 @@ import { StyleSheet } from "react-native";
 import { SearchDropdown } from "src/components/Form";
 import FlexStyles from "src/components/FlexBox/FlexStyles";
 import Icon from "src/components/Icon";
-import { CreateIngrediantGroup } from "./CreateIngrediantGroup";
+import {
+  CreateIngrediantGroup,
+  IngrediantGroup,
+} from "./CreateIngrediantGroup";
 import { NextButton } from "./NextButton";
 import Spacer from "src/components/Spacer";
+import { IngrediantSchema } from "./IngrediantInput";
 
 const restaurants = [
   {
@@ -55,10 +59,17 @@ type CreateRecipeIngrediantsProps = {
 
 const validationSchema = yup.object().shape({
   recipeName: yup.string().required(CREATE_RECIPE_VALIDATIONS.RECIPE_NAME),
+  ingrediantGroups: yup.array().of(
+    yup.object().shape({
+      category: yup.string().required(CREATE_RECIPE_VALIDATIONS.RECIPE_NAME),
+      ingrediants: yup.array().of(IngrediantSchema),
+    })
+  ),
 });
 
 export type RecipeIngrediantsForm = {
   restaurant: string;
+  ingrediantGroups: IngrediantGroup[];
 };
 
 const CreateRecipeIngrediants: React.FC<CreateRecipeIngrediantsProps> = ({
@@ -68,7 +79,7 @@ const CreateRecipeIngrediants: React.FC<CreateRecipeIngrediantsProps> = ({
     defaultValues: {
       restaurant: "",
     },
-    mode: "onChange",
+    mode: "all",
     resolver: yupResolver(validationSchema),
   });
 
