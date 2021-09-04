@@ -1,25 +1,26 @@
 import * as React from "react";
 import { TouchableOpacity, View } from "react-native";
-import { Controller, useForm } from "react-hook-form";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { Controller } from "react-hook-form";
 
 import Typography from "src/components/Typography";
 import { COLORS } from "src/constants/colors";
-import { CREATE_RECIPE_VALIDATIONS } from "src/constants/Errors";
-import { styles } from "./styles";
 import { moderateScale } from "src/utils/scale";
 import { StyleSheet } from "react-native";
 import { SearchDropdown } from "src/components/Form";
 import FlexStyles from "src/components/FlexBox/FlexStyles";
 import Icon from "src/components/Icon";
-import {
-  CreateIngrediantGroup,
-  IngrediantGroup,
-} from "./CreateIngrediantGroup";
-import { NextButton } from "./NextButton";
 import Spacer from "src/components/Spacer";
-import { IngrediantSchema } from "./IngrediantInput";
+import { CreateIngrediantGroup } from "./CreateIngrediantGroup";
+import { NextButton } from "./NextButton";
+import { styles } from "./styles";
+import { ConnectRecipeIngrediantForm } from "src/utils/ConnectRecipeContext";
+import {
+  RecipeIngrediantsForm,
+  RecipeIngrediantsFormContextType,
+  IngrediantGroup,
+  RecipeIngrediantsFormControl,
+  SubmitRecipeIngrediants,
+} from "src/providers/CreateRecipeForm/type";
 
 const restaurants = [
   {
@@ -52,94 +53,88 @@ const restaurants = [
   },
 ];
 
-type CreateRecipeIngrediantsProps = {
+type MappedProps = {
+  ingrediantGroups: IngrediantGroup[];
+  control: RecipeIngrediantsFormControl;
+  handleSubmit: SubmitRecipeIngrediants;
+};
+
+type CreateRecipeIngrediantsProps = MappedProps & {
   // eslint-disable-next-line no-unused-vars
   onSubmit: (data: RecipeIngrediantsForm) => void;
 };
 
-const validationSchema = yup.object().shape({
-  recipeName: yup.string().required(CREATE_RECIPE_VALIDATIONS.RECIPE_NAME),
-  ingrediantGroups: yup.array().of(
-    yup.object().shape({
-      category: yup.string().required(CREATE_RECIPE_VALIDATIONS.RECIPE_NAME),
-      ingrediants: yup.array().of(IngrediantSchema),
-    })
-  ),
-});
-
-export type RecipeIngrediantsForm = {
-  restaurant: string;
-  ingrediantGroups: IngrediantGroup[];
-};
-
-const CreateRecipeIngrediants: React.FC<CreateRecipeIngrediantsProps> = ({
-  onSubmit,
-}) => {
-  const { control, handleSubmit } = useForm<RecipeIngrediantsForm>({
-    defaultValues: {
-      restaurant: "",
-    },
-    mode: "all",
-    resolver: yupResolver(validationSchema),
-  });
-
-  return (
-    <View style={componentStyles.container}>
-      <Controller
-        control={control}
-        name="restaurant"
-        render={({ field: { value, onChange } }) => (
-          <View style={styles.inputContainer}>
+const CreateRecipeIngrediants: React.FC<CreateRecipeIngrediantsProps> =
+  React.memo(({ control, ingrediantGroups, onSubmit, handleSubmit }) => {
+    return (
+      <View style={componentStyles.container}>
+        <Controller
+          control={control}
+          name="restaurant"
+          render={({ field: { value, onChange } }) => (
+            <View style={styles.inputContainer}>
+              <Typography
+                variant="P"
+                color={COLORS.statsGreySecondary}
+                marginBottom={moderateScale(8)}
+              >
+                Restaurant
+              </Typography>
+              <SearchDropdown
+                items={restaurants}
+                onChange={onChange}
+                placeholder="Select restaurant"
+                value={value}
+              />
+            </View>
+          )}
+        />
+        <View style={[styles.inputContainer, { marginTop: moderateScale(25) }]}>
+          <View
+            style={[
+              FlexStyles.flexDirectionRow,
+              FlexStyles.justifyContentSpaceBetween,
+            ]}
+          >
             <Typography
               variant="P"
               color={COLORS.statsGreySecondary}
               marginBottom={moderateScale(8)}
             >
-              Restaurant
+              Add Categorized Ingredients
             </Typography>
-            <SearchDropdown
-              items={restaurants}
-              onChange={onChange}
-              placeholder="Select restaurant"
-              value={value}
-            />
+            <TouchableOpacity>
+              <Icon
+                type="Feather"
+                name="plus-circle"
+                style={{
+                  color: COLORS.statsGreyPrimary,
+                  fontSize: moderateScale(18),
+                }}
+              />
+            </TouchableOpacity>
           </View>
-        )}
-      />
-      <View style={[styles.inputContainer, { marginTop: moderateScale(25) }]}>
-        <View
-          style={[
-            FlexStyles.flexDirectionRow,
-            FlexStyles.justifyContentSpaceBetween,
-          ]}
-        >
-          <Typography
-            variant="P"
-            color={COLORS.statsGreySecondary}
-            marginBottom={moderateScale(8)}
-          >
-            Add Categorized Ingredients
-          </Typography>
-          <TouchableOpacity>
-            <Icon
-              type="Feather"
-              name="plus-circle"
-              style={{
-                color: COLORS.statsGreyPrimary,
-                fontSize: moderateScale(18),
-              }}
-            />
-          </TouchableOpacity>
+          {ingrediantGroups.map((_, index) => (
+            <CreateIngrediantGroup key={`_ingrediantGroup_${index}_`} />
+          ))}
         </View>
-        <CreateIngrediantGroup />
+        <Spacer size={20} scale />
+        <NextButton onPress={handleSubmit(onSubmit)} />
       </View>
-      <Spacer size={20} scale />
-      <NextButton onPress={handleSubmit(onSubmit)} />
-    </View>
-  );
-};
+    );
+  });
 
-export default CreateRecipeIngrediants;
+const mapStateToProps = (
+  state: RecipeIngrediantsFormContextType
+): MappedProps => ({
+  ingrediantGroups: state.ingrediantGroups,
+  control: state.control,
+  handleSubmit: state.handleSubmit,
+});
+
+export default ConnectRecipeIngrediantForm<CreateRecipeIngrediantsProps>(
+  mapStateToProps
+)(CreateRecipeIngrediants);
 
 const componentStyles = StyleSheet.create({
   container: {
