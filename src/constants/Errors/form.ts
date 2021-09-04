@@ -1,4 +1,5 @@
 export const CREATE_RECIPE_VALIDATIONS = {
+  RESTAURANT: "Please select a restaurant",
   RECIPE_NAME: "Recipe name is required",
   CATEGORY_NAME: "Please enter category name",
   INGREDIANT_NAME: "Please enter recipe name",
