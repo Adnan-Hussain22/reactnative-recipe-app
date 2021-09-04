@@ -10,9 +10,13 @@ import { moderateScale } from "src/utils/scale";
 type NextButtonProps = {
   // eslint-disable-next-line no-unused-vars
   onPress: () => void;
+  disabled?: boolean;
 };
 
-export const NextButton: React.FC<NextButtonProps> = ({ onPress }) => {
+export const NextButton: React.FC<NextButtonProps> = ({
+  disabled,
+  onPress,
+}) => {
   return (
     <Button
       text="NEXT"
@@ -31,6 +35,7 @@ export const NextButton: React.FC<NextButtonProps> = ({ onPress }) => {
       }
       iconRight
       onPress={onPress}
+      disabled={disabled}
     />
   );
 };
