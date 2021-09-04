@@ -16,8 +16,16 @@ export type RecipeIngrediantsForm = {
   ingrediantGroups: IngrediantGroup[];
 };
 
-export type RecipeIngrediantsFormContextType = {
-  control: Control<RecipeIngrediantsForm>;
-  onSubmit: UseFormHandleSubmit<RecipeIngrediantsForm>;
-  watch: UseFormWatch<RecipeIngrediantsForm>;
-};
+export type RecipeIngrediantsFormControl = Control<RecipeIngrediantsForm>;
+
+export type SubmitRecipeIngrediants =
+  UseFormHandleSubmit<RecipeIngrediantsForm>;
+
+export type WatchRecipeIngrediants = UseFormWatch<RecipeIngrediantsForm>;
+
+export interface RecipeIngrediantsFormContextType
+  extends RecipeIngrediantsForm {
+  control: RecipeIngrediantsFormControl;
+  handleSubmit: SubmitRecipeIngrediants;
+  watch: WatchRecipeIngrediants;
+}
