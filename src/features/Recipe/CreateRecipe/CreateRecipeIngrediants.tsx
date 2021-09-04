@@ -54,7 +54,7 @@ const restaurants = [
 ];
 
 type MappedProps = {
-  ingrediantGroups: IngrediantGroup[];
+  ingrediantGroups?: IngrediantGroup[];
   control: RecipeIngrediantsFormControl;
   handleSubmit: SubmitRecipeIngrediants;
 };
@@ -65,7 +65,7 @@ type CreateRecipeIngrediantsProps = MappedProps & {
 };
 
 const CreateRecipeIngrediants: React.FC<CreateRecipeIngrediantsProps> =
-  React.memo(({ control, ingrediantGroups, onSubmit, handleSubmit }) => {
+  React.memo(({ control, onSubmit, handleSubmit }) => {
     return (
       <View style={componentStyles.container}>
         <Controller
@@ -114,9 +114,17 @@ const CreateRecipeIngrediants: React.FC<CreateRecipeIngrediantsProps> =
               />
             </TouchableOpacity>
           </View>
-          {ingrediantGroups.map((_, index) => (
-            <CreateIngrediantGroup key={`_ingrediantGroup_${index}_`} />
-          ))}
+          <Controller
+            control={control}
+            name="ingrediantGroups"
+            render={({ field: { value } }) => (
+              <React.Fragment>
+                {value.map((_, index) => (
+                  <CreateIngrediantGroup key={`_ingrediantGroup_${index}_`} />
+                ))}
+              </React.Fragment>
+            )}
+          />
         </View>
         <Spacer size={20} scale />
         <NextButton onPress={handleSubmit(onSubmit)} />
@@ -127,7 +135,6 @@ const CreateRecipeIngrediants: React.FC<CreateRecipeIngrediantsProps> =
 const mapStateToProps = (
   state: RecipeIngrediantsFormContextType
 ): MappedProps => ({
-  ingrediantGroups: state.ingrediantGroups,
   control: state.control,
   handleSubmit: state.handleSubmit,
 });

@@ -19,33 +19,32 @@ export const CategorySchema = yup.object().shape({
 
 export type IngrediantGroup = {
   category: string;
-  ingrediants: Ingrediant[];
+  ingredients: Ingrediant[];
 };
 
-export const CreateIngrediantGroup: React.FC = () => {
+export const CreateIngrediantGroup: React.FC = React.memo(() => {
   const {
     control,
     formState: { errors },
     handleSubmit,
-  } = useForm<{ category: string }>({
+    setValue,
+    watch,
+  } = useForm<IngrediantGroup>({
     defaultValues: {
       category: "",
+      ingredients: [{ name: "", scale: "tbsp", amount: 1 }],
     },
     mode: "all",
     resolver: yupResolver(CategorySchema),
   });
-  const [ingrediants, setIngrediants] = React.useState<Ingrediant[]>([
-    { name: "", scale: "", amount: 1 },
-  ]);
+  const ingredients = watch("ingredients");
   const [collapse, toggleCollapse] = useTogglState(false);
 
   const handleAdd = React.useCallback(() => {
-    setIngrediants((prev) => {
-      const newState = [...prev];
-      newState.push({ name: "", scale: "", amount: 1 });
-      return newState;
-    });
-  }, []);
+    const newState = [...ingredients];
+    newState.push({ name: "", scale: "", amount: 1 });
+    setValue("ingredients", newState);
+  }, [ingredients]);
 
   const onSubmit = () => {
     toggleCollapse();
@@ -69,17 +68,25 @@ export const CreateIngrediantGroup: React.FC = () => {
       />
       <Spacer size={5} />
       <Divider />
-      {!collapse
-        ? ingrediants.map((_, index) => (
-            <CreateIngrediantInput
-              step={index + 1}
-              key={`_ingrediant_${index}_`}
-            />
-          ))
-        : null}
+      <Controller
+        control={control}
+        name="ingredients"
+        render={({ field: { value } }) => (
+          <React.Fragment>
+            {!collapse
+              ? value.map((_, index) => (
+                  <CreateIngrediantInput
+                    step={index + 1}
+                    key={`_ingrediant_${index}_`}
+                  />
+                ))
+              : null}
+          </React.Fragment>
+        )}
+      />
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {
