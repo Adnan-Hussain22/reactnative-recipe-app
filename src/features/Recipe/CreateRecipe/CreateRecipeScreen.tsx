@@ -5,6 +5,7 @@ import { SafeAreaView } from "react-native";
 
 import Icon from "src/components/Icon";
 import Typography from "src/components/Typography";
+import { CreateRecipeProvider } from "src/providers";
 import { moderateScale } from "src/utils/scale";
 import { CreateRecipeCooking, ICookingForm } from "./CreateRecipeCooking";
 import CreateRecipeInfo, { RecipeInfoForm } from "./CreateRecipeInfo";
@@ -73,7 +74,9 @@ const CreateRecipeScreen: React.FC = () => {
             {step === CreateRecipeSteps.RECIPE_INFO ? (
               <CreateRecipeInfo onSubmit={onStep} />
             ) : step === CreateRecipeSteps.RECIPE_INGREDIANTS ? (
-              <CreateRecipeIngrediants onSubmit={onStep} />
+              <CreateRecipeProvider>
+                <CreateRecipeIngrediants onSubmit={onStep} />
+              </CreateRecipeProvider>
             ) : (
               <CreateRecipeCooking onSubmit={onStep} />
             )}

@@ -1,11 +1,13 @@
 /* eslint-disable no-unused-vars */
 import * as React from "react";
 import { View } from "react-native";
-import IngrediantInput from "./IngrediantInput";
 import { useTogglState } from "src/hooks/useToggleState";
-import { moderateScale } from "src/utils/scale";
 import Divider from "src/components/Divider/Divider";
 import Spacer from "src/components/Spacer";
+import { moderateScale } from "src/utils/scale";
+import { ConnectRecipeIngrediantForm } from "src/utils/ConnectRecipeContext";
+import { OnChangeIngredient } from "src/providers";
+import IngrediantInput from "./IngrediantInput";
 import TextWithEditButton from "./TextWithEditButton";
 
 export type Ingrediant = {
@@ -20,7 +22,22 @@ export enum IngrediantFormEnum {
   SCALE = "scale",
 }
 
-export const CreateIngrediantInput: React.FC<{ step: number }> = ({ step }) => {
+type PropsType = {
+  ingredientIndex: number;
+  categoryIndex: number;
+  onDeleteIngredient: (index: number) => void;
+};
+
+type MapStateToPropsType = {
+  onChangeIngredient: OnChangeIngredient;
+};
+
+const Component: React.FC<PropsType & Partial<MapStateToPropsType>> = ({
+  ingredientIndex,
+  categoryIndex,
+  onChangeIngredient,
+  onDeleteIngredient,
+}) => {
   const [editable, toggleEditable] = useTogglState(true);
   const [ingrediant, setIngrediant] = React.useState<Ingrediant>({
     name: "",
@@ -30,6 +47,7 @@ export const CreateIngrediantInput: React.FC<{ step: number }> = ({ step }) => {
 
   const handleSubmit = (formValues: Ingrediant) => {
     setIngrediant({ ...formValues });
+    onChangeIngredient?.({ ...formValues }, categoryIndex, ingredientIndex);
   };
 
   return (
@@ -43,12 +61,16 @@ export const CreateIngrediantInput: React.FC<{ step: number }> = ({ step }) => {
         {editable ? (
           <IngrediantInput
             toggleEditable={toggleEditable}
+            ingredientIndex={ingredientIndex}
+            categoryIndex={categoryIndex}
             onSubmit={handleSubmit}
-            step={step}
+            onDelete={onDeleteIngredient}
           />
         ) : (
           <TextWithEditButton
-            text={`${step} ) ${ingrediant.amount} ${ingrediant.scale} ${ingrediant.name}`}
+            text={`${ingredientIndex + 1} ) ${ingrediant.amount} ${
+              ingrediant.scale
+            } ${ingrediant.name}`}
             onEdit={toggleEditable}
           />
         )}
@@ -58,3 +80,10 @@ export const CreateIngrediantInput: React.FC<{ step: number }> = ({ step }) => {
     </React.Fragment>
   );
 };
+
+export const CreateIngrediantInput = ConnectRecipeIngrediantForm<
+  MapStateToPropsType,
+  PropsType
+>(({ onChangeIngredient }) => ({
+  onChangeIngredient,
+}))(Component);

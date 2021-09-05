@@ -1,36 +1,76 @@
-import React from "react";
-import { useForm } from "react-hook-form";
+import React, { useCallback, useState } from "react";
+import { DeepMap, FieldError, useForm } from "react-hook-form";
+import * as yup from "yup";
 
-import { RecipeIngrediantsForm } from "./type";
-import { RecipeIngrediantsFormContext } from "./context";
+import { RecipeIngredientsForm, Ingredient, IngredientGroup } from "./type";
+import { RecipeIngredientsFormContext } from "./context";
+import { CREATE_RECIPE_VALIDATIONS } from "src/constants/Errors";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 const emptyData = {
   category: "",
-  ingrediants: [{ amount: 1, scale: "tbsp", name: "" }],
+  ingredients: [{ amount: 1, scale: "tbsp", name: "" }],
 };
 
+export const schema = yup.object().shape({
+  restaurant: yup.string().required(CREATE_RECIPE_VALIDATIONS.RESTAURANT),
+});
+
 export const CreateRecipeProvider: React.FC = ({ children }) => {
-  const { control, handleSubmit, watch, getValues } =
-    useForm<RecipeIngrediantsForm>({
+  const { control, handleSubmit, watch, setValue } =
+    useForm<RecipeIngredientsForm>({
       defaultValues: {
         restaurant: "",
-        ingrediantGroups: [emptyData],
+        ingredientGroups: [emptyData],
       },
+      mode: "onChange",
+      resolver: yupResolver(schema),
     });
+  const [errors, setErrors] = useState<DeepMap<IngredientGroup, FieldError>>(
+    {}
+  );
 
-  const { ingrediantGroups, restaurant } = getValues();
+  const ingredientGroups = watch("ingredientGroups");
+  const restaurant = watch("restaurant");
+
+  const onChangeCategory = useCallback(
+    (value: string, index: number) => {
+      if (!ingredientGroups[index]) {
+        return;
+      }
+      ingredientGroups[index].category = value;
+      setValue("ingredientGroups", ingredientGroups);
+    },
+    [ingredientGroups]
+  );
+
+  const onChangeIngredient = useCallback(
+    (value: Ingredient, categoryIndex: number, ingredientIndex: number) => {
+      if (!ingredientGroups[categoryIndex]?.ingredients) {
+        return;
+      }
+      const ingredients = ingredientGroups[categoryIndex]?.ingredients;
+      ingredients[ingredientIndex] = value;
+      ingredientGroups[categoryIndex].ingredients = ingredients;
+      setValue("ingredientGroups", ingredientGroups);
+    },
+    [ingredientGroups]
+  );
 
   return (
-    <RecipeIngrediantsFormContext.Provider
+    <RecipeIngredientsFormContext.Provider
       value={{
         restaurant,
-        ingrediantGroups,
+        ingredientGroups,
         control,
         watch,
+        errors,
         handleSubmit,
+        onChangeCategory,
+        onChangeIngredient,
       }}
     >
       {children}
-    </RecipeIngrediantsFormContext.Provider>
+    </RecipeIngredientsFormContext.Provider>
   );
 };

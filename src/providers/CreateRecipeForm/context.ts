@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import React from "react";
-import { RecipeIngrediantsFormContextType } from "./type";
+import { RecipeIngredientsFormContextType } from "./type";
 
-export const RecipeIngrediantsFormContext =
+export const RecipeIngredientsFormContext =
   // @ts-ignore
-  React.createContext<RecipeIngrediantsFormContextType>();
+  React.createContext<RecipeIngredientsFormContextType>();

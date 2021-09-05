@@ -1,26 +1,26 @@
 import * as React from "react";
-import { TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View, StyleSheet } from "react-native";
 import { Controller } from "react-hook-form";
 
 import Typography from "src/components/Typography";
-import { COLORS } from "src/constants/colors";
-import { moderateScale } from "src/utils/scale";
-import { StyleSheet } from "react-native";
 import { SearchDropdown } from "src/components/Form";
 import FlexStyles from "src/components/FlexBox/FlexStyles";
 import Icon from "src/components/Icon";
 import Spacer from "src/components/Spacer";
+import { moderateScale } from "src/utils/scale";
+import { COLORS } from "src/constants/colors";
+import { ConnectRecipeIngrediantForm } from "src/utils/ConnectRecipeContext";
 import { CreateIngrediantGroup } from "./CreateIngrediantGroup";
 import { NextButton } from "./NextButton";
 import { styles } from "./styles";
-import { ConnectRecipeIngrediantForm } from "src/utils/ConnectRecipeContext";
 import {
-  RecipeIngrediantsForm,
-  RecipeIngrediantsFormContextType,
-  IngrediantGroup,
-  RecipeIngrediantsFormControl,
-  SubmitRecipeIngrediants,
+  RecipeIngredientsForm,
+  RecipeIngredientsFormContextType,
+  IngredientGroup,
+  RecipeIngredientsFormControl,
+  SubmitRecipeIngredients,
 } from "src/providers/CreateRecipeForm/type";
+import { HoNoop } from "src/utils/noop";
 
 const restaurants = [
   {
@@ -54,18 +54,17 @@ const restaurants = [
 ];
 
 type MappedProps = {
-  ingrediantGroups?: IngrediantGroup[];
-  control: RecipeIngrediantsFormControl;
-  handleSubmit: SubmitRecipeIngrediants;
+  ingredientGroups?: IngredientGroup[];
+  control: RecipeIngredientsFormControl;
+  handleSubmit: SubmitRecipeIngredients;
 };
 
-type CreateRecipeIngrediantsProps = MappedProps & {
-  // eslint-disable-next-line no-unused-vars
-  onSubmit: (data: RecipeIngrediantsForm) => void;
+type CreateRecipeIngrediantsProps = Partial<MappedProps> & {
+  onSubmit: (data: RecipeIngredientsForm) => void;
 };
 
 const CreateRecipeIngrediants: React.FC<CreateRecipeIngrediantsProps> =
-  React.memo(({ control, onSubmit, handleSubmit }) => {
+  React.memo(({ control, onSubmit, handleSubmit = HoNoop }) => {
     return (
       <View style={componentStyles.container}>
         <Controller
@@ -116,11 +115,14 @@ const CreateRecipeIngrediants: React.FC<CreateRecipeIngrediantsProps> =
           </View>
           <Controller
             control={control}
-            name="ingrediantGroups"
+            name="ingredientGroups"
             render={({ field: { value } }) => (
               <React.Fragment>
                 {value.map((_, index) => (
-                  <CreateIngrediantGroup key={`_ingrediantGroup_${index}_`} />
+                  <CreateIngrediantGroup
+                    key={`_ingrediantGroup_${index}_`}
+                    categoryIndex={index}
+                  />
                 ))}
               </React.Fragment>
             )}
@@ -132,16 +134,18 @@ const CreateRecipeIngrediants: React.FC<CreateRecipeIngrediantsProps> =
     );
   });
 
-const mapStateToProps = (
-  state: RecipeIngrediantsFormContextType
-): MappedProps => ({
-  control: state.control,
-  handleSubmit: state.handleSubmit,
+const mapStateToProps = ({
+  control,
+  handleSubmit,
+}: RecipeIngredientsFormContextType): MappedProps => ({
+  control,
+  handleSubmit,
 });
 
-export default ConnectRecipeIngrediantForm<CreateRecipeIngrediantsProps>(
-  mapStateToProps
-)(CreateRecipeIngrediants);
+export default ConnectRecipeIngrediantForm<
+  MappedProps,
+  CreateRecipeIngrediantsProps
+>(mapStateToProps)(CreateRecipeIngrediants);
 
 const componentStyles = StyleSheet.create({
   container: {

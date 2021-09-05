@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { RecipeIngrediantsFormContext } from "src/providers";
+import { RecipeIngredientsFormContext } from "src/providers";
 
 export const useRecipeIngrediantForm = () =>
-  useContext(RecipeIngrediantsFormContext);
+  useContext(RecipeIngredientsFormContext);

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import * as React from "react";
 import { View, StyleSheet } from "react-native";
 import { widthPercentageToDP } from "react-native-responsive-screen";
@@ -76,7 +75,7 @@ const IngrediantCategory: React.FC<IngrediantCategoryProps> = ({
             type="Feather"
             name="plus-circle"
             size={20}
-            color={COLORS.statsGreyPrimary}
+            color={COLORS.fbBlue}
             onPress={onAdd}
           />
         </React.Fragment>
@@ -93,6 +92,6 @@ const styles = StyleSheet.create({
     borderBottomColor: COLORS.dotgrey,
     backgroundColor: "transparent",
     paddingVertical: moderateScale(5),
-    width: widthPercentageToDP("90%") - 90,
+    width: widthPercentageToDP("90%") - moderateScale(80),
   },
 });

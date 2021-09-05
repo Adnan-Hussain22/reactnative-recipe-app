@@ -17,9 +17,11 @@ import { styles } from "./styles";
 import { CREATE_RECIPE_VALIDATIONS } from "src/constants/Errors";
 
 type IngrediantInputProps = {
+  ingredientIndex: number;
+  categoryIndex: number;
   onSubmit: (form: FormValues) => void;
+  onDelete: (index: number) => void;
   toggleEditable: () => void;
-  step: number;
 };
 
 type FormValues = {
@@ -35,9 +37,10 @@ export const IngrediantSchema = yup.object().shape({
 });
 
 const IngrediantInput: React.FC<IngrediantInputProps> = ({
-  step,
-  onSubmit,
+  ingredientIndex,
   toggleEditable,
+  onSubmit,
+  onDelete,
 }) => {
   const {
     control,
@@ -71,15 +74,31 @@ const IngrediantInput: React.FC<IngrediantInputProps> = ({
           color={COLORS.statsGreySecondary}
           marginBottom={moderateScale(15)}
         >
-          Ingrediant {step}
+          Ingrediant {ingredientIndex + 1}
         </Typography>
-        <TouchableIcon
-          type="FontAwesome5"
-          name="check-circle"
-          size={20}
-          color={COLORS.primaryRed}
-          onPress={handleSubmit(submit)}
-        />
+        <View
+          style={[
+            FlexStyles.flexDirectionRow,
+            FlexStyles.justifyContentSpaceBetween,
+            ,
+            { width: moderateScale(50) },
+          ]}
+        >
+          <TouchableIcon
+            type="FontAwesome5"
+            name="check-circle"
+            size={20}
+            color={COLORS.primaryRed}
+            onPress={handleSubmit(submit)}
+          />
+          <TouchableIcon
+            type="Fontisto"
+            name="close"
+            size={20}
+            color={COLORS.primaryRed}
+            onPress={() => onDelete(ingredientIndex)}
+          />
+        </View>
       </View>
       <Controller
         control={control}
