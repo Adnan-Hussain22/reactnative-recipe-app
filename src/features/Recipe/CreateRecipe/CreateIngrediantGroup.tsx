@@ -1,12 +1,18 @@
 import * as React from "react";
 import { View, StyleSheet } from "react-native";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
 import Divider from "src/components/Divider/Divider";
 import Spacer from "src/components/Spacer";
-import { IngredientFormErrors, OnChangeCategory } from "src/providers";
+import {
+  IngredientFormErrors,
+  OnAddIngredient,
+  OnChangeCategory,
+  OnDeleteIngredient,
+  OnDeleteIngredientCategory,
+} from "src/providers";
 import { useTogglState } from "src/hooks/useToggleState";
 import { COLORS } from "src/constants/colors";
 import { CREATE_RECIPE_VALIDATIONS } from "src/constants/Errors";
@@ -28,6 +34,9 @@ export type IngredientGroup = {
 
 type MapStateToPropsType = {
   onChangeCategory: OnChangeCategory;
+  onDeleteIngredientCategory: OnDeleteIngredientCategory;
+  onAddIngredient: OnAddIngredient;
+  onDeleteIngredient: OnDeleteIngredient;
   errors?: IngredientFormErrors;
 };
 
@@ -37,51 +46,61 @@ type PropsType = {
 
 const Component: React.FC<PropsType & Partial<MapStateToPropsType>> =
   React.memo(
-    ({ categoryIndex, errors: ingredientFormErrors, onChangeCategory }) => {
+    ({
+      categoryIndex,
+      errors: ingredientFormErrors,
+      onChangeCategory,
+      onAddIngredient,
+      onDeleteIngredientCategory,
+      onDeleteIngredient,
+    }) => {
       const {
         control,
         formState: { errors },
         handleSubmit,
         setValue,
-        getValues,
         watch,
       } = useForm<IngredientGroup>({
         defaultValues: {
           category: "",
           ingredients: [{ name: "", scale: "tbsp", amount: 1 }],
         },
-        mode: "all",
+        mode: "onChange",
         resolver: yupResolver(CategorySchema),
       });
-      const { ingredients } = getValues();
+      const { append, remove } = useFieldArray({
+        control,
+        name: "ingredients",
+      });
+      const ingredients = watch("ingredients");
       const [collapse, toggleCollapse] = useTogglState(false);
 
       const handleChangeCategory = React.useCallback(
         (onChange: CallableFunction) => (category: string) => {
           onChange(category);
-          // onChangeCategory?.(category, categoryIndex);
+          onChangeCategory?.(category, categoryIndex);
         },
         []
       );
 
-      const handleAdd = React.useCallback(() => {
-        const newState = [...ingredients];
-        newState.push({ name: "", scale: "", amount: 1 });
-        setValue("ingredients", newState);
+      const handleAddIngredient = React.useCallback(() => {
+        append({ name: "", scale: "", amount: 1 });
+        onAddIngredient!(categoryIndex);
+      }, []);
+
+      const handleDeleteCategory = React.useCallback(() => {
+        onDeleteIngredientCategory!(categoryIndex);
       }, [ingredients]);
 
-      const handleDelete = React.useCallback(
+      const handleDeleteIngredient = React.useCallback(
         (index: number) => {
           if (ingredients.length === 1) {
             return;
           }
-          console.log("handleDelete==>", { length: ingredients.length, index });
-          const newState = [...ingredients];
-          newState.splice(index, 1);
-          console.log("newState==>", newState);
-          setValue("ingredients", newState);
+          remove(index);
+          onDeleteIngredient!(categoryIndex, index);
         },
-        [ingredients]
+        [ingredients, setValue]
       );
 
       const onSubmit = () => {
@@ -89,8 +108,6 @@ const Component: React.FC<PropsType & Partial<MapStateToPropsType>> =
           toggleCollapse();
         }
       };
-
-      console.log("ingredients==>", ingredients);
 
       return (
         <View style={styles.container}>
@@ -102,7 +119,8 @@ const Component: React.FC<PropsType & Partial<MapStateToPropsType>> =
                 category={value}
                 setToggle={handleSubmit(onSubmit)}
                 toggle={!collapse}
-                onAdd={handleAdd}
+                onAdd={handleAddIngredient}
+                onDelete={handleDeleteCategory}
                 error={errors.category?.message}
                 onChangeCategory={handleChangeCategory(onChange)}
               />
@@ -117,7 +135,7 @@ const Component: React.FC<PropsType & Partial<MapStateToPropsType>> =
                     key={`_ingrediant_${index}_`}
                     ingredientIndex={index}
                     categoryIndex={categoryIndex}
-                    onDeleteIngredient={handleDelete}
+                    onDeleteIngredient={handleDeleteIngredient}
                   />
                 ))
               : null}
@@ -130,10 +148,23 @@ const Component: React.FC<PropsType & Partial<MapStateToPropsType>> =
 export const CreateIngrediantGroup = ConnectRecipeIngrediantForm<
   MapStateToPropsType,
   PropsType
->(({ onChangeCategory, errors }) => ({
-  onChangeCategory,
-  errors: errors.ingredients,
-}))(Component);
+>(
+  ({
+    errors,
+    onChangeCategory,
+    onAddIngredient,
+    onDeleteIngredient,
+    onAddIngredientCategory,
+    onDeleteIngredientCategory,
+  }) => ({
+    onChangeCategory,
+    errors: errors.ingredients,
+    onAddCategory: onAddIngredientCategory,
+    onDeleteIngredientCategory,
+    onAddIngredient,
+    onDeleteIngredient,
+  })
+)(Component);
 
 const styles = StyleSheet.create({
   container: {

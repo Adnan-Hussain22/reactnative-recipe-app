@@ -38,6 +38,17 @@ export type OnChangeIngredient = (
   ingredientIndex: number
 ) => void;
 
+export type OnAddIngredient = (categoryIndex: number) => void;
+
+export type OnDeleteIngredient = (
+  categoryIndex: number,
+  ingredientIndex: number
+) => void;
+
+export type OnAddIngredientCategory = () => void;
+
+export type OnDeleteIngredientCategory = (categoryIndex: number) => void;
+
 export type MainFormErrors = DeepMap<IngredientGroup, FieldError>;
 
 export type IngredientFormErrors = Partial<DeepMap<Ingredient, FieldError>[]>;
@@ -50,4 +61,8 @@ export interface RecipeIngredientsFormContextType
   onChangeCategory: OnChangeCategory;
   onChangeIngredient: OnChangeIngredient;
   handleSubmit: SubmitRecipeIngredients;
+  onAddIngredient: OnAddIngredient;
+  onDeleteIngredient: OnDeleteIngredient;
+  onAddIngredientCategory: OnAddIngredientCategory;
+  onDeleteIngredientCategory: OnDeleteIngredientCategory;
 }

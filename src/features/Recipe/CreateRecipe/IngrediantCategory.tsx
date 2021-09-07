@@ -18,6 +18,7 @@ type IngrediantCategoryProps = {
   error?: string;
   setToggle: () => void;
   onAdd: () => void;
+  onDelete: () => void;
   onChangeCategory: (text: string) => void;
 };
 
@@ -27,6 +28,7 @@ const IngrediantCategory: React.FC<IngrediantCategoryProps> = ({
   error,
   setToggle,
   onAdd,
+  onDelete,
   onChangeCategory,
 }) => {
   return (
@@ -72,6 +74,13 @@ const IngrediantCategory: React.FC<IngrediantCategoryProps> = ({
             onPress={setToggle}
           />
           <TouchableIcon
+            type="Fontisto"
+            name="close"
+            size={20}
+            color={COLORS.primaryRed}
+            onPress={onDelete}
+          />
+          <TouchableIcon
             type="Feather"
             name="plus-circle"
             size={20}
@@ -92,6 +101,6 @@ const styles = StyleSheet.create({
     borderBottomColor: COLORS.dotgrey,
     backgroundColor: "transparent",
     paddingVertical: moderateScale(5),
-    width: widthPercentageToDP("90%") - moderateScale(80),
+    width: widthPercentageToDP("90%") - moderateScale(100),
   },
 });

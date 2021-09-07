@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { DeepMap, FieldError, useForm } from "react-hook-form";
+import { DeepMap, FieldError, useFieldArray, useForm } from "react-hook-form";
 import * as yup from "yup";
 
 import { RecipeIngredientsForm, Ingredient, IngredientGroup } from "./type";
@@ -7,9 +7,11 @@ import { RecipeIngredientsFormContext } from "./context";
 import { CREATE_RECIPE_VALIDATIONS } from "src/constants/Errors";
 import { yupResolver } from "@hookform/resolvers/yup";
 
+const emptyIngredient = { amount: 1, scale: "tbsp", name: "" };
+
 const emptyData = {
   category: "",
-  ingredients: [{ amount: 1, scale: "tbsp", name: "" }],
+  ingredients: [emptyIngredient],
 };
 
 export const schema = yup.object().shape({
@@ -26,11 +28,14 @@ export const CreateRecipeProvider: React.FC = ({ children }) => {
       mode: "onChange",
       resolver: yupResolver(schema),
     });
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "ingredientGroups",
+  });
   const [errors, setErrors] = useState<DeepMap<IngredientGroup, FieldError>>(
     {}
   );
-
-  const ingredientGroups = watch("ingredientGroups");
+  const ingredientGroups = fields;
   const restaurant = watch("restaurant");
 
   const onChangeCategory = useCallback(
@@ -57,6 +62,43 @@ export const CreateRecipeProvider: React.FC = ({ children }) => {
     [ingredientGroups]
   );
 
+  const onAddIngredient = useCallback(
+    (categoryIndex: number) => {
+      const ingredients = ingredientGroups[categoryIndex]?.ingredients;
+      if (ingredients) {
+        ingredients.push({ ...emptyIngredient });
+        ingredientGroups[categoryIndex].ingredients = ingredients;
+        setValue("ingredientGroups", ingredientGroups);
+      }
+    },
+    [ingredientGroups, setValue]
+  );
+
+  const onDeleteIngredient = useCallback(
+    (categoryIndex: number, ingredientIndex: number) => {
+      const ingredients = ingredientGroups[categoryIndex]?.ingredients;
+      if (ingredients?.length > 1) {
+        ingredients.splice(ingredientIndex, 1);
+        ingredientGroups[categoryIndex].ingredients = ingredients;
+        setValue("ingredientGroups", ingredientGroups);
+      }
+    },
+    [ingredientGroups, setValue]
+  );
+
+  const onAddIngredientCategory = useCallback(() => {
+    append({ ...emptyData });
+  }, [ingredientGroups, setValue]);
+
+  const onDeleteIngredientCategory = useCallback(
+    (categoryIndex: number) => {
+      if (ingredientGroups.length > 1) {
+        remove(categoryIndex);
+      }
+    },
+    [ingredientGroups, setValue]
+  );
+
   return (
     <RecipeIngredientsFormContext.Provider
       value={{
@@ -68,6 +110,10 @@ export const CreateRecipeProvider: React.FC = ({ children }) => {
         handleSubmit,
         onChangeCategory,
         onChangeIngredient,
+        onAddIngredient,
+        onDeleteIngredient,
+        onAddIngredientCategory,
+        onDeleteIngredientCategory,
       }}
     >
       {children}

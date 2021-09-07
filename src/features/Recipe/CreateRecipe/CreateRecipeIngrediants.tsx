@@ -1,11 +1,11 @@
 import * as React from "react";
-import { TouchableOpacity, View, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { Controller } from "react-hook-form";
 
 import Typography from "src/components/Typography";
 import { SearchDropdown } from "src/components/Form";
 import FlexStyles from "src/components/FlexBox/FlexStyles";
-import Icon from "src/components/Icon";
+import { TouchableIcon } from "src/components/Icon";
 import Spacer from "src/components/Spacer";
 import { moderateScale } from "src/utils/scale";
 import { COLORS } from "src/constants/colors";
@@ -19,6 +19,8 @@ import {
   IngredientGroup,
   RecipeIngredientsFormControl,
   SubmitRecipeIngredients,
+  WatchRecipeIngredients,
+  OnAddIngredientCategory,
 } from "src/providers/CreateRecipeForm/type";
 import { HoNoop } from "src/utils/noop";
 
@@ -57,6 +59,8 @@ type MappedProps = {
   ingredientGroups?: IngredientGroup[];
   control: RecipeIngredientsFormControl;
   handleSubmit: SubmitRecipeIngredients;
+  watch: WatchRecipeIngredients;
+  onAddIngredientCategory: OnAddIngredientCategory;
 };
 
 type CreateRecipeIngrediantsProps = Partial<MappedProps> & {
@@ -64,82 +68,89 @@ type CreateRecipeIngrediantsProps = Partial<MappedProps> & {
 };
 
 const CreateRecipeIngrediants: React.FC<CreateRecipeIngrediantsProps> =
-  React.memo(({ control, onSubmit, handleSubmit = HoNoop }) => {
-    return (
-      <View style={componentStyles.container}>
-        <Controller
-          control={control}
-          name="restaurant"
-          render={({ field: { value, onChange } }) => (
-            <View style={styles.inputContainer}>
+  React.memo(
+    ({ control, onSubmit, handleSubmit = HoNoop, onAddIngredientCategory }) => {
+      return (
+        <View style={componentStyles.container}>
+          <Controller
+            control={control}
+            name="restaurant"
+            render={({ field: { value, onChange } }) => (
+              <View style={styles.inputContainer}>
+                <Typography
+                  variant="P"
+                  color={COLORS.statsGreySecondary}
+                  marginBottom={moderateScale(8)}
+                >
+                  Restaurant
+                </Typography>
+                <SearchDropdown
+                  items={restaurants}
+                  onChange={onChange}
+                  placeholder="Select restaurant"
+                  value={value}
+                />
+              </View>
+            )}
+          />
+          <View
+            style={[styles.inputContainer, { marginTop: moderateScale(25) }]}
+          >
+            <View
+              style={[
+                FlexStyles.flexDirectionRow,
+                FlexStyles.justifyContentSpaceBetween,
+              ]}
+            >
               <Typography
                 variant="P"
                 color={COLORS.statsGreySecondary}
                 marginBottom={moderateScale(8)}
               >
-                Restaurant
+                Add Categorized Ingredients
               </Typography>
-              <SearchDropdown
-                items={restaurants}
-                onChange={onChange}
-                placeholder="Select restaurant"
-                value={value}
-              />
-            </View>
-          )}
-        />
-        <View style={[styles.inputContainer, { marginTop: moderateScale(25) }]}>
-          <View
-            style={[
-              FlexStyles.flexDirectionRow,
-              FlexStyles.justifyContentSpaceBetween,
-            ]}
-          >
-            <Typography
-              variant="P"
-              color={COLORS.statsGreySecondary}
-              marginBottom={moderateScale(8)}
-            >
-              Add Categorized Ingredients
-            </Typography>
-            <TouchableOpacity>
-              <Icon
+              <TouchableIcon
                 type="Feather"
                 name="plus-circle"
+                onPress={onAddIngredientCategory!}
                 style={{
                   color: COLORS.statsGreyPrimary,
                   fontSize: moderateScale(18),
                 }}
               />
-            </TouchableOpacity>
+            </View>
+            <Controller
+              control={control}
+              name="ingredientGroups"
+              render={({ field: { value } }) => (
+                <React.Fragment>
+                  {value.map((_, index) => (
+                    <CreateIngrediantGroup
+                      key={`_ingrediantGroup_${index}_`}
+                      categoryIndex={index}
+                    />
+                  ))}
+                </React.Fragment>
+              )}
+            />
           </View>
-          <Controller
-            control={control}
-            name="ingredientGroups"
-            render={({ field: { value } }) => (
-              <React.Fragment>
-                {value.map((_, index) => (
-                  <CreateIngrediantGroup
-                    key={`_ingrediantGroup_${index}_`}
-                    categoryIndex={index}
-                  />
-                ))}
-              </React.Fragment>
-            )}
-          />
+          <Spacer size={20} scale />
+          <NextButton onPress={handleSubmit(onSubmit)} />
         </View>
-        <Spacer size={20} scale />
-        <NextButton onPress={handleSubmit(onSubmit)} />
-      </View>
-    );
-  });
+      );
+    }
+  );
 
 const mapStateToProps = ({
   control,
   handleSubmit,
+  watch,
+  onAddIngredientCategory,
 }: RecipeIngredientsFormContextType): MappedProps => ({
   control,
   handleSubmit,
+  watch,
+  onAddIngredientCategory,
 });
 
 export default ConnectRecipeIngrediantForm<
