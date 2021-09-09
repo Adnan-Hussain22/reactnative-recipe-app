@@ -31,14 +31,14 @@ const CreateRecipeScreen: React.FC = () => {
   const onStep = React.useCallback(
     (data: RecipeInfoForm | RecipeIngrediantsForm | ICookingForm) => {
       console.log("onStep==>", data);
-      if (step !== CreateRecipeSteps.RECIPE_COOKING) {
-        setStep((prev) => prev + 1);
-      }
-      setFormState((prev) => {
-        const newState = [...prev];
-        newState[step] = data;
-        return newState as any;
-      });
+      // if (step !== CreateRecipeSteps.RECIPE_COOKING) {
+      //   setStep((prev) => prev + 1);
+      // }
+      // setFormState((prev) => {
+      //   const newState = [...prev];
+      //   newState[step] = data;
+      //   return newState as any;
+      // });
     },
     [step]
   );
@@ -74,9 +74,7 @@ const CreateRecipeScreen: React.FC = () => {
             {step === CreateRecipeSteps.RECIPE_INFO ? (
               <CreateRecipeInfo onSubmit={onStep} />
             ) : step === CreateRecipeSteps.RECIPE_INGREDIANTS ? (
-              <CreateRecipeProvider>
-                <CreateRecipeIngrediants onSubmit={onStep} />
-              </CreateRecipeProvider>
+              <CreateRecipeIngrediants onSubmit={onStep} />
             ) : (
               <CreateRecipeCooking onSubmit={onStep} />
             )}

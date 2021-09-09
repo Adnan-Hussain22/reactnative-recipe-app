@@ -13,14 +13,14 @@ export type Ingredient = {
   scale: string;
 };
 
-export type IngredientGroup = {
+export type CategorizedIngredients = {
   category: string;
   ingredients: Ingredient[];
 };
 
 export type RecipeIngredientsForm = {
   restaurant: string;
-  ingredientGroups: IngredientGroup[];
+  categorizedIngredients: CategorizedIngredients[];
 };
 
 export type RecipeIngredientsFormControl = Control<RecipeIngredientsForm>;
@@ -49,7 +49,7 @@ export type OnAddIngredientCategory = () => void;
 
 export type OnDeleteIngredientCategory = (categoryIndex: number) => void;
 
-export type MainFormErrors = DeepMap<IngredientGroup, FieldError>;
+export type MainFormErrors = DeepMap<CategorizedIngredients, FieldError>;
 
 export type IngredientFormErrors = Partial<DeepMap<Ingredient, FieldError>[]>;
 

@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import * as React from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useFormContext } from "react-hook-form";
 import { View, StyleSheet } from "react-native";
 import { widthPercentageToDP } from "react-native-responsive-screen";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -15,6 +15,7 @@ import { typographyStyles } from "src/constants/globalStyles";
 import { moderateScale } from "src/utils/scale";
 import { styles } from "./styles";
 import { CREATE_RECIPE_VALIDATIONS } from "src/constants/Errors";
+import { RecipeIngredientsForm } from "src/providers";
 
 type IngrediantInputProps = {
   ingredientIndex: number;
@@ -37,6 +38,7 @@ export const IngrediantSchema = yup.object().shape({
 });
 
 const IngrediantInput: React.FC<IngrediantInputProps> = ({
+  categoryIndex,
   ingredientIndex,
   toggleEditable,
   onSubmit,
@@ -44,17 +46,17 @@ const IngrediantInput: React.FC<IngrediantInputProps> = ({
 }) => {
   const {
     control,
-    formState: { errors },
     handleSubmit,
-  } = useForm<FormValues>({
-    defaultValues: {
-      name: "",
-      amount: 1,
-      scale: "tbsp",
-    },
-    mode: "all",
-    resolver: yupResolver(IngrediantSchema),
-  });
+    formState: { errors: FormErrors },
+  } = useFormContext<RecipeIngredientsForm>();
+
+  const errors = React.useMemo(
+    () =>
+      FormErrors.categorizedIngredients?.[categoryIndex]?.ingredients?.[
+        ingredientIndex
+      ],
+    [FormErrors]
+  );
 
   const submit = (form: FormValues) => {
     onSubmit(form);
@@ -102,7 +104,7 @@ const IngrediantInput: React.FC<IngrediantInputProps> = ({
       </View>
       <Controller
         control={control}
-        name="name"
+        name={`categorizedIngredients.${categoryIndex}.ingredients.${ingredientIndex}.name`}
         render={({ field: { value, onChange } }) => (
           <React.Fragment>
             <Typography variant="P" color={COLORS.statsGreySecondary}>
@@ -115,7 +117,7 @@ const IngrediantInput: React.FC<IngrediantInputProps> = ({
               autoFocus
               value={value}
               onChangeText={onChange}
-              error={errors.name?.message}
+              error={errors?.name?.message}
             />
           </React.Fragment>
         )}
@@ -123,7 +125,7 @@ const IngrediantInput: React.FC<IngrediantInputProps> = ({
       <View style={[FlexStyles.flexRow, FlexStyles.justifyContentSpaceBetween]}>
         <Controller
           control={control}
-          name="amount"
+          name={`categorizedIngredients.${categoryIndex}.ingredients.${ingredientIndex}.amount`}
           render={({ field: { value, onChange } }) => (
             <View>
               <Typography variant="P" color={COLORS.statsGreySecondary}>
@@ -139,14 +141,14 @@ const IngrediantInput: React.FC<IngrediantInputProps> = ({
                 value={`${value}`}
                 onChangeText={onChange}
                 keyboardType="numeric"
-                error={errors.amount?.message}
+                error={errors?.amount?.message}
               />
             </View>
           )}
         />
         <Controller
           control={control}
-          name="scale"
+          name={`categorizedIngredients.${categoryIndex}.ingredients.${ingredientIndex}.scale`}
           render={({ field: { value, onChange } }) => (
             <View>
               <Typography variant="P" color={COLORS.statsGreySecondary}>
@@ -161,7 +163,7 @@ const IngrediantInput: React.FC<IngrediantInputProps> = ({
                 style={typographyStyles.P}
                 value={value}
                 onChangeText={onChange}
-                error={errors.scale?.message}
+                error={errors?.scale?.message}
               />
             </View>
           )}

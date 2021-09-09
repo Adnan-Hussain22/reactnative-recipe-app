@@ -1,6 +1,12 @@
 import * as React from "react";
 import { View, StyleSheet } from "react-native";
-import { Controller } from "react-hook-form";
+import {
+  Controller,
+  FormProvider,
+  useFieldArray,
+  useForm,
+} from "react-hook-form";
+import * as yup from "yup";
 
 import Typography from "src/components/Typography";
 import { SearchDropdown } from "src/components/Form";
@@ -9,20 +15,13 @@ import { TouchableIcon } from "src/components/Icon";
 import Spacer from "src/components/Spacer";
 import { moderateScale } from "src/utils/scale";
 import { COLORS } from "src/constants/colors";
-import { ConnectRecipeIngrediantForm } from "src/utils/ConnectRecipeContext";
 import { CreateIngrediantGroup } from "./CreateIngrediantGroup";
 import { NextButton } from "./NextButton";
 import { styles } from "./styles";
-import {
-  RecipeIngredientsForm,
-  RecipeIngredientsFormContextType,
-  IngredientGroup,
-  RecipeIngredientsFormControl,
-  SubmitRecipeIngredients,
-  WatchRecipeIngredients,
-  OnAddIngredientCategory,
-} from "src/providers/CreateRecipeForm/type";
-import { HoNoop } from "src/utils/noop";
+import { RecipeIngredientsForm } from "src/providers/CreateRecipeForm/type";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { CREATE_RECIPE_VALIDATIONS } from "src/constants/Errors";
+import { IngrediantSchema } from "./IngrediantInput";
 
 const restaurants = [
   {
@@ -55,23 +54,59 @@ const restaurants = [
   },
 ];
 
-type MappedProps = {
-  ingredientGroups?: IngredientGroup[];
-  control: RecipeIngredientsFormControl;
-  handleSubmit: SubmitRecipeIngredients;
-  watch: WatchRecipeIngredients;
-  onAddIngredientCategory: OnAddIngredientCategory;
-};
+// type MappedProps = {
+//   ingredientGroups?: CategorizedIngredients[];
+//   control: RecipeIngredientsFormControl;
+//   handleSubmit: SubmitRecipeIngredients;
+//   watch: WatchRecipeIngredients;
+//   onAddIngredientCategory: OnAddIngredientCategory;
+// };
 
-type CreateRecipeIngrediantsProps = Partial<MappedProps> & {
+type CreateRecipeIngrediantsProps = {
   onSubmit: (data: RecipeIngredientsForm) => void;
 };
 
+export const schema = yup.object().shape({
+  restaurant: yup.string().required(CREATE_RECIPE_VALIDATIONS.RESTAURANT),
+  categorizedIngredients: yup
+    .array()
+    .of(
+      yup.object().shape({
+        category: yup
+          .string()
+          .required(CREATE_RECIPE_VALIDATIONS.CATEGORY_NAME),
+        ingredients: yup.array().of(IngrediantSchema).min(1),
+      })
+    )
+    .min(1),
+});
+
+const emptyData = {
+  category: "",
+  ingredients: [{ name: "", amount: 1, scale: "tbsp" }],
+};
+
 const CreateRecipeIngrediants: React.FC<CreateRecipeIngrediantsProps> =
-  React.memo(
-    ({ control, onSubmit, handleSubmit = HoNoop, onAddIngredientCategory }) => {
-      return (
-        <View style={componentStyles.container}>
+  // { control, onSubmit, handleSubmit = HoNoop, onAddIngredientCategory }
+  React.memo(({ onSubmit }) => {
+    const { control, handleSubmit, ...formMethods } =
+      useForm<RecipeIngredientsForm>({
+        defaultValues: {
+          restaurant: "",
+          categorizedIngredients: [{ ...emptyData }],
+        },
+        mode: "onChange",
+        resolver: yupResolver(schema),
+      });
+
+    const { append, fields } = useFieldArray({
+      control,
+      name: "categorizedIngredients",
+    });
+
+    return (
+      <View style={componentStyles.container}>
+        <FormProvider {...{ control, handleSubmit, ...formMethods }}>
           <Controller
             control={control}
             name="restaurant"
@@ -112,51 +147,53 @@ const CreateRecipeIngrediants: React.FC<CreateRecipeIngrediantsProps> =
               <TouchableIcon
                 type="Feather"
                 name="plus-circle"
-                onPress={onAddIngredientCategory!}
+                onPress={() => append({ ...emptyData })}
                 style={{
                   color: COLORS.statsGreyPrimary,
                   fontSize: moderateScale(18),
                 }}
               />
             </View>
-            <Controller
-              control={control}
-              name="ingredientGroups"
-              render={({ field: { value } }) => (
-                <React.Fragment>
-                  {value.map((_, index) => (
+            <React.Fragment>
+              {fields.map((_, index) => (
+                <Controller
+                  control={control}
+                  name={`categorizedIngredients.${index}`}
+                  render={({ field: { value } }) => (
                     <CreateIngrediantGroup
                       key={`_ingrediantGroup_${index}_`}
                       categoryIndex={index}
+                      categorizedIngredient={value}
                     />
-                  ))}
-                </React.Fragment>
-              )}
-            />
+                  )}
+                />
+              ))}
+            </React.Fragment>
           </View>
-          <Spacer size={20} scale />
-          <NextButton onPress={handleSubmit(onSubmit)} />
-        </View>
-      );
-    }
-  );
+        </FormProvider>
+        <Spacer size={20} scale />
+        <NextButton onPress={handleSubmit(onSubmit)} />
+      </View>
+    );
+  });
 
-const mapStateToProps = ({
-  control,
-  handleSubmit,
-  watch,
-  onAddIngredientCategory,
-}: RecipeIngredientsFormContextType): MappedProps => ({
-  control,
-  handleSubmit,
-  watch,
-  onAddIngredientCategory,
-});
+// const mapStateToProps = ({
+//   control,
+//   handleSubmit,
+//   watch,
+//   onAddIngredientCategory,
+// }: RecipeIngredientsFormContextType): MappedProps => ({
+//   control,
+//   handleSubmit,
+//   watch,
+//   onAddIngredientCategory,
+// });
 
-export default ConnectRecipeIngrediantForm<
-  MappedProps,
-  CreateRecipeIngrediantsProps
->(mapStateToProps)(CreateRecipeIngrediants);
+export default CreateRecipeIngrediants;
+// export default ConnectRecipeIngrediantForm<
+//   MappedProps,
+//   CreateRecipeIngrediantsProps
+// >(mapStateToProps)(CreateRecipeIngrediants);
 
 const componentStyles = StyleSheet.create({
   container: {
