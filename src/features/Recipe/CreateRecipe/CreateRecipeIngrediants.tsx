@@ -7,6 +7,7 @@ import {
   useForm,
 } from "react-hook-form";
 import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 import Typography from "src/components/Typography";
 import { SearchDropdown } from "src/components/Form";
@@ -15,13 +16,12 @@ import { TouchableIcon } from "src/components/Icon";
 import Spacer from "src/components/Spacer";
 import { moderateScale } from "src/utils/scale";
 import { COLORS } from "src/constants/colors";
+import { CREATE_RECIPE_VALIDATIONS } from "src/constants/Errors";
 import { CreateIngrediantGroup } from "./CreateIngrediantGroup";
 import { NextButton } from "./NextButton";
 import { styles } from "./styles";
-import { RecipeIngredientsForm } from "src/providers/CreateRecipeForm/type";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { CREATE_RECIPE_VALIDATIONS } from "src/constants/Errors";
 import { IngrediantSchema } from "./IngrediantInput";
+import { RecipeIngredientsForm } from "./type";
 
 const restaurants = [
   {
@@ -53,14 +53,6 @@ const restaurants = [
     label: "Kolachi",
   },
 ];
-
-// type MappedProps = {
-//   ingredientGroups?: CategorizedIngredients[];
-//   control: RecipeIngredientsFormControl;
-//   handleSubmit: SubmitRecipeIngredients;
-//   watch: WatchRecipeIngredients;
-//   onAddIngredientCategory: OnAddIngredientCategory;
-// };
 
 type CreateRecipeIngrediantsProps = {
   onSubmit: (data: RecipeIngredientsForm) => void;
@@ -159,9 +151,9 @@ const CreateRecipeIngrediants: React.FC<CreateRecipeIngrediantsProps> =
                 <Controller
                   control={control}
                   name={`categorizedIngredients.${index}`}
+                  key={`_ingrediantGroup_${index}_`}
                   render={({ field: { value } }) => (
                     <CreateIngrediantGroup
-                      key={`_ingrediantGroup_${index}_`}
                       categoryIndex={index}
                       categorizedIngredient={value}
                     />
@@ -177,23 +169,7 @@ const CreateRecipeIngrediants: React.FC<CreateRecipeIngrediantsProps> =
     );
   });
 
-// const mapStateToProps = ({
-//   control,
-//   handleSubmit,
-//   watch,
-//   onAddIngredientCategory,
-// }: RecipeIngredientsFormContextType): MappedProps => ({
-//   control,
-//   handleSubmit,
-//   watch,
-//   onAddIngredientCategory,
-// });
-
 export default CreateRecipeIngrediants;
-// export default ConnectRecipeIngrediantForm<
-//   MappedProps,
-//   CreateRecipeIngrediantsProps
-// >(mapStateToProps)(CreateRecipeIngrediants);
 
 const componentStyles = StyleSheet.create({
   container: {

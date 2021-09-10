@@ -32,22 +32,19 @@ type MapStateToPropsType = {
   onChangeIngredient: OnChangeIngredient;
 };
 
-export const CreateIngrediantInput: React.FC<
-  PropsType & Partial<MapStateToPropsType>
-> = ({ ingredientIndex, categoryIndex, onChangeIngredient }) => {
+export const CreateIngrediantInput: React.FC<PropsType> = ({
+  ingredientIndex,
+  categoryIndex,
+}) => {
   const [editable, toggleEditable] = useTogglState(true);
-  const {
-    control,
-    trigger,
-    formState: { errors },
-  } = useFormContext<RecipeIngredientsForm>();
+  const { control, handleSubmit } = useFormContext<RecipeIngredientsForm>();
   const { remove } = useFieldArray({
     control,
     name: `categorizedIngredients.${categoryIndex}.ingredients`,
   });
 
-  const handleSubmit = (formValues: Ingrediant) => {
-    onChangeIngredient?.({ ...formValues }, categoryIndex, ingredientIndex);
+  const onSubmit = () => {
+    // onChangeIngredient?.({ ...formValues }, categoryIndex, ingredientIndex);
   };
 
   const onDeleteIngredient = (index: number) => {
@@ -71,7 +68,7 @@ export const CreateIngrediantInput: React.FC<
                 toggleEditable={toggleEditable}
                 ingredientIndex={ingredientIndex}
                 categoryIndex={categoryIndex}
-                onSubmit={handleSubmit}
+                onSubmit={handleSubmit(onSubmit)}
                 onDelete={onDeleteIngredient}
               />
             ) : (

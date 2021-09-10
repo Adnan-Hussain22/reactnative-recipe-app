@@ -15,20 +15,14 @@ import { typographyStyles } from "src/constants/globalStyles";
 import { moderateScale } from "src/utils/scale";
 import { styles } from "./styles";
 import { CREATE_RECIPE_VALIDATIONS } from "src/constants/Errors";
-import { RecipeIngredientsForm } from "src/providers";
+import { Ingredient, RecipeIngredientsForm } from "src/providers";
 
 type IngrediantInputProps = {
   ingredientIndex: number;
   categoryIndex: number;
-  onSubmit: (form: FormValues) => void;
+  onSubmit: (form: Ingredient) => void;
   onDelete: (index: number) => void;
   toggleEditable: () => void;
-};
-
-type FormValues = {
-  name: string;
-  amount: number;
-  scale: string;
 };
 
 export const IngrediantSchema = yup.object().shape({
@@ -58,7 +52,7 @@ const IngrediantInput: React.FC<IngrediantInputProps> = ({
     [FormErrors]
   );
 
-  const submit = (form: FormValues) => {
+  const submit = (form: Ingredient) => {
     onSubmit(form);
     toggleEditable();
   };

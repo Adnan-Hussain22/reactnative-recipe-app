@@ -5,7 +5,6 @@ import * as yup from "yup";
 
 import Divider from "src/components/Divider/Divider";
 import Spacer from "src/components/Spacer";
-import { CategorizedIngredients, RecipeIngredientsForm } from "src/providers";
 import { useTogglState } from "src/hooks/useToggleState";
 import { COLORS } from "src/constants/colors";
 import { CREATE_RECIPE_VALIDATIONS } from "src/constants/Errors";
@@ -13,6 +12,7 @@ import { moderateScale } from "src/utils/scale";
 
 import IngrediantCategory from "./IngrediantCategory";
 import { CreateIngrediantInput, Ingrediant } from "./CreateIngrediantInput";
+import { CategorizedIngredients, RecipeIngredientsForm } from "./type";
 
 export const CategorySchema = yup.object().shape({
   category: yup.string().required(CREATE_RECIPE_VALIDATIONS.CATEGORY_NAME),
@@ -22,14 +22,6 @@ export type IngredientGroup = {
   category: string;
   ingredients: Ingrediant[];
 };
-
-// type MapStateToPropsType = {
-//   onChangeCategory: OnChangeCategory;
-//   onDeleteIngredientCategory: OnDeleteIngredientCategory;
-//   onAddIngredient: OnAddIngredient;
-//   onDeleteIngredient: OnDeleteIngredient;
-//   errors?: IngredientFormErrors;
-// };
 
 type PropsType = {
   categoryIndex: number;
@@ -49,7 +41,7 @@ export const CreateIngrediantGroup: React.FC<PropsType> = React.memo(
       control,
       name: "categorizedIngredients",
     });
-    const { append: appendIngredient, fields: ingredients } = useFieldArray({
+    const { append: appendIngredient, fields } = useFieldArray({
       control,
       name: `categorizedIngredients.${categoryIndex}.ingredients`,
     });
@@ -62,8 +54,11 @@ export const CreateIngrediantGroup: React.FC<PropsType> = React.memo(
     );
 
     const handleAddIngredient = React.useCallback(() => {
-      appendIngredient({ name: "", scale: "", amount: 1 });
-    }, []);
+      appendIngredient(
+        { name: "", scale: "tbsp", amount: 1 },
+        { shouldFocus: true }
+      );
+    }, [appendIngredient]);
 
     const handleDeleteCategory = React.useCallback(() => {
       const { categorizedIngredients } = getValues();
@@ -71,10 +66,9 @@ export const CreateIngrediantGroup: React.FC<PropsType> = React.memo(
         return;
       }
       removeCategory(categoryIndex);
-    }, []);
+    }, [removeCategory]);
 
-    const onSubmit = (formValues: RecipeIngredientsForm) => {
-      console.log("formValues==>", formValues);
+    const onSubmit = (_: RecipeIngredientsForm) => {
       toggleCollapse();
     };
 
@@ -100,46 +94,41 @@ export const CreateIngrediantGroup: React.FC<PropsType> = React.memo(
         />
         <Spacer size={5} />
         <Divider />
-        <React.Fragment>
-          {ingredients.map((_, index) => (
-            <Controller
-              control={control}
-              name={`categorizedIngredients.${categoryIndex}.ingredients.${index}`}
-              render={() => (
-                <CreateIngrediantInput
-                  key={`_category${categoryIndex}_ingrediant_${index}_`}
-                  ingredientIndex={index}
-                  categoryIndex={categoryIndex}
-                />
-              )}
-            />
-          ))}
-        </React.Fragment>
+        {console.log("fields==>", fields)}
+        {!collapse ? (
+          <Controller
+            name={`categorizedIngredients.${categoryIndex}.ingredients`}
+            control={control}
+            render={({ field: { value } }) => {
+              console.log(
+                "categorizedIngredients.${categoryIndex}.ingredients==>",
+                value
+              );
+              return (
+                <React.Fragment />
+                // <React.Fragment>
+                //   {value.map((_, index) => (
+                //     <Controller
+                //       key={`_category${categoryIndex}_ingrediant_${index}_`}
+                //       control={control}
+                //       name={`categorizedIngredients.${categoryIndex}.ingredients.${index}`}
+                //       render={() => (
+                //         <CreateIngrediantInput
+                //           ingredientIndex={index}
+                //           categoryIndex={categoryIndex}
+                //         />
+                //       )}
+                //     />
+                //   ))}
+                // </React.Fragment>
+              );
+            }}
+          />
+        ) : null}
       </View>
     );
   }
 );
-
-// export const CreateIngrediantGroup = ConnectRecipeIngrediantForm<
-//   MapStateToPropsType,
-//   PropsType
-// >(
-//   ({
-//     errors,
-//     onChangeCategory,
-//     onAddIngredient,
-//     onDeleteIngredient,
-//     onAddIngredientCategory,
-//     onDeleteIngredientCategory,
-//   }) => ({
-//     onChangeCategory,
-//     errors: errors.ingredients,
-//     onAddCategory: onAddIngredientCategory,
-//     onDeleteIngredientCategory,
-//     onAddIngredient,
-//     onDeleteIngredient,
-//   })
-// )(Component);
 
 const styles = StyleSheet.create({
   container: {

@@ -1,17 +1,14 @@
-/* eslint-disable no-unused-vars */
 import * as React from "react";
 import { ScrollView, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native";
 
 import Icon from "src/components/Icon";
 import Typography from "src/components/Typography";
-import { CreateRecipeProvider } from "src/providers";
 import { moderateScale } from "src/utils/scale";
 import { CreateRecipeCooking, ICookingForm } from "./CreateRecipeCooking";
 import CreateRecipeInfo, { RecipeInfoForm } from "./CreateRecipeInfo";
-import CreateRecipeIngrediants, {
-  RecipeIngrediantsForm,
-} from "./CreateRecipeIngrediants";
+import CreateRecipeIngrediants from "./CreateRecipeIngrediants";
+import { RecipeIngredientsForm } from "./type";
 import { styles } from "./styles";
 
 enum CreateRecipeSteps {
@@ -25,11 +22,11 @@ const CreateRecipeScreen: React.FC = () => {
     CreateRecipeSteps.RECIPE_INGREDIANTS
   );
   const [formState, setFormState] = React.useState<
-    [RecipeInfoForm | null, RecipeIngrediantsForm | null, ICookingForm | null]
+    [RecipeInfoForm | null, RecipeIngredientsForm | null, ICookingForm | null]
   >([null, null, null]);
 
   const onStep = React.useCallback(
-    (data: RecipeInfoForm | RecipeIngrediantsForm | ICookingForm) => {
+    (data: RecipeInfoForm | RecipeIngredientsForm | ICookingForm) => {
       console.log("onStep==>", data);
       // if (step !== CreateRecipeSteps.RECIPE_COOKING) {
       //   setStep((prev) => prev + 1);
