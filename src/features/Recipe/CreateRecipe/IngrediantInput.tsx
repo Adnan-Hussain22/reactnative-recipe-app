@@ -1,9 +1,8 @@
 /* eslint-disable no-unused-vars */
 import * as React from "react";
-import { Controller, useForm, useFormContext } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 import { View, StyleSheet } from "react-native";
 import { widthPercentageToDP } from "react-native-responsive-screen";
-import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
 import FlexStyles from "src/components/FlexBox/FlexStyles";
@@ -15,13 +14,12 @@ import { typographyStyles } from "src/constants/globalStyles";
 import { moderateScale } from "src/utils/scale";
 import { styles } from "./styles";
 import { CREATE_RECIPE_VALIDATIONS } from "src/constants/Errors";
-import { Ingredient, RecipeIngredientsForm } from "src/providers";
+import { RecipeIngredientsForm } from "src/providers";
 
 type IngrediantInputProps = {
   ingredientIndex: number;
   categoryIndex: number;
-  onSubmit: (form: Ingredient) => void;
-  onDelete: (index: number) => void;
+  onDelete: () => void;
   toggleEditable: () => void;
 };
 
@@ -35,7 +33,6 @@ const IngrediantInput: React.FC<IngrediantInputProps> = ({
   categoryIndex,
   ingredientIndex,
   toggleEditable,
-  onSubmit,
   onDelete,
 }) => {
   const {
@@ -52,8 +49,7 @@ const IngrediantInput: React.FC<IngrediantInputProps> = ({
     [FormErrors]
   );
 
-  const submit = (form: Ingredient) => {
-    onSubmit(form);
+  const submit = () => {
     toggleEditable();
   };
 
@@ -76,7 +72,6 @@ const IngrediantInput: React.FC<IngrediantInputProps> = ({
           style={[
             FlexStyles.flexDirectionRow,
             FlexStyles.justifyContentSpaceBetween,
-            ,
             { width: moderateScale(50) },
           ]}
         >
@@ -92,7 +87,7 @@ const IngrediantInput: React.FC<IngrediantInputProps> = ({
             name="close"
             size={20}
             color={COLORS.primaryRed}
-            onPress={() => onDelete(ingredientIndex)}
+            onPress={onDelete}
           />
         </View>
       </View>
@@ -101,6 +96,7 @@ const IngrediantInput: React.FC<IngrediantInputProps> = ({
         name={`categorizedIngredients.${categoryIndex}.ingredients.${ingredientIndex}.name`}
         render={({ field: { value, onChange } }) => (
           <React.Fragment>
+            {console.log("ingredient==>", value)}
             <Typography variant="P" color={COLORS.statsGreySecondary}>
               Name
             </Typography>

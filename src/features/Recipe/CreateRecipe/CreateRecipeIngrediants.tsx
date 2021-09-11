@@ -79,7 +79,6 @@ const emptyData = {
 };
 
 const CreateRecipeIngrediants: React.FC<CreateRecipeIngrediantsProps> =
-  // { control, onSubmit, handleSubmit = HoNoop, onAddIngredientCategory }
   React.memo(({ onSubmit }) => {
     const { control, handleSubmit, ...formMethods } =
       useForm<RecipeIngredientsForm>({
@@ -91,78 +90,75 @@ const CreateRecipeIngrediants: React.FC<CreateRecipeIngrediantsProps> =
         resolver: yupResolver(schema),
       });
 
-    const { append, fields } = useFieldArray({
+    const { append, fields: categorizedIngredients } = useFieldArray({
       control,
       name: "categorizedIngredients",
     });
+    console.log("categorizedIngredients==>", categorizedIngredients);
+
+    const handleAdd = () => {
+      append(JSON.parse(JSON.stringify(emptyData)));
+    };
+
+    React.useEffect(() => {}, [categorizedIngredients]);
 
     return (
       <View style={componentStyles.container}>
-        <FormProvider {...{ control, handleSubmit, ...formMethods }}>
-          <Controller
-            control={control}
-            name="restaurant"
-            render={({ field: { value, onChange } }) => (
-              <View style={styles.inputContainer}>
-                <Typography
-                  variant="P"
-                  color={COLORS.statsGreySecondary}
-                  marginBottom={moderateScale(8)}
-                >
-                  Restaurant
-                </Typography>
-                <SearchDropdown
-                  items={restaurants}
-                  onChange={onChange}
-                  placeholder="Select restaurant"
-                  value={value}
-                />
-              </View>
-            )}
-          />
-          <View
-            style={[styles.inputContainer, { marginTop: moderateScale(25) }]}
-          >
-            <View
-              style={[
-                FlexStyles.flexDirectionRow,
-                FlexStyles.justifyContentSpaceBetween,
-              ]}
-            >
+        <Controller
+          control={control}
+          name="restaurant"
+          render={({ field: { value, onChange } }) => (
+            <View style={styles.inputContainer}>
               <Typography
                 variant="P"
                 color={COLORS.statsGreySecondary}
                 marginBottom={moderateScale(8)}
               >
-                Add Categorized Ingredients
+                Restaurant
               </Typography>
-              <TouchableIcon
-                type="Feather"
-                name="plus-circle"
-                onPress={() => append({ ...emptyData })}
-                style={{
-                  color: COLORS.statsGreyPrimary,
-                  fontSize: moderateScale(18),
-                }}
+              <SearchDropdown
+                items={restaurants}
+                onChange={onChange}
+                placeholder="Select restaurant"
+                value={value}
               />
             </View>
-            <React.Fragment>
-              {fields.map((_, index) => (
-                <Controller
-                  control={control}
-                  name={`categorizedIngredients.${index}`}
-                  key={`_ingrediantGroup_${index}_`}
-                  render={({ field: { value } }) => (
-                    <CreateIngrediantGroup
-                      categoryIndex={index}
-                      categorizedIngredient={value}
-                    />
-                  )}
-                />
-              ))}
-            </React.Fragment>
+          )}
+        />
+        <View style={[styles.inputContainer, { marginTop: moderateScale(25) }]}>
+          <View
+            style={[
+              FlexStyles.flexDirectionRow,
+              FlexStyles.justifyContentSpaceBetween,
+            ]}
+          >
+            <Typography
+              variant="P"
+              color={COLORS.statsGreySecondary}
+              marginBottom={moderateScale(8)}
+            >
+              Add Categorized Ingredients
+            </Typography>
+            <TouchableIcon
+              type="Feather"
+              name="plus-circle"
+              onPress={handleAdd}
+              style={{
+                color: COLORS.statsGreyPrimary,
+                fontSize: moderateScale(18),
+              }}
+            />
           </View>
-        </FormProvider>
+          <FormProvider {...{ control, handleSubmit, ...formMethods }}>
+            {categorizedIngredients.map((value, index) => (
+              <CreateIngrediantGroup
+                key={`_ingrediantGroup_${index}_`}
+                categoryIndex={index}
+                categorizedIngredient={value}
+              />
+            ))}
+          </FormProvider>
+        </View>
         <Spacer size={20} scale />
         <NextButton onPress={handleSubmit(onSubmit)} />
       </View>

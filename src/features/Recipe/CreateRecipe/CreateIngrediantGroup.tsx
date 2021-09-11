@@ -35,13 +35,15 @@ export const CreateIngrediantGroup: React.FC<PropsType> = React.memo(
       control,
       handleSubmit,
       getValues,
+      setValue,
       formState: { errors },
     } = useFormContext<RecipeIngredientsForm>();
     const { remove: removeCategory } = useFieldArray({
       control,
       name: "categorizedIngredients",
     });
-    const { append: appendIngredient, fields } = useFieldArray({
+
+    const { fields: ingredients, append: appendIngredient } = useFieldArray({
       control,
       name: `categorizedIngredients.${categoryIndex}.ingredients`,
     });
@@ -54,11 +56,8 @@ export const CreateIngrediantGroup: React.FC<PropsType> = React.memo(
     );
 
     const handleAddIngredient = React.useCallback(() => {
-      appendIngredient(
-        { name: "", scale: "tbsp", amount: 1 },
-        { shouldFocus: true }
-      );
-    }, [appendIngredient]);
+      appendIngredient({ name: "", amount: 1, scale: "tbsp" });
+    }, [setValue]);
 
     const handleDeleteCategory = React.useCallback(() => {
       const { categorizedIngredients } = getValues();
@@ -67,11 +66,7 @@ export const CreateIngrediantGroup: React.FC<PropsType> = React.memo(
       }
       removeCategory(categoryIndex);
     }, [removeCategory]);
-
-    const onSubmit = (_: RecipeIngredientsForm) => {
-      toggleCollapse();
-    };
-
+    console.log(`categorizedIngredient ${categoryIndex}==>`, ingredients);
     return (
       <View style={styles.container}>
         <Controller
@@ -80,7 +75,7 @@ export const CreateIngrediantGroup: React.FC<PropsType> = React.memo(
           render={({ field: { value, onChange } }) => (
             <IngrediantCategory
               category={value}
-              setToggle={handleSubmit(onSubmit)}
+              setToggle={handleSubmit(toggleCollapse)}
               toggle={!collapse}
               onAdd={handleAddIngredient}
               onDelete={handleDeleteCategory}
@@ -94,36 +89,16 @@ export const CreateIngrediantGroup: React.FC<PropsType> = React.memo(
         />
         <Spacer size={5} />
         <Divider />
-        {console.log("fields==>", fields)}
         {!collapse ? (
-          <Controller
-            name={`categorizedIngredients.${categoryIndex}.ingredients`}
-            control={control}
-            render={({ field: { value } }) => {
-              console.log(
-                "categorizedIngredients.${categoryIndex}.ingredients==>",
-                value
-              );
-              return (
-                <React.Fragment />
-                // <React.Fragment>
-                //   {value.map((_, index) => (
-                //     <Controller
-                //       key={`_category${categoryIndex}_ingrediant_${index}_`}
-                //       control={control}
-                //       name={`categorizedIngredients.${categoryIndex}.ingredients.${index}`}
-                //       render={() => (
-                //         <CreateIngrediantInput
-                //           ingredientIndex={index}
-                //           categoryIndex={categoryIndex}
-                //         />
-                //       )}
-                //     />
-                //   ))}
-                // </React.Fragment>
-              );
-            }}
-          />
+          <React.Fragment>
+            {ingredients.map((_, index) => (
+              <CreateIngrediantInput
+                key={`_category${categoryIndex}_ingrediant_${index}_`}
+                ingredientIndex={index}
+                categoryIndex={categoryIndex}
+              />
+            ))}
+          </React.Fragment>
         ) : null}
       </View>
     );

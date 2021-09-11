@@ -1,15 +1,14 @@
-/* eslint-disable no-unused-vars */
 import * as React from "react";
 import { View } from "react-native";
+import { useFieldArray, useFormContext } from "react-hook-form";
+
 import { useTogglState } from "src/hooks/useToggleState";
 import Divider from "src/components/Divider/Divider";
 import Spacer from "src/components/Spacer";
 import { moderateScale } from "src/utils/scale";
-import { ConnectRecipeIngrediantForm } from "src/utils/ConnectRecipeContext";
-import { OnChangeIngredient, RecipeIngredientsForm } from "src/providers";
 import IngrediantInput from "./IngrediantInput";
 import TextWithEditButton from "./TextWithEditButton";
-import { Controller, useFieldArray, useFormContext } from "react-hook-form";
+import { RecipeIngredientsForm } from "./type";
 
 export type Ingrediant = {
   name: string;
@@ -28,28 +27,31 @@ type PropsType = {
   categoryIndex: number;
 };
 
-type MapStateToPropsType = {
-  onChangeIngredient: OnChangeIngredient;
-};
-
 export const CreateIngrediantInput: React.FC<PropsType> = ({
   ingredientIndex,
   categoryIndex,
 }) => {
   const [editable, toggleEditable] = useTogglState(true);
-  const { control, handleSubmit } = useFormContext<RecipeIngredientsForm>();
-  const { remove } = useFieldArray({
+  const { control } = useFormContext<RecipeIngredientsForm>();
+  const { remove, fields: ingredients } = useFieldArray({
     control,
     name: `categorizedIngredients.${categoryIndex}.ingredients`,
   });
 
-  const onSubmit = () => {
-    // onChangeIngredient?.({ ...formValues }, categoryIndex, ingredientIndex);
+  const ingredient = React.useMemo(
+    () => ingredients[ingredientIndex],
+    [ingredients, ingredientIndex]
+  );
+
+  const onDeleteIngredient = () => {
+    remove(ingredientIndex);
   };
 
-  const onDeleteIngredient = (index: number) => {
-    remove(index);
-  };
+  console.log("CreateIngrediantInput ingredients==>", ingredients);
+  console.log(
+    `category:${categoryIndex} ingredient:${ingredientIndex}==>`,
+    ingredient
+  );
 
   return (
     <React.Fragment>
@@ -59,28 +61,21 @@ export const CreateIngrediantInput: React.FC<PropsType> = ({
           paddingVertical: moderateScale(10),
         }}
       >
-        <Controller
-          control={control}
-          name={`categorizedIngredients.${categoryIndex}.ingredients.${ingredientIndex}`}
-          render={({ field: { value } }) => {
-            return editable ? (
-              <IngrediantInput
-                toggleEditable={toggleEditable}
-                ingredientIndex={ingredientIndex}
-                categoryIndex={categoryIndex}
-                onSubmit={handleSubmit(onSubmit)}
-                onDelete={onDeleteIngredient}
-              />
-            ) : (
-              <TextWithEditButton
-                text={`${ingredientIndex + 1} ) ${value.amount} ${
-                  value.scale
-                } ${value.name}`}
-                onEdit={toggleEditable}
-              />
-            );
-          }}
-        />
+        {editable ? (
+          <IngrediantInput
+            toggleEditable={toggleEditable}
+            ingredientIndex={ingredientIndex}
+            categoryIndex={categoryIndex}
+            onDelete={onDeleteIngredient}
+          />
+        ) : (
+          <TextWithEditButton
+            text={`${ingredientIndex + 1} ) ${ingredient.amount ?? 1} ${
+              ingredient.scale
+            } ${ingredient.name}`}
+            onEdit={toggleEditable}
+          />
+        )}
       </View>
       <Divider />
       <Spacer size={8} />
