@@ -94,9 +94,9 @@ const IngrediantInput: React.FC<IngrediantInputProps> = ({
       <Controller
         control={control}
         name={`categorizedIngredients.${categoryIndex}.ingredients.${ingredientIndex}.name`}
+        defaultValue=""
         render={({ field: { value, onChange } }) => (
           <React.Fragment>
-            {console.log("ingredient==>", value)}
             <Typography variant="P" color={COLORS.statsGreySecondary}>
               Name
             </Typography>
@@ -116,6 +116,7 @@ const IngrediantInput: React.FC<IngrediantInputProps> = ({
         <Controller
           control={control}
           name={`categorizedIngredients.${categoryIndex}.ingredients.${ingredientIndex}.amount`}
+          defaultValue={1}
           render={({ field: { value, onChange } }) => (
             <View>
               <Typography variant="P" color={COLORS.statsGreySecondary}>
@@ -139,6 +140,7 @@ const IngrediantInput: React.FC<IngrediantInputProps> = ({
         <Controller
           control={control}
           name={`categorizedIngredients.${categoryIndex}.ingredients.${ingredientIndex}.scale`}
+          defaultValue="tbsp"
           render={({ field: { value, onChange } }) => (
             <View>
               <Typography variant="P" color={COLORS.statsGreySecondary}>
@@ -154,6 +156,7 @@ const IngrediantInput: React.FC<IngrediantInputProps> = ({
                 value={value}
                 onChangeText={onChange}
                 error={errors?.scale?.message}
+                autoCapitalize="none"
               />
             </View>
           )}

@@ -3,8 +3,8 @@ import { View, StyleSheet } from "react-native";
 import {
   Controller,
   FormProvider,
-  useFieldArray,
   useForm,
+  useFormContext,
 } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -79,28 +79,33 @@ const emptyData = {
 };
 
 const CreateRecipeIngrediants: React.FC<CreateRecipeIngrediantsProps> =
-  React.memo(({ onSubmit }) => {
-    const { control, handleSubmit, ...formMethods } =
-      useForm<RecipeIngredientsForm>({
-        defaultValues: {
-          restaurant: "",
-          categorizedIngredients: [{ ...emptyData }],
-        },
-        mode: "onChange",
-        resolver: yupResolver(schema),
-      });
-
-    const { append, fields: categorizedIngredients } = useFieldArray({
-      control,
-      name: "categorizedIngredients",
-    });
-    console.log("categorizedIngredients==>", categorizedIngredients);
-
+  React.memo(() => {
+    const { control, handleSubmit, setValue, watch } =
+      useFormContext<RecipeIngredientsForm>();
+    const watchCategorizedIngredients = watch("categorizedIngredients");
+    // const { append, fields: categorizedIngredients } = useFieldArray({
+    //   control,
+    //   name: "categorizedIngredients",
+    // });
     const handleAdd = () => {
-      append(JSON.parse(JSON.stringify(emptyData)));
+      watchCategorizedIngredients.push(JSON.parse(JSON.stringify(emptyData)));
+      setValue("categorizedIngredients", watchCategorizedIngredients);
     };
 
-    React.useEffect(() => {}, [categorizedIngredients]);
+    const handleDeleteCategory = () => {
+      watchCategorizedIngredients.push(JSON.parse(JSON.stringify(emptyData)));
+      // watchCategorizedIngredients.splice(categoryIndex, 1);
+      setValue(
+        "categorizedIngredients",
+        JSON.parse(JSON.stringify(watchCategorizedIngredients))
+      );
+    };
+
+    const submit = (formState) => {
+      console.log("formState==>", formState);
+    };
+
+    console.log("watchCategorizedIngredients==>", watchCategorizedIngredients);
 
     return (
       <View style={componentStyles.container}>
@@ -149,23 +154,38 @@ const CreateRecipeIngrediants: React.FC<CreateRecipeIngrediantsProps> =
               }}
             />
           </View>
-          <FormProvider {...{ control, handleSubmit, ...formMethods }}>
-            {categorizedIngredients.map((value, index) => (
+          <React.Fragment>
+            {watchCategorizedIngredients.map((value, index) => (
               <CreateIngrediantGroup
-                key={`_ingrediantGroup_${index}_`}
+                key={`categorizedIngredients.${index}`}
                 categoryIndex={index}
                 categorizedIngredient={value}
+                onDeleteCategory={handleDeleteCategory}
               />
             ))}
-          </FormProvider>
+          </React.Fragment>
         </View>
         <Spacer size={20} scale />
-        <NextButton onPress={handleSubmit(onSubmit)} />
+        <NextButton onPress={handleSubmit(submit)} />
       </View>
     );
   });
 
-export default CreateRecipeIngrediants;
+export default (props: CreateRecipeIngrediantsProps) => {
+  const methods = useForm<RecipeIngredientsForm>({
+    defaultValues: {
+      restaurant: "",
+      categorizedIngredients: [{ ...emptyData }],
+    },
+    mode: "onChange",
+    resolver: yupResolver(schema),
+  });
+  return (
+    <FormProvider {...methods}>
+      <CreateRecipeIngrediants {...props} />
+    </FormProvider>
+  );
+};
 
 const componentStyles = StyleSheet.create({
   container: {

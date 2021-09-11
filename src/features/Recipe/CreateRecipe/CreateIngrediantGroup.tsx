@@ -1,6 +1,6 @@
 import * as React from "react";
 import { View, StyleSheet } from "react-native";
-import { Controller, useFormContext, useFieldArray } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 import * as yup from "yup";
 
 import Divider from "src/components/Divider/Divider";
@@ -26,64 +26,50 @@ export type IngredientGroup = {
 type PropsType = {
   categoryIndex: number;
   categorizedIngredient: CategorizedIngredients;
+  onDeleteCategory: (categoryIndex: number) => void;
 };
 
 export const CreateIngrediantGroup: React.FC<PropsType> = React.memo(
-  ({ categoryIndex }) => {
+  ({ categoryIndex, onDeleteCategory }) => {
     const [collapse, toggleCollapse] = useTogglState(false);
-    const {
-      control,
-      handleSubmit,
-      getValues,
-      setValue,
-      formState: { errors },
-    } = useFormContext<RecipeIngredientsForm>();
-    const { remove: removeCategory } = useFieldArray({
-      control,
-      name: "categorizedIngredients",
-    });
-
-    const { fields: ingredients, append: appendIngredient } = useFieldArray({
-      control,
-      name: `categorizedIngredients.${categoryIndex}.ingredients`,
-    });
-
-    const handleChangeCategory = React.useCallback(
-      (onChange: CallableFunction) => (category: string) => {
-        onChange(category);
-      },
-      []
+    const { control, handleSubmit, setValue, watch, getValues } =
+      useFormContext<RecipeIngredientsForm>();
+    const watchIngredients = watch(
+      `categorizedIngredients.${categoryIndex}.ingredients`
     );
 
     const handleAddIngredient = React.useCallback(() => {
-      appendIngredient({ name: "", amount: 1, scale: "tbsp" });
-    }, [setValue]);
+      watchIngredients.push({ name: "", amount: 1, scale: "tbsp" });
+      setValue(
+        `categorizedIngredients.${categoryIndex}.ingredients`,
+        watchIngredients
+      );
+    }, [setValue, watchIngredients]);
 
     const handleDeleteCategory = React.useCallback(() => {
-      const { categorizedIngredients } = getValues();
-      if (categorizedIngredients.length === 1) {
-        return;
-      }
-      removeCategory(categoryIndex);
-    }, [removeCategory]);
-    console.log(`categorizedIngredient ${categoryIndex}==>`, ingredients);
+      onDeleteCategory(categoryIndex);
+    }, [onDeleteCategory, categoryIndex]);
+
+    console.log(
+      "watchIngredients==>",
+      watchIngredients,
+      getValues().categorizedIngredients
+    );
+
     return (
       <View style={styles.container}>
         <Controller
           control={control}
           name={`categorizedIngredients.${categoryIndex}.category`}
-          render={({ field: { value, onChange } }) => (
+          render={({ field: { value, onChange }, fieldState: { error } }) => (
             <IngrediantCategory
               category={value}
               setToggle={handleSubmit(toggleCollapse)}
               toggle={!collapse}
               onAdd={handleAddIngredient}
               onDelete={handleDeleteCategory}
-              error={
-                errors.categorizedIngredients?.[categoryIndex]?.category
-                  ?.message
-              }
-              onChangeCategory={handleChangeCategory(onChange)}
+              error={error?.message}
+              onChangeCategory={onChange}
             />
           )}
         />
@@ -91,9 +77,9 @@ export const CreateIngrediantGroup: React.FC<PropsType> = React.memo(
         <Divider />
         {!collapse ? (
           <React.Fragment>
-            {ingredients.map((_, index) => (
+            {watchIngredients.map((_, index) => (
               <CreateIngrediantInput
-                key={`_category${categoryIndex}_ingrediant_${index}_`}
+                key={`categorizedIngredients.${categoryIndex}.ingredients.${index}`}
                 ingredientIndex={index}
                 categoryIndex={categoryIndex}
               />

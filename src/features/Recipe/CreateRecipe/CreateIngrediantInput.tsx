@@ -47,12 +47,6 @@ export const CreateIngrediantInput: React.FC<PropsType> = ({
     remove(ingredientIndex);
   };
 
-  console.log("CreateIngrediantInput ingredients==>", ingredients);
-  console.log(
-    `category:${categoryIndex} ingredient:${ingredientIndex}==>`,
-    ingredient
-  );
-
   return (
     <React.Fragment>
       <View
@@ -70,7 +64,7 @@ export const CreateIngrediantInput: React.FC<PropsType> = ({
           />
         ) : (
           <TextWithEditButton
-            text={`${ingredientIndex + 1} ) ${ingredient.amount ?? 1} ${
+            text={`${ingredientIndex + 1} ) ${ingredient.amount} ${
               ingredient.scale
             } ${ingredient.name}`}
             onEdit={toggleEditable}
