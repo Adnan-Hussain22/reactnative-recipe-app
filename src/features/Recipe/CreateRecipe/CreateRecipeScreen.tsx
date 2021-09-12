@@ -19,25 +19,25 @@ enum CreateRecipeSteps {
 
 const CreateRecipeScreen: React.FC = () => {
   const [step, setStep] = React.useState<CreateRecipeSteps>(
-    CreateRecipeSteps.RECIPE_INGREDIANTS
+    CreateRecipeSteps.RECIPE_INFO
   );
-  const [formState, setFormState] = React.useState<
+  const [, setFormState] = React.useState<
     [RecipeInfoForm | null, RecipeIngredientsForm | null, ICookingForm | null]
   >([null, null, null]);
 
   const onStep = React.useCallback(
     (data: RecipeInfoForm | RecipeIngredientsForm | ICookingForm) => {
       console.log("onStep==>", data);
-      // if (step !== CreateRecipeSteps.RECIPE_COOKING) {
-      //   setStep((prev) => prev + 1);
-      // }
-      // setFormState((prev) => {
-      //   const newState = [...prev];
-      //   newState[step] = data;
-      //   return newState as any;
-      // });
+      if (step !== CreateRecipeSteps.RECIPE_COOKING) {
+        setStep((prev) => prev + 1);
+      }
+      setFormState((prev) => {
+        const newState = [...prev];
+        newState[step] = data;
+        return newState as any;
+      });
     },
-    [step]
+    [step, setFormState, setStep]
   );
 
   return (
