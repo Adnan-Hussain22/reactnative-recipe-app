@@ -44,7 +44,9 @@ export const CreateIngrediantInput: React.FC<PropsType> = ({
   );
 
   const onDeleteIngredient = () => {
-    remove(ingredientIndex);
+    if (ingredients.length > 1) {
+      remove(ingredientIndex);
+    }
   };
 
   return (

@@ -3,6 +3,7 @@ import { View, StyleSheet } from "react-native";
 import {
   Controller,
   FormProvider,
+  useFieldArray,
   useForm,
   useFormContext,
 } from "react-hook-form";
@@ -79,33 +80,24 @@ const emptyData = {
 };
 
 const CreateRecipeIngrediants: React.FC<CreateRecipeIngrediantsProps> =
-  React.memo(() => {
+  React.memo(({ onSubmit }) => {
     const { control, handleSubmit, setValue, watch } =
       useFormContext<RecipeIngredientsForm>();
     const watchCategorizedIngredients = watch("categorizedIngredients");
-    // const { append, fields: categorizedIngredients } = useFieldArray({
-    //   control,
-    //   name: "categorizedIngredients",
-    // });
+    const { remove } = useFieldArray({
+      control,
+      name: "categorizedIngredients",
+    });
     const handleAdd = () => {
       watchCategorizedIngredients.push(JSON.parse(JSON.stringify(emptyData)));
       setValue("categorizedIngredients", watchCategorizedIngredients);
     };
 
-    const handleDeleteCategory = () => {
-      watchCategorizedIngredients.push(JSON.parse(JSON.stringify(emptyData)));
-      // watchCategorizedIngredients.splice(categoryIndex, 1);
-      setValue(
-        "categorizedIngredients",
-        JSON.parse(JSON.stringify(watchCategorizedIngredients))
-      );
+    const handleDeleteCategory = (categoryIndex: number) => {
+      if (watchCategorizedIngredients.length > 1) {
+        remove(categoryIndex);
+      }
     };
-
-    const submit = (formState) => {
-      console.log("formState==>", formState);
-    };
-
-    console.log("watchCategorizedIngredients==>", watchCategorizedIngredients);
 
     return (
       <View style={componentStyles.container}>
@@ -166,7 +158,7 @@ const CreateRecipeIngrediants: React.FC<CreateRecipeIngrediantsProps> =
           </React.Fragment>
         </View>
         <Spacer size={20} scale />
-        <NextButton onPress={handleSubmit(submit)} />
+        <NextButton onPress={handleSubmit(onSubmit)} />
       </View>
     );
   });

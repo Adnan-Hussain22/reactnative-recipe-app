@@ -32,7 +32,7 @@ type PropsType = {
 export const CreateIngrediantGroup: React.FC<PropsType> = React.memo(
   ({ categoryIndex, onDeleteCategory }) => {
     const [collapse, toggleCollapse] = useTogglState(false);
-    const { control, handleSubmit, setValue, watch, getValues } =
+    const { control, handleSubmit, setValue, watch } =
       useFormContext<RecipeIngredientsForm>();
     const watchIngredients = watch(
       `categorizedIngredients.${categoryIndex}.ingredients`
@@ -49,12 +49,6 @@ export const CreateIngrediantGroup: React.FC<PropsType> = React.memo(
     const handleDeleteCategory = React.useCallback(() => {
       onDeleteCategory(categoryIndex);
     }, [onDeleteCategory, categoryIndex]);
-
-    console.log(
-      "watchIngredients==>",
-      watchIngredients,
-      getValues().categorizedIngredients
-    );
 
     return (
       <View style={styles.container}>
