@@ -4,14 +4,16 @@ import Icon, { IconProps } from "./Icon";
 
 type TouchableIconProps = IconProps & {
   onPress: () => void;
+  disabled?: boolean;
 };
 
 export const TouchableIcon: React.FC<TouchableIconProps> = ({
   onPress,
+  disabled,
   ...props
 }) => {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress} disabled={disabled}>
       <Icon {...props} />
     </TouchableOpacity>
   );

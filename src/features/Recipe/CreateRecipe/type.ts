@@ -17,3 +17,7 @@ export type RecipeIngredientsForm = {
 export type ToggleProp = {
   toggle: boolean;
 };
+
+export type ICookingForm = {
+  instructions: string[];
+};

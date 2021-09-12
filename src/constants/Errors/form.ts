@@ -5,6 +5,7 @@ export const CREATE_RECIPE_VALIDATIONS = {
   INGREDIANT_NAME: "Please enter recipe name",
   INGREDIANT_AMOUNT: "Please enter amount",
   INGREDIANT_SCALE: "Scale is required",
+  INSTRUCTION_MIN: "Atleast one step in instructions is required",
 };
 
 export const ONBOARDING_VALIDATIONS = {
