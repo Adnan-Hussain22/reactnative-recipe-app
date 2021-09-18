@@ -16,6 +16,7 @@ type IngrediantCategoryProps = {
   category: string;
   toggle?: boolean;
   error?: string;
+  categoryIndex: number;
   setToggle: () => void;
   onAdd: () => void;
   onDelete: () => void;
@@ -26,6 +27,7 @@ const IngrediantCategory: React.FC<IngrediantCategoryProps> = ({
   category,
   toggle,
   error,
+  categoryIndex,
   setToggle,
   onAdd,
   onDelete,
@@ -60,7 +62,7 @@ const IngrediantCategory: React.FC<IngrediantCategoryProps> = ({
       ) : (
         <TextWithEditButton
           style={{ width: "100%" }}
-          text={`1 ) ${category}`}
+          text={`${categoryIndex + 1} ) ${category}`}
           onEdit={setToggle}
         />
       )}

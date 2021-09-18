@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 import FlexStyles from "src/components/FlexBox/FlexStyles";
 import { COLORS } from "src/constants/colors";
 import { formStyles } from "src/constants/globalStyles";
-import { moderateScale } from "src/utils/scale";
+import { moderateScale, verticalScale } from "src/utils/scale";
 
 const LEFT_SPACING = moderateScale(15);
 
@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
   container: {
     ...FlexStyles.flexContainer,
     backgroundColor: COLORS.white,
-    paddingTop: moderateScale(50),
+    paddingTop: verticalScale(40),
   },
   body: {
     ...FlexStyles.flexContainer,

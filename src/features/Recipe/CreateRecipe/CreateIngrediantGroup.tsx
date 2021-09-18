@@ -58,11 +58,12 @@ export const CreateIngrediantGroup: React.FC<PropsType> = React.memo(
           render={({ field: { value, onChange }, fieldState: { error } }) => (
             <IngrediantCategory
               category={value}
-              setToggle={handleSubmit(toggleCollapse)}
               toggle={!collapse}
+              error={error?.message}
+              categoryIndex={categoryIndex}
+              setToggle={handleSubmit(toggleCollapse)}
               onAdd={handleAddIngredient}
               onDelete={handleDeleteCategory}
-              error={error?.message}
               onChangeCategory={onChange}
             />
           )}

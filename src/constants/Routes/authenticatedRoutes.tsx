@@ -1,8 +1,7 @@
-/* eslint-disable no-unused-vars */
 export enum AUHTENTICATED_ROUTES {
   DISCOVER = "Discover",
   SEARCH = "Search",
-  SCAN = "Scan",
+  CREATE = "Create",
   COMMUNITY = "Community",
   PROFILE = "Profile",
 }

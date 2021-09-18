@@ -1,11 +1,12 @@
 import * as React from "react";
 import { Image, View, StyleSheet } from "react-native";
+import { widthPercentageToDP } from "react-native-responsive-screen";
 import FlexStyles from "src/components/FlexBox/FlexStyles";
 import Icon from "src/components/Icon";
 import ImagePicker from "src/components/ImagePicker";
 import Typography from "src/components/Typography";
 import { COLORS } from "src/constants/colors";
-import { moderateScale, verticalScale } from "src/utils/scale";
+import { moderateScale } from "src/utils/scale";
 
 interface RecipeCoverProps {
   onChange: (image: string) => void;
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
     borderStyle: "dotted",
     borderColor: COLORS.dotgrey,
     borderRadius: moderateScale(8),
-    height: verticalScale(130),
+    height: widthPercentageToDP("55%"),
     marginVertical: moderateScale(15),
   },
   image: {

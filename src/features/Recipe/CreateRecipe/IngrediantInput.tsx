@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import * as React from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { View, StyleSheet } from "react-native";

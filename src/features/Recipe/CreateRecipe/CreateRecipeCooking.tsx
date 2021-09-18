@@ -26,7 +26,6 @@ export const CreateRecipeCooking: React.FC<CreateRecipeCookingProps> = ({
 
   const checkIsValidated = (newState: string[] = instructions) => {
     if (newState.some((val) => val.trim().length)) {
-      console.log("validated man");
       setError("");
       return true;
     }
@@ -69,7 +68,7 @@ export const CreateRecipeCooking: React.FC<CreateRecipeCookingProps> = ({
     if (!checkIsValidated()) {
       return;
     }
-    onSubmit({ instructions });
+    onSubmit({ instructions: instructions.map((val) => val.trim()) });
   };
 
   return (

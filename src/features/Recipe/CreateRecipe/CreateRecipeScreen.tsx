@@ -4,12 +4,13 @@ import { graphql, useMutation } from "react-relay";
 
 import Icon from "src/components/Icon";
 import Typography from "src/components/Typography";
-import { moderateScale } from "src/utils/scale";
-import { convertToSec } from "src/utils/time";
 import {
+  CreateRecipeInput,
   CreateRecipeScreenMutation,
   RecipeIngredientInput,
 } from "src/services/graphql/__generated__/CreateRecipeScreenMutation.graphql";
+import { moderateScale } from "src/utils/scale";
+import { convertToSec } from "src/utils/time";
 
 import { CreateRecipeCooking, ICookingForm } from "./CreateRecipeCooking";
 import CreateRecipeInfo, { RecipeInfoForm } from "./CreateRecipeInfo";
@@ -17,6 +18,7 @@ import CreateRecipeIngrediants from "./CreateRecipeIngrediants";
 import { RecipeIngredientsForm } from "./type";
 import { styles } from "./styles";
 import { Spinner } from "src/components/Spinner";
+import FlexStyles from "src/components/FlexBox/FlexStyles";
 
 enum CreateRecipeSteps {
   RECIPE_INFO,
@@ -65,23 +67,26 @@ const CreateRecipeScreen: React.FC = () => {
             name: ingredient.name,
           }))
         );
+      const payload: CreateRecipeInput = {
+        name: recipeInfo.recipeName,
+        image: recipeInfo.cover,
+        description: recipeInfo.description,
+        calories: Number(recipeInfo.calories),
+        serving: Number(recipeInfo.serving),
+        cookingTime: convertToSec(
+          recipeInfo.cookingTime.scale,
+          Number(recipeInfo.cookingTime.time)
+        ),
+        restraunts: [recipeIngredient.restaurant],
+        ingredients,
+        instructions: recipeInstruction.instructions,
+      };
       commitRecipe({
         variables: {
-          createRecipeInput: {
-            name: recipeInfo.recipeName,
-            image: recipeInfo.cover,
-            description: recipeInfo.description,
-            calories: Number(recipeInfo.calories),
-            serving: Number(recipeInfo.serving),
-            cookingTime: convertToSec(
-              recipeInfo.cookingTime.scale,
-              Number(recipeInfo.cookingTime.time)
-            ),
-            restraunts: [recipeIngredient.restaurant],
-            ingredients,
-            instructions: recipeInstruction.instructions,
-          },
+          createRecipeInput: payload,
         },
+        onCompleted: () => {},
+        onError: () => {},
       });
     },
     [commitRecipe]
@@ -90,23 +95,24 @@ const CreateRecipeScreen: React.FC = () => {
   const onStep = React.useCallback(
     (data: RecipeInfoForm | RecipeIngredientsForm | ICookingForm) => {
       console.log("onStep==>", data);
-      if (step !== CreateRecipeSteps.RECIPE_COOKING) {
-        setStep((prev) => prev + 1);
-      }
       setFormState((prev) => {
         const newState = [...prev];
         newState[step] = data;
         return newState as any;
       });
-      formState[step] = data as any;
-      handleCreateRecipe(formState);
+      if (step === CreateRecipeSteps.RECIPE_COOKING) {
+        formState[step] = data as any;
+        handleCreateRecipe(formState);
+        return;
+      }
+      setStep((prev) => prev + 1);
     },
     [step, setFormState, setStep, handleCreateRecipe, formState]
   );
 
   return (
-    <View style={styles.container}>
-      <SafeAreaView style={styles.container}>
+    <SafeAreaView style={FlexStyles.flexContainer}>
+      <View style={styles.container}>
         <Spinner visible={recipeInFlight} text={"Creating recipe..."} />
         <View style={{ height: moderateScale(45) }}>
           <TouchableOpacity
@@ -142,8 +148,8 @@ const CreateRecipeScreen: React.FC = () => {
             )}
           </ScrollView>
         </View>
-      </SafeAreaView>
-    </View>
+      </View>
+    </SafeAreaView>
   );
 };
 
