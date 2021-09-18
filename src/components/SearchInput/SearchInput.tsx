@@ -7,7 +7,6 @@ import { moderateScale, width } from "src/utils/scale";
 
 interface SearchInputProps {
   value: string;
-  // eslint-disable-next-line no-unused-vars
   onChange: (text: string) => void;
 }
 

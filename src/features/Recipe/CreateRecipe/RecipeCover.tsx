@@ -8,7 +8,6 @@ import { COLORS } from "src/constants/colors";
 import { moderateScale, verticalScale } from "src/utils/scale";
 
 interface RecipeCoverProps {
-  // eslint-disable-next-line no-unused-vars
   onChange: (image: string) => void;
   imagePath: string;
 }

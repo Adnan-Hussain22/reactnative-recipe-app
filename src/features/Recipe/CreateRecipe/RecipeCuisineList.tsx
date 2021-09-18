@@ -9,7 +9,6 @@ import { moderateScale } from "src/utils/scale";
 
 interface RecipeCuisineListProps {
   cuisine: string;
-  // eslint-disable-next-line no-unused-vars
   onChange: (selected: string) => void;
 }
 

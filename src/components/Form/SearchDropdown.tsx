@@ -9,7 +9,6 @@ import { COLORS } from "src/constants/colors";
 import { moderateScale } from "src/utils/scale";
 
 interface SearchDropdownProps {
-  // eslint-disable-next-line no-unused-vars
   onChange: (data: any) => void;
   items: ItemType[];
   placeholder?: string;

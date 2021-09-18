@@ -8,7 +8,6 @@ import { moderateScale } from "src/utils/scale";
 interface ImagePickerProps {
   allowMultiple?: boolean;
   errorMessage?: string;
-  // eslint-disable-next-line no-unused-vars
   setImage: (path: string) => void;
 }
 
@@ -28,6 +27,7 @@ const ImagePicker: React.FC<ImagePickerProps> = ({
   }, []);
 
   const onPressImagePicker = React.useCallback(async () => {
+    await requestPermission();
     const result = await Picker.launchImageLibraryAsync({
       mediaTypes: Picker.MediaTypeOptions.Images,
       allowsEditing: true,
@@ -40,10 +40,6 @@ const ImagePicker: React.FC<ImagePickerProps> = ({
       setImage(result.uri);
     }
   }, [allowMultiple]);
-
-  React.useEffect(() => {
-    requestPermission();
-  }, []);
 
   return (
     <>

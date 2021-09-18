@@ -9,7 +9,6 @@ import Typography from "../Typography";
 
 interface GenderProps {
   value: GENDER;
-  // eslint-disable-next-line no-unused-vars
   onChange: (value: GENDER) => void;
   error?: string;
 }

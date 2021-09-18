@@ -8,7 +8,6 @@ import { iconStyles } from "src/constants/globalStyles";
 import { moderateScale } from "src/utils/scale";
 
 type NextButtonProps = {
-  // eslint-disable-next-line no-unused-vars
   onPress: () => void;
   disabled?: boolean;
 };

@@ -13,7 +13,6 @@ import { moderateScale } from "src/utils/scale";
 interface RecipeCookingTimeProps {
   time: string;
   scale: "hr" | "min";
-  // eslint-disable-next-line no-unused-vars
   onChange: (prop: { time: string; scale: "hr" | "min" }) => void;
 }
 

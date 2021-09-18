@@ -16,9 +16,9 @@ import { styles } from "./styles";
 import { COLORS } from "src/constants/colors";
 import { moderateScale } from "src/utils/scale";
 import { NextButton } from "src/features/Recipe/CreateRecipe/NextButton";
+import { TimeScale } from "src/typings/time";
 
 interface CreateRecipeInfoProps {
-  // eslint-disable-next-line no-unused-vars
   onSubmit: (data: RecipeInfoForm) => void;
 }
 
@@ -26,7 +26,7 @@ export type RecipeInfoForm = {
   recipeName: string;
   description: string;
   cover: string;
-  cookingTime: { time: string; scale: "hr" | "min" };
+  cookingTime: { time: string; scale: TimeScale };
   cuisine: string;
   serving: string;
   calories: string;
@@ -42,7 +42,7 @@ const CreateRecipeInfo: React.FC<CreateRecipeInfoProps> = ({ onSubmit }) => {
       recipeName: "",
       cover: "",
       description: "",
-      cookingTime: { time: "", scale: "hr" },
+      cookingTime: { time: "", scale: TimeScale.HOUR },
       serving: "",
       calories: "",
     },
