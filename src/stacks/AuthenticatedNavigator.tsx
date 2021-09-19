@@ -1,13 +1,12 @@
 import * as React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { SafeAreaView } from "react-native";
 
 import DicoverScreen from "src/features/Discover";
 import SearchScreen from "src/features/Search";
 import CommunityScreen from "src/features/Community";
 import ProfileScreen from "src/features/Profile";
+import CreateRecipeScreen from "src/features/Recipe/CreateRecipe/CreateRecipeScreen";
 import TabBarIcon from "src/components/TabIcon";
-import Typography from "src/components/Typography";
 import { AUHTENTICATED_ROUTES } from "src/constants/Routes";
 import { tabBarOptions } from "src/constants/navigatorOptions";
 
@@ -16,23 +15,21 @@ import { tabBarOptions } from "src/constants/navigatorOptions";
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
-const ScanScreen = () => {
-  return (
-    <SafeAreaView
-      style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-    >
-      <Typography>Scan Screen</Typography>
-    </SafeAreaView>
-  );
-};
+// const ScanScreen = () => {
+//   return (
+//     <SafeAreaView
+//       style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+//     >
+//       <Typography>Scan Screen</Typography>
+//     </SafeAreaView>
+//   );
+// };
 
 const AuthenticatedNavigator = () => {
   return (
     <Navigator
+      initialRouteName={AUHTENTICATED_ROUTES.CREATE}
       screenOptions={({ route }) => ({
-        // tabBarVisible:
-        //   getRouteName(route) !== CHAT_SCREEN &&
-        //   getRouteName(route) !== NEW_MESSAGE_SCREEN,
         tabBarIcon: ({ focused }) => (
           <TabBarIcon focused={focused} routeName={route.name} />
         ),
@@ -43,7 +40,10 @@ const AuthenticatedNavigator = () => {
     >
       <Screen name={AUHTENTICATED_ROUTES.DISCOVER} component={DicoverScreen} />
       <Screen name={AUHTENTICATED_ROUTES.SEARCH} component={SearchScreen} />
-      <Screen name={AUHTENTICATED_ROUTES.SCAN} component={ScanScreen} />
+      <Screen
+        name={AUHTENTICATED_ROUTES.CREATE}
+        component={CreateRecipeScreen}
+      />
       <Screen
         name={AUHTENTICATED_ROUTES.COMMUNITY}
         component={CommunityScreen}

@@ -24,7 +24,7 @@ const Icon: React.FC<{ color: string; routeName: string }> = ({
       return <DiscoverIcon color={color} />;
     case AUHTENTICATED_ROUTES.SEARCH:
       return <SearchIcon color={color} />;
-    case AUHTENTICATED_ROUTES.SCAN:
+    case AUHTENTICATED_ROUTES.CREATE:
       return <ScanIcon color={color} />;
     case AUHTENTICATED_ROUTES.COMMUNITY:
       return <CommunityIcon color={color} />;
