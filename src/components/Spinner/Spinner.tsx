@@ -21,5 +21,7 @@ export const Spinner: React.FC<SpinnerProps> = ({ visible = false, text }) => {
 const styles = StyleSheet.create({
   spinnerTextStyle: {
     color: COLORS.white,
+    width: "100%",
+    textAlign: "center",
   },
 });

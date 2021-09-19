@@ -27,6 +27,8 @@ import { Spinner } from "src/components/Spinner";
 import FlexStyles from "src/components/FlexBox/FlexStyles";
 import { uploadMedia } from "src/api/media";
 import { useTogglState } from "src/hooks/useToggleState";
+import { useNavigation } from "@react-navigation/core";
+import { AUHTENTICATED_ROUTES } from "src/constants/Routes";
 
 enum CreateRecipeSteps {
   RECIPE_INFO,
@@ -61,6 +63,7 @@ const CreateRecipeScreen: React.FC = () => {
   const [commitRecipe] =
     useMutation<CreateRecipeScreenMutation>(createRecipeMutation);
   const [isLoading, toggleIsLoading] = useTogglState();
+  const navigation = useNavigation();
 
   const handleCreateRecipe = React.useCallback(
     async (state: RecipeState) => {
@@ -97,7 +100,15 @@ const CreateRecipeScreen: React.FC = () => {
           variables: {
             createRecipeInput: payload,
           },
-          onCompleted: () => {},
+          onCompleted: () => {
+            Alert.alert(
+              "Recipe uploaded!",
+              "Thankyou for uploading the recipe"
+            );
+            setFormState([null, null, null]);
+            setStep(CreateRecipeSteps.RECIPE_INFO);
+            navigation.navigate(AUHTENTICATED_ROUTES.DISCOVER);
+          },
           onError: () => {
             Alert.alert("Uh oh!", "Something went wrong");
           },
