@@ -1,5 +1,11 @@
 import * as React from "react";
-import { ScrollView, TouchableOpacity, View, SafeAreaView } from "react-native";
+import {
+  ScrollView,
+  TouchableOpacity,
+  View,
+  SafeAreaView,
+  Alert,
+} from "react-native";
 import { graphql, useMutation } from "react-relay";
 
 import Icon from "src/components/Icon";
@@ -19,6 +25,8 @@ import { RecipeIngredientsForm } from "./type";
 import { styles } from "./styles";
 import { Spinner } from "src/components/Spinner";
 import FlexStyles from "src/components/FlexBox/FlexStyles";
+import { uploadMedia } from "src/api/media";
+import { useTogglState } from "src/hooks/useToggleState";
 
 enum CreateRecipeSteps {
   RECIPE_INFO,
@@ -50,51 +58,61 @@ const CreateRecipeScreen: React.FC = () => {
     null,
     null,
   ]);
-  const [commitRecipe, recipeInFlight] =
+  const [commitRecipe] =
     useMutation<CreateRecipeScreenMutation>(createRecipeMutation);
+  const [isLoading, toggleIsLoading] = useTogglState();
 
   const handleCreateRecipe = React.useCallback(
-    (state: RecipeState) => {
-      const [recipeInfo, recipeIngredient, recipeInstruction] = state;
-      if (!recipeInfo || !recipeIngredient || !recipeInstruction) {
-        return;
+    async (state: RecipeState) => {
+      try {
+        const [recipeInfo, recipeIngredient, recipeInstruction] = state;
+        if (!recipeInfo || !recipeIngredient || !recipeInstruction) {
+          return;
+        }
+        toggleIsLoading();
+        const ingredients: RecipeIngredientInput[] =
+          recipeIngredient.categorizedIngredients.flatMap((category) =>
+            category.ingredients.map((ingredient) => ({
+              group: category.category,
+              amount: `${ingredient.amount} ${ingredient.scale}`,
+              name: ingredient.name,
+            }))
+          );
+        const imageRes = await uploadMedia(recipeInfo.cover);
+        const payload: CreateRecipeInput = {
+          name: recipeInfo.recipeName,
+          image: imageRes,
+          description: recipeInfo.description,
+          calories: Number(recipeInfo.calories),
+          serving: Number(recipeInfo.serving),
+          cookingTime: convertToSec(
+            recipeInfo.cookingTime.scale,
+            Number(recipeInfo.cookingTime.time)
+          ),
+          restraunts: [recipeIngredient.restaurant],
+          ingredients,
+          instructions: recipeInstruction.instructions,
+        };
+        commitRecipe({
+          variables: {
+            createRecipeInput: payload,
+          },
+          onCompleted: () => {},
+          onError: () => {
+            Alert.alert("Uh oh!", "Something went wrong");
+          },
+        });
+      } catch (error) {
+        Alert.alert("Uh oh!", "Something went wrong");
+      } finally {
+        toggleIsLoading();
       }
-      const ingredients: RecipeIngredientInput[] =
-        recipeIngredient.categorizedIngredients.flatMap((category) =>
-          category.ingredients.map((ingredient) => ({
-            group: category.category,
-            amount: `${ingredient.amount} ${ingredient.scale}`,
-            name: ingredient.name,
-          }))
-        );
-      const payload: CreateRecipeInput = {
-        name: recipeInfo.recipeName,
-        image: recipeInfo.cover,
-        description: recipeInfo.description,
-        calories: Number(recipeInfo.calories),
-        serving: Number(recipeInfo.serving),
-        cookingTime: convertToSec(
-          recipeInfo.cookingTime.scale,
-          Number(recipeInfo.cookingTime.time)
-        ),
-        restraunts: [recipeIngredient.restaurant],
-        ingredients,
-        instructions: recipeInstruction.instructions,
-      };
-      commitRecipe({
-        variables: {
-          createRecipeInput: payload,
-        },
-        onCompleted: () => {},
-        onError: () => {},
-      });
     },
     [commitRecipe]
   );
 
   const onStep = React.useCallback(
     (data: RecipeInfoForm | RecipeIngredientsForm | ICookingForm) => {
-      console.log("onStep==>", data);
       setFormState((prev) => {
         const newState = [...prev];
         newState[step] = data;
@@ -113,7 +131,7 @@ const CreateRecipeScreen: React.FC = () => {
   return (
     <SafeAreaView style={FlexStyles.flexContainer}>
       <View style={styles.container}>
-        <Spinner visible={recipeInFlight} text={"Creating recipe..."} />
+        <Spinner visible={isLoading} text={"Creating recipe..."} />
         <View style={{ height: moderateScale(45) }}>
           <TouchableOpacity
             onPress={() => {}}
