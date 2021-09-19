@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import _ from "lodash-es";
 import {
   PROD,
@@ -8,6 +7,9 @@ import {
   SOCKET_URL_DEV,
   GRAPHQL_ENDPOINT,
   REST_API_ENDPOINT,
+  CLOUNDINARY_CLOUD_NAME,
+  CLOUNDINARY_API_BASE_URL,
+  CLOUNDINARY_UPLOAD_PRESET,
 } from "@env";
 
 export enum ConfigEnum {
@@ -16,6 +18,9 @@ export enum ConfigEnum {
   GRAPHQL_URL = "GRAPHQL_URL",
   SOCKET_URL = "SOCKET_URL",
   PROD = "PROD",
+  CLOUNDINARY_CLOUD_NAME = "CLOUNDINARY_CLOUD_NAME",
+  CLOUNDINARY_API_BASE_URL = "CLOUNDINARY_API_BASE_URL",
+  CLOUNDINARY_UPLOAD_PRESET = "CLOUNDINARY_UPLOAD_PRESET",
 }
 
 const Env: any = {
@@ -46,6 +51,9 @@ const config = {
   [ConfigEnum.SOCKET_URL]: SOCKET_URL,
   [ConfigEnum.BASE_URL]: BASE_URL,
   [ConfigEnum.REST_API_URL]: `${BASE_URL}${REST_API_ENDPOINT}`,
+  [ConfigEnum.CLOUNDINARY_CLOUD_NAME]: CLOUNDINARY_CLOUD_NAME ?? "",
+  [ConfigEnum.CLOUNDINARY_API_BASE_URL]: CLOUNDINARY_API_BASE_URL ?? "",
+  [ConfigEnum.CLOUNDINARY_UPLOAD_PRESET]: CLOUNDINARY_UPLOAD_PRESET ?? "",
 };
 
 console.log("BASE_URL==>", BASE_URL);
