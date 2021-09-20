@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Image, View, StyleSheet } from "react-native";
 import { widthPercentageToDP } from "react-native-responsive-screen";
+import { graphql, useFragment } from "react-relay";
 
 import StartRating from "src/components/StarRating";
 import Typography from "src/components/Typography";
@@ -8,28 +9,32 @@ import { normalizeImageSrc } from "src/utils/image";
 import { moderateScale } from "src/utils/scale";
 import { COLORS } from "src/constants/colors";
 import Icon from "src/components/Icon";
+import { RecipeItem_recipe$key } from "src/services/graphql/__generated__/RecipeItem_recipe.graphql";
 
 interface RecipeItemProps {
-  title: string;
-  subTitle: string;
-  rating: number;
-  image: string;
-  bookmark?: boolean;
+  recipeRef: RecipeItem_recipe$key;
 }
 
-const RecipeItem: React.FC<RecipeItemProps> = ({
-  title,
-  subTitle,
-  rating,
-  image,
-  bookmark,
-}) => {
+const recipeFragment = graphql`
+  fragment RecipeItem_recipe on Recipe {
+    _id
+    name
+    description
+    image
+    totalRating
+    isBookmark
+  }
+`;
+
+const RecipeItem: React.FC<RecipeItemProps> = ({ recipeRef }) => {
+  const data = useFragment(recipeFragment, recipeRef);
+
   return (
     <View style={styles.itemContainer}>
-      <Image source={normalizeImageSrc(image)} style={styles.itemImage} />
+      <Image source={normalizeImageSrc(data?.image)} style={styles.itemImage} />
       <View
         style={
-          bookmark
+          data.isBookmark
             ? styles.itemContentWithBookmark
             : styles.itemContentWithoutBookmark
         }
@@ -39,7 +44,7 @@ const RecipeItem: React.FC<RecipeItemProps> = ({
           color={COLORS.listTitle}
           numberOfLines={2}
         >
-          {title}
+          {data?.name}
         </Typography>
         <Typography
           variant="P"
@@ -47,19 +52,19 @@ const RecipeItem: React.FC<RecipeItemProps> = ({
           marginTop={moderateScale(5)}
           numberOfLines={2}
         >
-          {subTitle}
+          {data?.description}
         </Typography>
         <View style={styles.ratingContainer}>
-          <StartRating rating={rating} />
+          <StartRating rating={data?.totalRating} />
           <Typography
             fontSize={moderateScale(10)}
             marginLeft={moderateScale(5)}
           >
-            {rating}
+            {data?.totalRating}
           </Typography>
         </View>
       </View>
-      {bookmark ? (
+      {data.isBookmark ? (
         <View style={styles.bookmark}>
           <Icon name="bookmark" type="Foundation" style={styles.bookmarkIcon} />
         </View>

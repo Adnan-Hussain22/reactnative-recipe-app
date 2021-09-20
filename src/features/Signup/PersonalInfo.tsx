@@ -14,7 +14,7 @@ import { COLORS } from "src/constants/colors";
 import { iconStyles } from "src/constants/globalStyles";
 import { PersonalInfoFormFields } from "src/typings/signup";
 import { moderateScale, width } from "src/utils/scale";
-import { ERRORS } from "src/constants/errors";
+import { ONBOARDING_VALIDATIONS as ERRORS } from "src/constants/Errors";
 import { GENDER } from "src/constants/common";
 
 export const validationSchema = yup.object().shape({

@@ -21,14 +21,13 @@ const TextInput: React.FC<TextInputProps> = ({
   ...props
 }) => {
   return (
-    <View style={{ marginVertical: moderateScale(5) }}>
+    <View style={{ marginVertical: moderateScale(3) }}>
       <InputWrapper style={containerStyle}>
         <NativeInput {...props} />
       </InputWrapper>
       <Typography
         variant="P"
         color={COLORS.primaryRed}
-        paddingLeft={moderateScale(18)}
         opacity={error ? 1 : 0}
         marginTop={moderateScale(4)}
       >

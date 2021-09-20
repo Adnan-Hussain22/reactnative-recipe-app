@@ -27,11 +27,7 @@ const paginationQuery = graphql`
       @connection(key: "SearchRecipesListQuery_searchRecipes") {
       edges {
         node {
-          id
-          name
-          description
-          image
-          totalRating
+          ...RecipeItem_recipe
         }
       }
     }

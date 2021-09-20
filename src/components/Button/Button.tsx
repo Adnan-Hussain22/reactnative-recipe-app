@@ -21,6 +21,7 @@ interface ButtonProps extends TypographyProps {
   center?: boolean;
   text?: string;
   textStyle?: TextStyle;
+  disabled?: boolean;
   // iconStyle?: StyleProp<TextStyle>;
   onPress: () => void;
 }
@@ -35,6 +36,7 @@ const Button: React.FC<ButtonProps> = ({
   text,
   style,
   textStyle,
+  disabled,
   // iconStyle,
   onPress,
   ...typoGraphyStyles
@@ -57,6 +59,7 @@ const Button: React.FC<ButtonProps> = ({
         },
         style,
       ]}
+      disabled={disabled}
       onPress={onPress}
     >
       {icon ? (

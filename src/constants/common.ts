@@ -1,6 +1,5 @@
 import { verticalScale } from "src/utils/scale";
 
-/* eslint-disable no-unused-vars */
 export enum GENDER {
   MALE,
   FEMALE,

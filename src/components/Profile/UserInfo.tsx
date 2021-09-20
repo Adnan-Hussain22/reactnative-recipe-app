@@ -1,45 +1,54 @@
 import * as React from "react";
 import { View, StyleSheet, TouchableOpacity } from "react-native";
 import UserAvatar from "react-native-user-avatar";
+import { graphql, useFragment } from "react-relay";
 
 import FollowButton from "src/components/Button/FollowButton";
 import Icon from "src/components/Icon";
 import Typography from "src/components/Typography";
 import { COLORS } from "src/constants/colors";
+import { UserInfo_user$key } from "src/services/graphql/__generated__/UserInfo_user.graphql";
 import { moderateScale, width } from "src/utils/scale";
 
 interface UserInfoProps {
-  name: string;
-  avatar: string;
-  username: string;
-  location: string;
+  user: UserInfo_user$key;
 }
 
-const UserInfo: React.FC<UserInfoProps> = ({
-  name,
-  username,
-  avatar,
-  location,
-}) => {
+const userInfoFragment = graphql`
+  fragment UserInfo_user on User {
+    _id
+    name
+    username
+    city
+    street
+    avatar
+  }
+`;
+
+const UserInfo: React.FC<UserInfoProps> = ({ user }) => {
+  const data = useFragment(userInfoFragment, user);
+
   return (
     <View style={styles.container}>
       <UserAvatar
         size={styles.avatar.width}
-        name={name}
-        src={avatar}
+        name={data.name ?? "N A"}
+        src={data.avatar ?? null}
         style={styles.avatar}
+        bgColor={COLORS.statsGreySecondary}
+        key={`__user${data?._id ?? ""}__${data?.avatar ?? ""}`}
       />
       <View style={styles.contentWrapper}>
         <View style={styles.contentContainer}>
           <Typography variant="BodySemiBold" color={COLORS.statsGreyPrimary}>
-            {username}
+            {data.username ?? ""}
           </Typography>
           <Typography
             variant="BodyLight"
             marginVertical={moderateScale(8)}
             color={COLORS.statsGreyPrimary}
           >
-            {name}
+            {data.name ?? ""}
           </Typography>
           <View style={styles.locationContainer}>
             <Icon
@@ -48,7 +57,7 @@ const UserInfo: React.FC<UserInfoProps> = ({
               style={styles.locationIcon}
             />
             <Typography variant="BodyLight" color={COLORS.statsGreySecondary}>
-              {location}
+              {`${data.street}, ${data.city}`}
             </Typography>
           </View>
           <FollowButton onPress={() => {}} />

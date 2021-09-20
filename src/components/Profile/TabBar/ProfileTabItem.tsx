@@ -8,7 +8,6 @@ interface ProfileTabItemProps {
   title: string;
   active?: boolean;
   routeKey: string;
-  // eslint-disable-next-line no-unused-vars
   onPress: (key: string) => void;
 }
 

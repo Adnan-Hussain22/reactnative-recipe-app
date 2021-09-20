@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 export enum UNAUHTENTICATED_ROUTES {
   LOGIN = "Login",
   SIGNUP = "Signup",

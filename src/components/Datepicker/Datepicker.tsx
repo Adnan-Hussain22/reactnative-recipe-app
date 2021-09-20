@@ -8,7 +8,6 @@ import InputWrapper from "../InputWrapper/InputWrapper";
 import Typography from "../Typography";
 
 interface DatePickerProps {
-  // eslint-disable-next-line no-unused-vars
   onChange: (newDate: Date) => void;
   date: Date;
 }

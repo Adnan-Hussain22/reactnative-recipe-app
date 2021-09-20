@@ -5,7 +5,6 @@ import ProfileTabItem from "src/components/Profile/TabBar/ProfileTabItem";
 interface ProfileTabBarProps {
   index?: number;
   routes: { title: string; key: string }[];
-  // eslint-disable-next-line no-unused-vars
   onPress: (key: string) => void;
 }
 

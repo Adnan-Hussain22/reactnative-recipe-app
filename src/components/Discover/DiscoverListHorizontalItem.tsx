@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useMemo } from "react";
-import { View, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { StyleSheet, Image, TouchableOpacity } from "react-native";
 import { graphql, useFragment } from "react-relay";
 import Typography from "src/components/Typography";
 import { COLORS } from "src/constants/colors";
@@ -16,17 +16,9 @@ interface DiscoverListHorizontalItemProps {
 
 const RecipeFragment = graphql`
   fragment DiscoverListHorizontalItem_recipe on Recipe {
-    id
     name
     description
     image
-    tags
-    totalRating
-    ingredients {
-      amount
-      name
-      group
-    }
   }
 `;
 

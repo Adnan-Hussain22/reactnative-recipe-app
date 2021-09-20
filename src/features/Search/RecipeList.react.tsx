@@ -5,6 +5,7 @@ import Icon from "src/components/Icon";
 import RecipeItem from "src/components/RecipeItem";
 import Typography from "src/components/Typography";
 import { COLORS } from "src/constants/colors";
+import { RecipeItem_recipe$key } from "src/services/graphql/__generated__/RecipeItem_recipe.graphql";
 import { moderateScale } from "src/utils/scale";
 
 interface RecipeListProps {
@@ -24,7 +25,7 @@ const RecipeList: React.FC<RecipeListProps> = ({
 }) => {
   const { keyExtractor, footer } = React.useMemo(() => {
     const keyExtractor = (item: any, index: number) => {
-      return `__recipeList${index}__${item.node.id}`;
+      return `__recipeList${index}__${item.node._id}`;
     };
 
     const footer = () => <View style={{ height: 40 }} />;
@@ -36,15 +37,10 @@ const RecipeList: React.FC<RecipeListProps> = ({
   }, []);
 
   const renderItem = React.useCallback(
-    ({ item: { node } }: ListRenderItemInfo<{ node: any }>) => {
-      return (
-        <RecipeItem
-          title={node.name}
-          subTitle={node.description}
-          image={node.image}
-          rating={node.totalRating}
-        />
-      );
+    ({
+      item: { node },
+    }: ListRenderItemInfo<{ node: RecipeItem_recipe$key }>) => {
+      return <RecipeItem recipeRef={node} />;
     },
     [data]
   );
