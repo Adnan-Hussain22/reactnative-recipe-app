@@ -2,7 +2,6 @@ import React from "react";
 import {
   View,
   Text,
-  SafeAreaView,
   Image,
   TouchableOpacity,
   useWindowDimensions,
@@ -10,7 +9,8 @@ import {
 } from "react-native";
 import { SceneMap, TabView } from "react-native-tab-view";
 import { useNavigation } from "@react-navigation/core";
-import { Rating } from "react-native-ratings";
+import { AirbnbRating } from "react-native-ratings";
+
 import BackArrow from "src/components/Svgs/BackArrow";
 import RecipeInfo from "src/components/Community/RecipeInfoBox";
 import RecipeInstruction from "src/features/Community/Recipe/RecipeInstruction";
@@ -22,6 +22,9 @@ import RecipeIngredient from "src/features/Community/Recipe/RecipeIngrideint";
 import { RECIPE_DATA } from "src/features/Community/Recipe/data";
 import { useMemo } from "react";
 import ProfileRequestList from "src/components/Profile/ProfileRequestList";
+import Typography from "src/components/Typography";
+import { moderateScale } from "src/utils/scale";
+import Spacer from "src/components/Spacer";
 
 const RecipeScreen: React.FC = () => {
   const layout = useWindowDimensions();
@@ -68,71 +71,74 @@ const RecipeScreen: React.FC = () => {
     if (index === 1) return <RecipeInstruction instructions={instructions} />;
     return <ProfileRequestList requests={[]} />;
   }, [index]);
+
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollView}>
-        <TouchableOpacity style={styles.backArrow} onPress={goBack}>
-          <BackArrow />
-        </TouchableOpacity>
-        <Image source={image} style={styles.image} />
-        <View style={styles.container}>
-          <View style={styles.topRow}>
-            <View style={styles.headingParent}>
-              <Text style={styles.heading}>{name}</Text>
-            </View>
-          </View>
-          <View style={styles.secondRow}>
-            <Text style={styles.origin}>{origan}</Text>
-            <Text style={styles.name}>Style by {chefName}</Text>
-          </View>
-
-          <View style={styles.ratingContainer}>
-            <Rating
-              ratingBackgroundColor="#000000AA"
-              ratingCount={rating}
-              imageSize={20}
-              onFinishRating={() => {}}
-            />
-            <Text style={styles.ratingText}>{rating}</Text>
-          </View>
-          <View style={styles.boxParent}>
-            <RecipeInfo {...{ calories, cookTime, serving }} />
-          </View>
-          <View style={styles.dropDownParent}>
-            <View style={styles.dropDown}>
-              <Text style={styles.dropDownHeading}>Nutrition Information</Text>
-
-              <View style={styles.iconDownParent}>
-                <Icon
-                  name="chevron-down"
-                  type="Entypo"
-                  style={styles.iconDown}
-                />
-              </View>
-            </View>
-          </View>
-          <View style={styles.tabContainer}>
-            <TabView
-              style={styles.tabView}
-              navigationState={{ index, routes }}
-              renderScene={renderScene}
-              onIndexChange={setIndex}
-              initialLayout={{ width: layout.width, height: layout.height }}
-              renderTabBar={(props) => {
-                return (
-                  <ProfileTabBar
-                    routes={routes}
-                    index={index}
-                    onPress={(key) => props.jumpTo(key)}
-                  />
-                );
-              }}
-            />
-            {_render}
+    <ScrollView contentContainerStyle={styles.scrollView}>
+      <TouchableOpacity style={styles.backArrow} onPress={goBack}>
+        <BackArrow />
+      </TouchableOpacity>
+      <Image source={image} style={styles.image} />
+      <View style={styles.container}>
+        <View style={styles.topRow}>
+          <View style={styles.headingParent}>
+            <Text style={styles.heading}>{name}</Text>
           </View>
         </View>
-      </ScrollView>
-    </SafeAreaView>
+        <View style={styles.secondRow}>
+          <Text style={styles.origin}>{origan}</Text>
+          <Text style={styles.name}>Style by {chefName}</Text>
+        </View>
+
+        <View style={styles.ratingContainer}>
+          <AirbnbRating
+            count={5}
+            showRating={false}
+            size={20}
+            defaultRating={rating}
+          />
+          <Text style={styles.ratingText}>{rating}</Text>
+        </View>
+        <View style={styles.boxParent}>
+          <RecipeInfo {...{ calories, cookTime, serving }} />
+        </View>
+        <View style={styles.dropDownParent}>
+          <View style={styles.dropDown}>
+            <Typography
+              variant="BodyLight"
+              padding={moderateScale(16)}
+              fontSize={moderateScale(18)}
+            >
+              Nutrition Information
+            </Typography>
+            <Text style={styles.dropDownHeading}></Text>
+
+            <View style={styles.iconDownParent}>
+              <Icon name="chevron-down" type="Entypo" style={styles.iconDown} />
+            </View>
+          </View>
+        </View>
+        <View style={styles.tabContainer}>
+          <TabView
+            style={styles.tabView}
+            navigationState={{ index, routes }}
+            renderScene={renderScene}
+            onIndexChange={setIndex}
+            initialLayout={{ width: layout.width, height: layout.height }}
+            renderTabBar={(props) => {
+              return (
+                <ProfileTabBar
+                  routes={routes}
+                  index={index}
+                  onPress={(key) => props.jumpTo(key)}
+                />
+              );
+            }}
+          />
+          {_render}
+        </View>
+      </View>
+      <Spacer size={10} />
+    </ScrollView>
   );
 };
 export default RecipeScreen;

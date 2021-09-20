@@ -68,8 +68,8 @@ const styles = StyleSheet.create({
   },
   separator: {
     width: "100%",
-    marginHorizontal: "2%",
-    borderBottomColor: "#000",
+    marginHorizontal: moderateScale(2),
+    borderBottomColor: COLORS.inputBorder,
     borderBottomWidth: 1,
   },
   stepContainer: {

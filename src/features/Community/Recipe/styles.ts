@@ -6,7 +6,6 @@ import { COLORS } from "src/constants/colors";
 export default StyleSheet.create({
   container: {
     flex: 1,
-    paddingBottom: moderateScale(10),
   },
 
   scrollView: { flexGrow: 1, backgroundColor: COLORS.white },
@@ -52,10 +51,14 @@ export default StyleSheet.create({
     marginRight: moderateScale(10),
     marginTop: moderateScale(-3),
   },
-  backArrow: { marginTop: 10, marginLeft: 15 },
+  backArrow: {
+    position: "absolute",
+    top: moderateScale(50),
+    left: moderateScale(15),
+    zIndex: 2,
+  },
   image: { width, height: height * 0.25 },
   tabContainer: {
-    paddingHorizontal: width * 0.04,
     paddingBottom: moderateScale(20),
   },
   tabView: {

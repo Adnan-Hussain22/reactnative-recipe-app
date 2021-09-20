@@ -7,7 +7,7 @@ interface SpacerProps {
   scale?: boolean;
 }
 
-const Spacer: React.FC<SpacerProps> = ({ size, scale }) => {
+const Spacer: React.FC<SpacerProps> = ({ size, scale = true }) => {
   return <View style={{ height: scale ? moderateScale(size) : size }} />;
 };
 

@@ -51,7 +51,7 @@ export default ProfileRequestItem;
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: moderateScale(20),
+    marginVertical: moderateScale(20),
     backgroundColor: COLORS.white,
     padding: moderateScale(18),
     paddingBottom: moderateScale(12),
