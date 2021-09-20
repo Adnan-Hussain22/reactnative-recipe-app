@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Image, View, StyleSheet } from "react-native";
+import { Image, View, StyleSheet, TouchableOpacity } from "react-native";
 import { generateShadow } from "react-native-shadow-generator";
 import UserAvatar from "react-native-user-avatar";
 import LikeBox from "src/components/LikeBox";
@@ -13,7 +13,7 @@ import { moderateScale } from "src/utils/scale";
 
 const RecipeRequestItem: React.FC = () => {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container}>
       <View style={styles.contentWrapper}>
         <View style={styles.userInfo}>
           <UserAvatar
@@ -38,7 +38,7 @@ const RecipeRequestItem: React.FC = () => {
         />
       </View>
       <LikeBox likes={56} />
-    </View>
+    </TouchableOpacity>
   );
 };
 

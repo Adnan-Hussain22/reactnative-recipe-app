@@ -3,12 +3,13 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import DicoverScreen from "src/features/Discover";
 import SearchScreen from "src/features/Search";
-import CommunityScreen from "src/features/Community";
+
 import ProfileScreen from "src/features/Profile";
 import CreateRecipeScreen from "src/features/Recipe/CreateRecipe/CreateRecipeScreen";
 import TabBarIcon from "src/components/TabIcon";
 import { AUHTENTICATED_ROUTES } from "src/constants/Routes";
 import { tabBarOptions } from "src/constants/navigatorOptions";
+import CommunityStack from "./Community";
 
 // const getRouteName = (route: Route<string, object | undefined>) =>
 //   getFocusedRouteNameFromRoute(route) ?? AUHTENTICATED_ROUTES.DISCOVER;
@@ -46,7 +47,7 @@ const AuthenticatedNavigator = () => {
       />
       <Screen
         name={AUHTENTICATED_ROUTES.COMMUNITY}
-        component={CommunityScreen}
+        component={CommunityStack}
       />
       <Screen name={AUHTENTICATED_ROUTES.PROFILE} component={ProfileScreen} />
     </Navigator>

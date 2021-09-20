@@ -6,7 +6,7 @@ import UnAuthenticatedStack from "./UnAuthenticated";
 
 const DeciderStack = createStackNavigator();
 
-const RootStackScreen = ({ userToken }) => (
+const RootStackScreen = ({ userToken }: { userToken: string }) => (
   <DeciderStack.Navigator headerMode="none">
     {userToken ? (
       <DeciderStack.Screen

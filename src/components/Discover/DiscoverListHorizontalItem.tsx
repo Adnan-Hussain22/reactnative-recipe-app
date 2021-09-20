@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useMemo } from "react";
-import { View, StyleSheet, Image } from "react-native";
+import { StyleSheet, Image, TouchableOpacity } from "react-native";
 import { graphql, useFragment } from "react-relay";
 import Typography from "src/components/Typography";
 import { COLORS } from "src/constants/colors";
@@ -32,7 +32,8 @@ export const DiscoverListHorizontalItem: React.FC<DiscoverListHorizontalItemProp
     }, [data]);
 
     return (
-      <View
+      <TouchableOpacity
+        onPress={_navigator}
         style={[
           styles.container,
           type === 0 ? styles.itemRectangle : styles.itemSquare,
@@ -64,7 +65,7 @@ export const DiscoverListHorizontalItem: React.FC<DiscoverListHorizontalItemProp
             {description}
           </Typography>
         ) : null}
-      </View>
+      </TouchableOpacity>
     );
   };
 
