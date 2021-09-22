@@ -8,7 +8,7 @@ export interface IInstruction {
   instruction: string;
 }
 export interface ISteps {
-  description: string;
+  name: string;
   quantity: string;
   substitutes?: string[];
 }

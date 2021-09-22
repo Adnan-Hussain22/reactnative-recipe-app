@@ -1,9 +1,11 @@
+import { useNavigation } from "@react-navigation/core";
 import * as React from "react";
 import { useMemo } from "react";
 import { StyleSheet, Image, TouchableOpacity } from "react-native";
 import { graphql, useFragment } from "react-relay";
 import Typography from "src/components/Typography";
 import { COLORS } from "src/constants/colors";
+import { AUHTENTICATED_ROUTES } from "src/constants/Routes";
 import { DiscoverListHorizontalItem_recipe$key } from "src/services/graphql/__generated__/DiscoverListHorizontalItem_recipe.graphql";
 import { normalizeImageSrc } from "src/utils/image";
 import { moderateScale } from "src/utils/scale";
@@ -16,6 +18,7 @@ interface DiscoverListHorizontalItemProps {
 
 const RecipeFragment = graphql`
   fragment DiscoverListHorizontalItem_recipe on Recipe {
+    _id
     name
     description
     image
@@ -24,6 +27,7 @@ const RecipeFragment = graphql`
 
 export const DiscoverListHorizontalItem: React.FC<DiscoverListHorizontalItemProps> =
   ({ type, isLast, recipe }) => {
+    const { navigate } = useNavigation();
     const data = useFragment(RecipeFragment, recipe);
     const { image, name, description } = useMemo(() => {
       return {
@@ -33,7 +37,9 @@ export const DiscoverListHorizontalItem: React.FC<DiscoverListHorizontalItemProp
 
     return (
       <TouchableOpacity
-        onPress={_navigator}
+        onPress={() => {
+          navigate(AUHTENTICATED_ROUTES.RECIPE_SCREEN, { recipeRef: recipe });
+        }}
         style={[
           styles.container,
           type === 0 ? styles.itemRectangle : styles.itemSquare,

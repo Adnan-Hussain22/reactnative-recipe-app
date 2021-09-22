@@ -10,6 +10,12 @@ interface RecipeIngredientItemsProps {
   ingredient: IIngredient;
 }
 
+// const fragment = graphql`
+//   fragment RecipeIngredientItems_ingredients on RecipeIngredients {
+
+//   }
+// `;
+
 const RecipeIngredientItems: React.FC<RecipeIngredientItemsProps> = ({
   ingredient: { title, steps },
 }) => {
@@ -18,7 +24,7 @@ const RecipeIngredientItems: React.FC<RecipeIngredientItemsProps> = ({
       <Text style={styles.title}>{title}</Text>
       <View style={styles.separator} />
       {steps.map((item: ISteps, index: number) => {
-        const { description, quantity, substitutes } = item;
+        const { name, quantity, substitutes } = item;
         const isSubtitutes = Boolean(substitutes?.length);
         return (
           <React.Fragment key={`RecipeIngredientItems${index}`}>
@@ -34,7 +40,7 @@ const RecipeIngredientItems: React.FC<RecipeIngredientItemsProps> = ({
                       : CUSTOM_FONTS.PROXIMA_REGULAR,
                   },
                 ]}
-              >{`${description}${isSubtitutes ? "*" : ""}`}</Text>
+              >{`${name}${isSubtitutes ? "*" : ""}`}</Text>
               <View style={styles.quantityParent}>
                 <Text style={styles.quantity}>{quantity}</Text>
               </View>

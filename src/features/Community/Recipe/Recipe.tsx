@@ -8,7 +8,7 @@ import {
   ScrollView,
 } from "react-native";
 import { SceneMap, TabView } from "react-native-tab-view";
-import { useNavigation } from "@react-navigation/core";
+import { useNavigation, useRoute } from "@react-navigation/core";
 import { AirbnbRating } from "react-native-ratings";
 
 import BackArrow from "src/components/Svgs/BackArrow";
@@ -18,18 +18,39 @@ import ProfileTabBar from "src/components/Profile/TabBar/ProfileTabBar";
 import Icon from "src/components/Icon";
 import styles from "./styles";
 import { useCallback } from "react";
-import RecipeIngredient from "src/features/Community/Recipe/RecipeIngrideint";
+import RecipeIngredient from "src/features/Community/Recipe/RecipeIngredient";
 import { RECIPE_DATA } from "src/features/Community/Recipe/data";
 import { useMemo } from "react";
 import ProfileRequestList from "src/components/Profile/ProfileRequestList";
 import Typography from "src/components/Typography";
 import { moderateScale } from "src/utils/scale";
 import Spacer from "src/components/Spacer";
+import { graphql, useFragment } from "react-relay";
+import { RecipeScreen_recipe$key } from "src/services/graphql/__generated__/RecipeScreen_recipe.graphql";
+import { normalizeImageSrc } from "src/utils/image";
+import { RecipeIngredient_ingredients$key } from "src/services/graphql/__generated__/RecipeIngredient_ingredients.graphql";
+
+const RecipeScreenFragment = graphql`
+  fragment RecipeScreen_recipe on Recipe {
+    _id
+    name
+    description
+    image
+    totalRating
+    cookingTime
+    serving
+    calories
+    instructions
+    ingredients {
+      ...RecipeIngredient_ingredients
+    }
+  }
+`;
 
 const RecipeScreen: React.FC = () => {
   const layout = useWindowDimensions();
-  const [index, setIndex] = React.useState(0);
   const navigation = useNavigation();
+  const [index, setIndex] = React.useState(0);
   const routes = useMemo(
     () => [
       { key: "INGREDIENTS", title: "Ingredients" },
@@ -38,19 +59,14 @@ const RecipeScreen: React.FC = () => {
     ],
     []
   );
+  const { params: { recipeRef } = { recipeRef } } = useRoute();
+  const data = useFragment(
+    RecipeScreenFragment,
+    recipeRef as RecipeScreen_recipe$key
+  );
 
-  const {
-    name,
-    origan,
-    chefName,
-    rating,
-    image,
-    cookTime,
-    calories,
-    serving,
-    ingredients,
-    instructions,
-  } = RECIPE_DATA;
+  const { rating, cookTime, calories, serving, ingredients, instructions } =
+    RECIPE_DATA;
 
   const renderIngredients = useCallback(() => null, []);
 
@@ -67,7 +83,13 @@ const RecipeScreen: React.FC = () => {
   const goBack = () => navigation.goBack();
 
   const _render = useMemo(() => {
-    if (index === 0) return <RecipeIngredient ingredients={ingredients} />;
+    if (index === 0)
+      return (
+        <RecipeIngredient
+          ingredientsRef={data.ingredients as RecipeIngredient_ingredients$key}
+          ingredients={ingredients}
+        />
+      );
     if (index === 1) return <RecipeInstruction instructions={instructions} />;
     return <ProfileRequestList requests={[]} />;
   }, [index]);
@@ -77,16 +99,18 @@ const RecipeScreen: React.FC = () => {
       <TouchableOpacity style={styles.backArrow} onPress={goBack}>
         <BackArrow />
       </TouchableOpacity>
-      <Image source={image} style={styles.image} />
+      <Image source={normalizeImageSrc(data.image)} style={styles.image} />
       <View style={styles.container}>
         <View style={styles.topRow}>
           <View style={styles.headingParent}>
-            <Text style={styles.heading}>{name}</Text>
+            <Text style={styles.heading}>{data.name}</Text>
           </View>
         </View>
         <View style={styles.secondRow}>
-          <Text style={styles.origin}>{origan}</Text>
-          <Text style={styles.name}>Style by {chefName}</Text>
+          {/* <Text style={styles.origin}>{origan}</Text> */}
+          <Text style={styles.name} numberOfLines={2}>
+            {data.description}
+          </Text>
         </View>
 
         <View style={styles.ratingContainer}>
