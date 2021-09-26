@@ -46,11 +46,6 @@ const ProfileRequestList: React.FC<ProfileRequestListProps> = ({
   const renderItem = React.useCallback(
     ({ item: { node } }: ListRenderItemInfo<{ node: any }>) => (
       <ProfileRequestItem
-        name="Grace bee"
-        username="gracebee"
-        avatar="https://www.pngkey.com/png/detail/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png"
-        description="something very very special that i cannot describe :P"
-        likes={56}
         requestRef={node as ProfileRequestItem_recipeRequest$key}
       />
     ),
