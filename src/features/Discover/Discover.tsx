@@ -19,15 +19,12 @@ const discoverScreenQuery = graphql`
     recipes(top: $tops, recent: $recent) {
       top {
         ...DiscoverListHorizontalItem_recipe
-        ...RecipeScreen_recipe
       }
       recent {
         ...DiscoverListHorizontalItem_recipe
-        ...RecipeScreen_recipe
       }
       cusines {
         ...DiscoverListHorizontalItem_recipe
-        ...RecipeScreen_recipe
       }
     }
   }

@@ -38,7 +38,7 @@ export const DiscoverListHorizontalItem: React.FC<DiscoverListHorizontalItemProp
     return (
       <TouchableOpacity
         onPress={() => {
-          navigate(AUHTENTICATED_ROUTES.RECIPE_SCREEN, { recipeRef: recipe });
+          navigate(AUHTENTICATED_ROUTES.RECIPE_SCREEN, { recipeId: data._id });
         }}
         style={[
           styles.container,

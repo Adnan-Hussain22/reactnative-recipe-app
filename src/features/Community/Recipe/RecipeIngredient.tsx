@@ -12,6 +12,7 @@ const RecipeIngredientFragment = graphql`
     _id
     name
     group
+    amount
   }
 `;
 
@@ -36,12 +37,12 @@ const RecipeIngredient: React.FC<RecipeIngredientProps> = ({
     }, Object.create(null));
     return Object.entries(res).map(([key, val]) => {
       return {
-        title: key,
-        steps: val,
+        category: key,
+        ingredients: val,
       };
     }) as IIngredient[];
   }, [data]);
-
+  console.log("data==>", data[0]);
   return (
     <View>
       <Tip />

@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import {
   View,
   Text,
@@ -10,6 +10,13 @@ import {
 import { SceneMap, TabView } from "react-native-tab-view";
 import { useNavigation, useRoute } from "@react-navigation/core";
 import { AirbnbRating } from "react-native-ratings";
+import {
+  graphql,
+  PreloadedQuery,
+  useFragment,
+  usePreloadedQuery,
+  useQueryLoader,
+} from "react-relay";
 
 import BackArrow from "src/components/Svgs/BackArrow";
 import RecipeInfo from "src/components/Community/RecipeInfoBox";
@@ -17,18 +24,19 @@ import RecipeInstruction from "src/features/Community/Recipe/RecipeInstruction";
 import ProfileTabBar from "src/components/Profile/TabBar/ProfileTabBar";
 import Icon from "src/components/Icon";
 import styles from "./styles";
-import { useCallback } from "react";
 import RecipeIngredient from "src/features/Community/Recipe/RecipeIngredient";
-import { RECIPE_DATA } from "src/features/Community/Recipe/data";
-import { useMemo } from "react";
-import ProfileRequestList from "src/components/Profile/ProfileRequestList";
+// import { RECIPE_DATA } from "src/features/Community/Recipe/data";
+// import ProfileRequestList from "src/components/Profile/ProfileRequestList";
 import Typography from "src/components/Typography";
 import { moderateScale } from "src/utils/scale";
 import Spacer from "src/components/Spacer";
-import { graphql, useFragment } from "react-relay";
 import { RecipeScreen_recipe$key } from "src/services/graphql/__generated__/RecipeScreen_recipe.graphql";
 import { normalizeImageSrc } from "src/utils/image";
 import { RecipeIngredient_ingredients$key } from "src/services/graphql/__generated__/RecipeIngredient_ingredients.graphql";
+import { RecipeTips } from "./RecipeTips";
+import { Spinner } from "src/components/Spinner";
+import { RecipeScreenQuery } from "src/services/graphql/__generated__/RecipeScreenQuery.graphql";
+import { RecipeTips_tips$key } from "src/services/graphql/__generated__/RecipeTips_tips.graphql";
 
 const RecipeScreenFragment = graphql`
   fragment RecipeScreen_recipe on Recipe {
@@ -47,11 +55,13 @@ const RecipeScreenFragment = graphql`
   }
 `;
 
-const RecipeScreen: React.FC = () => {
+const Screen: React.FC<{
+  recipeRef: RecipeScreen_recipe$key | RecipeTips_tips$key;
+}> = ({ recipeRef }) => {
   const layout = useWindowDimensions();
   const navigation = useNavigation();
   const [index, setIndex] = React.useState(0);
-  const routes = useMemo(
+  const routes = React.useMemo(
     () => [
       { key: "INGREDIENTS", title: "Ingredients" },
       { key: "INSTRUCCTIONS", title: "Instructions" },
@@ -59,20 +69,33 @@ const RecipeScreen: React.FC = () => {
     ],
     []
   );
-  const { params: { recipeRef } = { recipeRef } } = useRoute();
   const data = useFragment(
     RecipeScreenFragment,
     recipeRef as RecipeScreen_recipe$key
   );
 
-  const { rating, cookTime, calories, serving, ingredients, instructions } =
-    RECIPE_DATA;
+  const {
+    ingredients,
+    instructions,
+    totalRating: rating,
+    cookingTime,
+    calories,
+    serving,
+  } = React.useMemo(() => {
+    return {
+      ...data,
+      cookingTime: data.cookingTime ?? 0,
+      calories: data.calories ?? 0,
+      serving: data.serving ?? 0,
+      instructions: data.instructions ?? [],
+    };
+  }, [data]);
 
-  const renderIngredients = useCallback(() => null, []);
+  const renderIngredients = React.useCallback(() => null, []);
 
-  const renderInstructions = useCallback(() => null, []);
+  const renderInstructions = React.useCallback(() => null, []);
 
-  const renderTips = useCallback(() => null, []);
+  const renderTips = React.useCallback(() => null, []);
 
   const renderScene = SceneMap({
     INGREDIENTS: renderIngredients,
@@ -82,17 +105,17 @@ const RecipeScreen: React.FC = () => {
 
   const goBack = () => navigation.goBack();
 
-  const _render = useMemo(() => {
+  const _render = React.useMemo(() => {
     if (index === 0)
       return (
         <RecipeIngredient
-          ingredientsRef={data.ingredients as RecipeIngredient_ingredients$key}
-          ingredients={ingredients}
+          ingredientsRef={ingredients as RecipeIngredient_ingredients$key}
         />
       );
-    if (index === 1) return <RecipeInstruction instructions={instructions} />;
-    return <ProfileRequestList requests={[]} />;
-  }, [index]);
+    if (index === 1)
+      return <RecipeInstruction instructions={instructions as string[]} />;
+    return <RecipeTips recipeRef={recipeRef as RecipeTips_tips$key} />;
+  }, [index, instructions, ingredients]);
 
   return (
     <ScrollView contentContainerStyle={styles.scrollView}>
@@ -123,7 +146,7 @@ const RecipeScreen: React.FC = () => {
           <Text style={styles.ratingText}>{rating}</Text>
         </View>
         <View style={styles.boxParent}>
-          <RecipeInfo {...{ calories, cookTime, serving }} />
+          <RecipeInfo {...{ calories, cookingTime, serving }} />
         </View>
         <View style={styles.dropDownParent}>
           <View style={styles.dropDown}>
@@ -165,4 +188,41 @@ const RecipeScreen: React.FC = () => {
     </ScrollView>
   );
 };
+
+const query = graphql`
+  query RecipeScreenQuery($recipeId: MongoID!) {
+    recipeById(_id: $recipeId) {
+      ...RecipeScreen_recipe
+      ...RecipeTips_tips
+    }
+  }
+`;
+
+const RecipeLoader: React.FC<{ recipeRef: PreloadedQuery<RecipeScreenQuery> }> =
+  ({ recipeRef }) => {
+    const data = usePreloadedQuery(query, recipeRef);
+    return <Screen recipeRef={data.recipeById as RecipeScreen_recipe$key} />;
+  };
+
+const RecipeScreen = () => {
+  const [queryRef, loadQuery] = useQueryLoader<RecipeScreenQuery>(query);
+  const { params: { recipeId } = { recipeId } } = useRoute();
+
+  React.useEffect(() => {
+    if (!queryRef) {
+      loadQuery({ recipeId });
+    }
+  }, [queryRef, loadQuery]);
+
+  if (!queryRef) {
+    return <Spinner visible />;
+  }
+
+  return (
+    <React.Suspense fallback={<Spinner visible />}>
+      <RecipeLoader recipeRef={queryRef} />
+    </React.Suspense>
+  );
+};
+
 export default RecipeScreen;

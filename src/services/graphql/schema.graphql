@@ -15,6 +15,7 @@ type Query {
     trending: Boolean
   ): RecipeFeed
   userById(_id: MongoID!): User
+  recipeById(_id: MongoID!): Recipe
   searchRecipes(
     """
     Forward pagination argument for returning at most first edges
@@ -143,7 +144,7 @@ type Recipe {
   video: String
   createdBy: User
   tags: [String]
-  tips: [RecipeTips]
+  tips(limit: Int = 100, sort: SortFindByIdsRecipeTipInput): [RecipeTip!]!
   ingredients: [RecipeIngredients]
   restraunts: [MongoID]
   instructions: [String]
@@ -436,11 +437,18 @@ enum SortRecipeBookmarksBookmarkEnum {
   _ID_ASC
 }
 
-type RecipeTips {
+type RecipeTip {
   text: String!
   image: String
-  user: MongoID!
-  _id: MongoID
+  user: User
+  _id: MongoID!
+  updatedAt: Date
+  createdAt: Date
+}
+
+enum SortFindByIdsRecipeTipInput {
+  _ID_ASC
+  _ID_DESC
 }
 
 type RecipeIngredients {
@@ -481,7 +489,7 @@ input FilterFindManyRecipeInput {
   video: String
   createdBy: MongoID
   tags: [String]
-  tips: [FilterFindManyRecipeTipsInput]
+  tips: [MongoID]
   ingredients: [FilterFindManyRecipeIngredientsInput]
   restraunts: [MongoID]
   instructions: [String]
@@ -498,16 +506,6 @@ input FilterFindManyRecipeInput {
   _operators: FilterFindManyRecipeOperatorsInput
   OR: [FilterFindManyRecipeInput!]
   AND: [FilterFindManyRecipeInput!]
-}
-
-"""
-
-"""
-input FilterFindManyRecipeTipsInput {
-  text: String
-  image: String
-  user: MongoID
-  _id: MongoID
 }
 
 """
