@@ -1,6 +1,6 @@
 export interface IIngredient {
-  title: string;
-  steps: ISteps[];
+  category: string;
+  ingredients: ISteps[];
 }
 
 export interface IInstruction {
@@ -8,8 +8,8 @@ export interface IInstruction {
   instruction: string;
 }
 export interface ISteps {
-  description: string;
-  quantity: string;
+  name: string;
+  amount: string;
   substitutes?: string[];
 }
 

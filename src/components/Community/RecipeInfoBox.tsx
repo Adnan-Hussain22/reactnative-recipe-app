@@ -3,7 +3,7 @@ import { View, StyleSheet, Text } from "react-native";
 import { CUSTOM_FONTS } from "src/constants/fonts";
 
 interface RecipeInfoProps {
-  cookTime: number;
+  cookingTime: number;
   calories: number;
   serving: number;
 }
@@ -24,13 +24,16 @@ const Box: React.FC<BoxProps> = ({ title, value }) => {
 const RecipeInfoBox: React.FC<RecipeInfoProps> = ({
   calories,
   serving,
-  cookTime,
+  cookingTime,
 }) => {
   return (
     <React.Fragment>
-      <Box title="Cook Time" value={`${cookTime} Mins`} />
-      <Box title="Servings" value={`${serving}`} />
-      <Box title="Calories" value={`${calories}`} />
+      <Box
+        title="Cook Time"
+        value={cookingTime ? `${cookingTime} Mins` : "N/A"}
+      />
+      <Box title="Servings" value={serving ? `${serving}` : "N/A"} />
+      <Box title="Calories" value={calories ? `${calories}` : "N/A"} />
     </React.Fragment>
   );
 };

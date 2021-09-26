@@ -2,11 +2,11 @@ import * as React from "react";
 import { View, StyleSheet, FlatList, Text } from "react-native";
 import { COLORS } from "src/constants/colors";
 import { CUSTOM_FONTS } from "src/constants/fonts";
-import { IInstruction } from "src/typings/recipe";
+// import { IInstruction } from "src/typings/recipe";
 import { moderateScale } from "src/utils/scale";
 
 interface RecipeInstructionProps {
-  instructions: IInstruction[];
+  instructions: string[];
 }
 
 const RecipeInstruction: React.FC<RecipeInstructionProps> = ({
@@ -18,10 +18,10 @@ const RecipeInstruction: React.FC<RecipeInstructionProps> = ({
         data={instructions}
         keyExtractor={(_, index) => `${index}`}
         showsHorizontalScrollIndicator={false}
-        renderItem={({ item }) => (
+        renderItem={({ item, index }) => (
           <View style={styles.container}>
-            <Text style={styles.id}>{item.id}</Text>
-            <Text style={styles.instruction}>{item.instruction}</Text>
+            <Text style={styles.id}>{index + 1}</Text>
+            <Text style={styles.instruction}>{item}</Text>
           </View>
         )}
       />

@@ -20,7 +20,7 @@ const Icon: React.FC<{ color: string; routeName: string }> = ({
   color,
 }) => {
   switch (routeName) {
-    case AUHTENTICATED_ROUTES.DISCOVER:
+    case AUHTENTICATED_ROUTES.DISCOVER_STACK:
       return <DiscoverIcon color={color} />;
     case AUHTENTICATED_ROUTES.SEARCH:
       return <SearchIcon color={color} />;

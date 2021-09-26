@@ -2,8 +2,7 @@ import * as React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import DrawerComponent from "src/components/Drawer";
 
-// Authenticated Stack
-import AuthenticatedNavigator from "./AuthenticatedNavigator";
+import AuthenticatedNavigator from "./Authenticated";
 
 const Drawer = createDrawerNavigator();
 
