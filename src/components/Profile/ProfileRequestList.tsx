@@ -5,7 +5,7 @@ import { ProfileRequestItem_recipeRequest$key } from "src/services/graphql/__gen
 import { ProfileRequestListQuery } from "src/services/graphql/__generated__/ProfileRequestListQuery.graphql";
 import { ProfileRequestList_recipeRequests$key } from "src/services/graphql/__generated__/ProfileRequestList_recipeRequests.graphql";
 import ProfileRequestItem from "./ProfileRequestItem";
-import RecipeRequestModal from "./RecipeRequestModal";
+import RecipeRequestModalCard from "./RecipeRequestModalCard";
 
 interface ProfileRequestListProps {
   requestsRef: ProfileRequestList_recipeRequests$key;
@@ -44,10 +44,10 @@ const ProfileRequestList: React.FC<ProfileRequestListProps> = ({
   );
 
   const renderItem = React.useCallback(
-    ({ item: { node } }: ListRenderItemInfo<{ node: any }>) => (
-      <ProfileRequestItem
-        requestRef={node as ProfileRequestItem_recipeRequest$key}
-      />
+    ({
+      item: { node },
+    }: ListRenderItemInfo<{ node: ProfileRequestItem_recipeRequest$key }>) => (
+      <ProfileRequestItem requestRef={node} />
     ),
     []
   );
@@ -57,7 +57,7 @@ const ProfileRequestList: React.FC<ProfileRequestListProps> = ({
       <FlatList
         data={requests}
         contentContainerStyle={styles.contentContainerStyle}
-        ListHeaderComponent={RecipeRequestModal}
+        ListHeaderComponent={RecipeRequestModalCard}
         showsVerticalScrollIndicator={false}
         renderItem={renderItem}
       />

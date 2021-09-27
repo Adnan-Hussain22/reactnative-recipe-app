@@ -1,1 +1,1 @@
-export * from "./KeyboardDissmissView";
+export * from "./KeyboardDismissView";
