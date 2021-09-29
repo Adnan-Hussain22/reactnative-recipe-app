@@ -1,26 +1,19 @@
 import * as React from "react";
-import {
-  View,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
-  Image,
-} from "react-native";
-import { widthPercentageToDP } from "react-native-responsive-screen";
+import { View, TouchableOpacity, TextInput, Image } from "react-native";
 import UserAvatar from "react-native-user-avatar";
 import { DismissKeyboardView } from "src/components";
 
 import Icon from "src/components/Icon";
 import Typography from "src/components/Typography";
 import { COLORS } from "src/constants/colors";
-import { typographyStyles } from "src/constants/globalStyles";
 import { useImagePicker } from "src/hooks";
-import { moderateScale } from "src/utils";
+import { recipeRequestCard as styles } from "./styles";
 
 export type RecipeRequestModalCardProps = {
   name: string;
   avatar: string;
   onSubmit: (form: RecipeRequestForm) => void;
+  autoFocusInput?: boolean;
 };
 
 export type RecipeRequestForm = {
@@ -31,6 +24,7 @@ export type RecipeRequestForm = {
 export const RecipeRequestModalCard: React.FC<RecipeRequestModalCardProps> = ({
   name,
   avatar,
+  autoFocusInput,
   onSubmit,
 }) => {
   const [value, setValue] = React.useState("");
@@ -54,6 +48,7 @@ export const RecipeRequestModalCard: React.FC<RecipeRequestModalCardProps> = ({
             key={`_recipe_avatar${name}_${avatar}`}
           />
           <TextInput
+            autoFocus={autoFocusInput}
             multiline
             placeholder="Tell us what recipe you would like to see!"
             placeholderTextColor={COLORS.statsGreySecondary}
@@ -110,74 +105,3 @@ export const RecipeRequestModalCard: React.FC<RecipeRequestModalCardProps> = ({
 };
 
 export default RecipeRequestModalCard;
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: COLORS.white,
-    marginTop: moderateScale(20),
-    borderRadius: moderateScale(10),
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    width: widthPercentageToDP("93%"),
-  },
-  infoContainer: {
-    paddingTop: moderateScale(20),
-    height: 100,
-    paddingHorizontal: moderateScale(20),
-    flexDirection: "row",
-    alignItems: "flex-start",
-  },
-  avatar: {
-    width: moderateScale(40),
-    height: moderateScale(40),
-    marginRight: moderateScale(15),
-  },
-  input: {
-    ...typographyStyles.P,
-    fontSize: moderateScale(14),
-    width: widthPercentageToDP("68%"),
-    minHeight: moderateScale(40),
-  },
-  imageContainer: {
-    height: 179,
-    margin: moderateScale(5),
-  },
-  image: { height: "100%", width: "100%" },
-  actionsContainer: {
-    flexDirection: "row",
-    paddingHorizontal: moderateScale(20),
-    borderTopWidth: 0.8,
-    borderTopColor: COLORS.dotgrey,
-  },
-  actionContainer: {
-    width: "50%",
-    paddingHorizontal: "10%",
-    flexDirection: "row",
-    borderRightWidth: 1,
-    borderRightColor: COLORS.dotgrey,
-  },
-  actionWrapper: {
-    flexDirection: "row",
-    paddingVertical: 10,
-    alignItems: "center",
-  },
-  actionIcon: {
-    fontSize: moderateScale(20),
-    color: COLORS.primaryRed,
-    marginRight: moderateScale(12),
-  },
-  colorRed: {
-    color: COLORS.primaryRed,
-  },
-  colorYellow: {
-    color: COLORS.primaryYellow,
-  },
-  colorDisabled: { color: COLORS.statsGreySecondary },
-  noBorder: { borderRightWidth: 0, paddingLeft: "15%" },
-});

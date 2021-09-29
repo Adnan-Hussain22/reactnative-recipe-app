@@ -31,7 +31,9 @@ const recipesFragment = graphql`
   }
 `;
 
-const ProfileRecipes: React.FC<ProfileRecipesProps> = ({ recipesRef }) => {
+export const ProfileRecipes: React.FC<ProfileRecipesProps> = ({
+  recipesRef,
+}) => {
   const { data } = usePaginationFragment<
     ProfileRecipesPaginationQuery,
     ProfileRecipes_recipes$key
