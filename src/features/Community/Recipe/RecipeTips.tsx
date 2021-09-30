@@ -3,7 +3,7 @@ import { View, StyleSheet, FlatList, ListRenderItemInfo } from "react-native";
 import { graphql, useFragment } from "react-relay";
 
 import { ProfileRequestBox } from "src/components/Profile/ProfileRequestBox";
-import RecipeRequestModal from "src/components/Profile/RecipeRequestModal";
+import RecipeRequestModalCard from "src/components/Profile/RecipeRequestModalCard";
 import { RecipeTips_tips$key } from "src/services/graphql/__generated__/RecipeTips_tips.graphql";
 
 interface RecipeTipsProps {
@@ -59,7 +59,7 @@ export const RecipeTips: React.FC<RecipeTipsProps> = ({ recipeRef }) => {
       <FlatList
         data={data.tips}
         contentContainerStyle={styles.contentContainerStyle}
-        ListHeaderComponent={RecipeRequestModal}
+        ListHeaderComponent={RecipeRequestModalCard}
         showsVerticalScrollIndicator={false}
         renderItem={renderItem}
       />

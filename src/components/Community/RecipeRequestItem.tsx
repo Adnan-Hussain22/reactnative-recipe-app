@@ -2,42 +2,61 @@ import * as React from "react";
 import { Image, View, StyleSheet, TouchableOpacity } from "react-native";
 import { generateShadow } from "react-native-shadow-generator";
 import UserAvatar from "react-native-user-avatar";
-import LikeBox from "src/components/LikeBox";
+import { graphql, useFragment } from "react-relay";
 
+import LikeBox from "src/components/LikeBox";
 import Typography from "src/components/Typography";
 import { COLORS } from "src/constants/colors";
+import { RecipeRequestItem_reciperequest$key } from "src/services/graphql/__generated__/RecipeRequestItem_reciperequest.graphql";
 import { normalizeImageSrc } from "src/utils/image";
 import { moderateScale } from "src/utils/scale";
 
-// interface RecipeRequestItemProps {}
+const fragment = graphql`
+  fragment RecipeRequestItem_reciperequest on RecipeRequest {
+    description
+    image
+    likes
+    user {
+      name
+      avatar
+    }
+  }
+`;
 
-const RecipeRequestItem: React.FC = () => {
+const RecipeRequestItem: React.FC<{
+  recipeRequestRef: RecipeRequestItem_reciperequest$key;
+}> = ({ recipeRequestRef }) => {
+  const data = useFragment(fragment, recipeRequestRef);
+
+  const { description, image, likes, avatar, name } = React.useMemo(
+    () => ({
+      ...data,
+      name: data.user?.name ?? "",
+      avatar: data.user?.avatar ?? undefined,
+      likes: data.likes?.length ?? 0,
+    }),
+    []
+  );
+
   return (
     <TouchableOpacity style={styles.container}>
       <View style={styles.contentWrapper}>
         <View style={styles.userInfo}>
           <UserAvatar
             size={styles.avatar.width}
-            name="Ahmed Ali"
-            src="https://www.pngkey.com/png/detail/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png"
+            name={name}
+            src={avatar}
             key={Math.random()}
             style={styles.avatar}
           />
           <Typography>Chefmikey</Typography>
         </View>
-        <Typography color={COLORS.textGrey}>
-          Has anyone tried to make a tawa mutton botti ?
-        </Typography>
+        <Typography color={COLORS.textGrey}>{description}</Typography>
       </View>
       <View style={styles.imageWrapper}>
-        <Image
-          source={normalizeImageSrc(
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGtoOZDDrpyQ6t1_mCcQeUTU65ywsA-FNSs6xJJPiaDk34pyICBtLXHDZSaTAG8w3JJyg&usqp=CAU"
-          )}
-          style={styles.image}
-        />
+        <Image source={normalizeImageSrc(image)} style={styles.image} />
       </View>
-      <LikeBox likes={56} />
+      <LikeBox likes={likes} />
     </TouchableOpacity>
   );
 };

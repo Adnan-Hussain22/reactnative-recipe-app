@@ -1,9 +1,9 @@
 import * as React from "react";
-import { Platform, TouchableOpacity } from "react-native";
-import * as Picker from "expo-image-picker";
+import { TouchableOpacity } from "react-native";
 import Typography from "src/components/Typography";
 import { COLORS } from "src/constants/colors";
 import { moderateScale } from "src/utils/scale";
+import { useImagePicker } from "src/hooks";
 
 interface ImagePickerProps {
   allowMultiple?: boolean;
@@ -17,29 +17,14 @@ const ImagePicker: React.FC<ImagePickerProps> = ({
   errorMessage,
   setImage,
 }) => {
-  const requestPermission = React.useCallback(async () => {
-    if (Platform.OS !== "web") {
-      const { status } = await Picker.requestMediaLibraryPermissionsAsync();
-      if (status !== Picker.PermissionStatus.GRANTED) {
-        alert("Sorry, we need camera roll permissions to make this work!");
-      }
-    }
-  }, []);
+  const { open } = useImagePicker({ allowMultiple });
 
   const onPressImagePicker = React.useCallback(async () => {
-    await requestPermission();
-    const result = await Picker.launchImageLibraryAsync({
-      mediaTypes: Picker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-      allowsMultipleSelection: allowMultiple,
-    });
-
-    if (!result.cancelled) {
-      setImage(result.uri);
+    const res = await open();
+    if (res) {
+      setImage(res.uri);
     }
-  }, [allowMultiple]);
+  }, [open]);
 
   return (
     <>

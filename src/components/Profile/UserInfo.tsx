@@ -14,7 +14,7 @@ interface UserInfoProps {
   user: UserInfo_user$key;
 }
 
-const userInfoFragment = graphql`
+export const userInfoFragment = graphql`
   fragment UserInfo_user on User {
     _id
     name
@@ -25,7 +25,7 @@ const userInfoFragment = graphql`
   }
 `;
 
-const UserInfo: React.FC<UserInfoProps> = ({ user }) => {
+export const UserInfo: React.FC<UserInfoProps> = ({ user }) => {
   const data = useFragment(userInfoFragment, user);
 
   return (
@@ -73,8 +73,6 @@ const UserInfo: React.FC<UserInfoProps> = ({ user }) => {
     </View>
   );
 };
-
-export default UserInfo;
 
 const styles = StyleSheet.create({
   container: { flexDirection: "row" },

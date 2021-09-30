@@ -8,11 +8,13 @@ import {
 import { SceneMap, TabView } from "react-native-tab-view";
 
 import ProfileStatsList from "src/components/Profile/ProfileStatsList";
-import UserInfo from "src/components/Profile/UserInfo";
+import {
+  UserInfo,
+  ProfileRecipes as ProfileRecipeList,
+} from "src/components/Profile";
 import ProfileTabBar from "src/components/Profile/TabBar/ProfileTabBar";
 import { COLORS } from "src/constants/colors";
 import { moderateScale, width } from "src/utils/scale";
-import ProfileRecipeList from "src/components/Profile/ProfileRecipes";
 import ProfileRequestList from "src/components/Profile/ProfileRequestList";
 import ProfileBookmarkList from "src/components/Profile/ProfileBookmarkList";
 import { useCallback } from "react";
@@ -26,7 +28,6 @@ import { ProfileScreenQuery } from "src/services/graphql/__generated__/ProfileSc
 import ScreenCenterSpinner from "src/components/Spinner/ScreenCenterSpinner.react";
 import { ProfileRecipes_recipes$key } from "src/services/graphql/__generated__/ProfileRecipes_recipes.graphql";
 import { ProfileBookmarkList_bookmarks$key } from "src/services/graphql/__generated__/ProfileBookmarkList_bookmarks.graphql";
-import { ProfileRequestList_recipeRequests$key } from "src/services/graphql/__generated__/ProfileRequestList_recipeRequests.graphql";
 
 export const profileUserQuery = graphql`
   query ProfileScreenQuery($currentUserId: MongoID!) {
@@ -78,11 +79,7 @@ const ProfileContainer: React.FC<{
   );
 
   const renderRequest = useCallback(
-    () => (
-      <ProfileRequestList
-        requestsRef={data.userById as ProfileRequestList_recipeRequests$key}
-      />
-    ),
+    () => <ProfileRequestList userRef={data.userById as any} />,
     [data]
   );
 
