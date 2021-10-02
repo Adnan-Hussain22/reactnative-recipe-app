@@ -1,8 +1,11 @@
 import React from "react";
 import { User, Tokens } from "src/typings/entities";
+import { Noop } from "src/utils";
 
 export type AuthContextType = Tokens & {
+  loading?: boolean;
   user?: User;
+  toggleLoading: Noop;
   setTokens: (tokens: Tokens) => void;
   setUser: (user: User) => void;
 };

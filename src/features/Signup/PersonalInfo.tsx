@@ -16,6 +16,7 @@ import { PersonalInfoFormFields } from "src/typings/signup";
 import { moderateScale, width } from "src/utils/scale";
 import { ONBOARDING_VALIDATIONS as ERRORS } from "src/constants/Errors";
 import { GENDER } from "src/constants/common";
+import { useAuth } from "src/hooks";
 
 export const validationSchema = yup.object().shape({
   firstName: yup.string().required(ERRORS.REQUIRED_FIRSTNAME),
@@ -23,7 +24,7 @@ export const validationSchema = yup.object().shape({
     .date()
     .max(moment().subtract(14, "year").toDate(), ERRORS.MIN_DOB),
   gender: yup
-    .number()
+    .string()
     .oneOf([GENDER.MALE, GENDER.FEMALE], ERRORS.OPTION_REQUIRED),
 });
 
@@ -33,14 +34,14 @@ const PersonalInfo: React.FC = () => {
       firstName: "",
       lastName: "",
       dateOfBirth: new Date(),
-      gender: -1,
     },
     mode: "onChange",
     resolver: yupResolver(validationSchema),
   });
+  const { saveUser } = useAuth();
 
-  const handleNext = React.useCallback(() => {
-    //
+  const handleNext = React.useCallback(async (form: PersonalInfoFormFields) => {
+    await saveUser({ ...form });
   }, []);
 
   return (

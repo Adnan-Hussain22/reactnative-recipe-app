@@ -7,7 +7,10 @@ import { height, moderateScale } from "src/utils/scale";
 import TextInput from "../TextInput";
 import Typography from "../Typography";
 
-export const UsernameBox: React.FC = () => {
+export const UsernameBox: React.FC<{
+  value: string;
+  onChange: (text: string) => void;
+}> = ({ value, onChange }) => {
   return (
     <View style={styles.formContainer}>
       <Typography variant="H1">Create a username</Typography>
@@ -15,6 +18,9 @@ export const UsernameBox: React.FC = () => {
         style={{ ...typographyStyles.P, color: COLORS.textGrey }}
         placeholder="Username"
         containerStyle={{ marginTop: moderateScale(18) }}
+        autoCapitalize="none"
+        value={value}
+        onChangeText={onChange}
       />
       <Typography
         variant="P"

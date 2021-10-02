@@ -1,4 +1,5 @@
 import { StatusCode } from "src/constants/api";
+import { GENDER } from "src/constants/common";
 import { User } from "src/typings/entities";
 
 export type Tokens = {
@@ -38,5 +39,5 @@ export type UpdateUserRequest = {
   lastName: string;
   username: string;
   avatar: string;
-  gender: string;
+  gender: GENDER;
 };
