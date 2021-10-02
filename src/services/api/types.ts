@@ -1,11 +1,5 @@
 import { StatusCode } from "src/constants/api";
-
-export type User = {
-  id?: string;
-  name: string;
-  email: string;
-  avatar: string;
-};
+import { User } from "src/typings/entities";
 
 export type Tokens = {
   accessToken: string;
@@ -17,7 +11,7 @@ export type WithUser = {
 };
 
 export type WithTokens = {
-  tokens: User;
+  tokens: Tokens;
 };
 
 export type Response = {
@@ -25,9 +19,14 @@ export type Response = {
   message: string;
 };
 
-export type AuthResponse = Response & Partial<WithTokens> & Partial<WithUser>;
+export type AuthResponse = {
+  data?: Partial<WithTokens> & Partial<WithUser>;
+} & Response;
+// Response & Partial<WithTokens> & Partial<WithUser>;
 
-export type UpdateUserResponse = Response & Partial<WithUser>;
+export type UpdateUserResponse = {
+  data?: Partial<WithUser>;
+} & Response;
 
 export type AuthRequest = {
   email: string;
