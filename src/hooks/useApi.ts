@@ -2,7 +2,7 @@ import { useCallback, useMemo } from "react";
 
 import { ApiNames, StatusCode } from "src/constants/api";
 import { COMMON_ERROR } from "src/constants/Errors";
-import { useTogglState } from "src/hooks";
+import { useTogglState } from "./useToggleState";
 import {
   AuthRequest,
   AuthResponse,
@@ -12,6 +12,7 @@ import {
   signupAsync,
   updateUserAsync,
 } from "src/services/api";
+import { CustomError } from "src/typings/error";
 
 export function ReturnApiResponse<T>(
   data: T,
@@ -20,7 +21,6 @@ export function ReturnApiResponse<T>(
 ) {
   return { data, message, status };
 }
-
 export const useApi = (apiName: ApiNames) => {
   const [inFlight, toggleInFlight] = useTogglState();
 
@@ -55,18 +55,22 @@ export const useApi = (apiName: ApiNames) => {
         }
         // execption case
         if (!res) {
-          throw new Error("");
+          throw new CustomError("");
         }
         if (res.statusCode !== StatusCode.SUCCESS) {
-          throw new Error(res.message);
+          throw new CustomError(res.message, res.statusCode);
         }
         toggleInFlight();
         return ReturnApiResponse(res, res.message, true);
-      } catch (error) {
+      } catch (error: any) {
         toggleInFlight();
         let message = COMMON_ERROR;
         if (Object.values(StatusCode).includes(error.code)) {
           message = error.message;
+        } else if (
+          Object.values(StatusCode).includes(error.response?.data?.statusCode)
+        ) {
+          message = error.response?.data?.message;
         }
         return ReturnApiResponse(null, message, false);
       }

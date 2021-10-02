@@ -18,11 +18,11 @@ export interface SignupFormFields {
 
 export const signupValidationSchema = yup.object().shape({
   email: yup.string().email(ERRORS.EMAIL).required(ERRORS.EMAIL),
-  password: yup.string().length(6).required(ERRORS.STRONG_PASSWORD),
+  password: yup.string().min(6).required(ERRORS.STRONG_PASSWORD),
   verifyPassword: yup
     .string()
     .oneOf([yup.ref("password"), null], ERRORS.PASSWORD_NOTMATCH)
-    .required(),
+    .required(ERRORS.PASSWORD_NOTMATCH),
 });
 
 interface SignupFormProps {
@@ -47,6 +47,8 @@ export const SignupForm: React.FC<SignupFormProps> = React.memo((props) => {
             onChangeText={onChange}
             error={props.errors.email?.message || ""}
             autoCapitalize="none"
+            errorStyle={styles.error}
+            containerStyle={styles.inputContainer}
           />
         )}
       />
@@ -62,6 +64,8 @@ export const SignupForm: React.FC<SignupFormProps> = React.memo((props) => {
             onChangeText={onChange}
             error={props.errors.password?.message || ""}
             autoCapitalize="none"
+            errorStyle={styles.error}
+            containerStyle={styles.inputContainer}
           />
         )}
       />
@@ -77,6 +81,8 @@ export const SignupForm: React.FC<SignupFormProps> = React.memo((props) => {
             onChangeText={onChange}
             error={props.errors.verifyPassword?.message || ""}
             autoCapitalize="none"
+            errorStyle={styles.error}
+            containerStyle={styles.inputContainer}
           />
         )}
       />
@@ -93,5 +99,11 @@ const styles = StyleSheet.create({
   input: {
     ...typographyStyles.P,
     color: COLORS.textGrey,
+  },
+  inputContainer: {
+    paddingVertical: moderateScale(10),
+  },
+  error: {
+    marginLeft: moderateScale(10),
   },
 });

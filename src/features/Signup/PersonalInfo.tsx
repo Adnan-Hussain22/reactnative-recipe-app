@@ -57,7 +57,7 @@ const PersonalInfo: React.FC = () => {
           marginBottom={moderateScale(15)}
           marginTop={moderateScale(60)}
         >
-          Tell me about yourself
+          Tell us about yourself
         </Typography>
         <PersonalInfoNameBox control={control} />
         <Controller

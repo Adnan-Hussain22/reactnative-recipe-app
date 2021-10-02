@@ -19,8 +19,10 @@ import {
 import { COLORS } from "src/constants/colors";
 import { usePlateform } from "src/hooks/usePlateform";
 import { moderateScale } from "src/utils/scale";
-import { useNavigation } from "@react-navigation/core";
-import { UNAUHTENTICATED_ROUTES } from "src/constants/Routes";
+import { useApi, useAuth } from "src/hooks";
+import { ApiNames } from "src/constants/api";
+import { AuthRequest, AuthResponse } from "src/services/api";
+import { Spinner } from "src/components/Spinner";
 
 const Signup: React.FC = () => {
   const { isIos } = usePlateform();
@@ -34,31 +36,35 @@ const Signup: React.FC = () => {
       password: "",
       verifyPassword: "",
     },
-    mode: "onChange",
+    mode: "all",
     resolver: yupResolver(signupValidationSchema),
   });
-  const navigation = useNavigation();
+  const { inFlight, commit } = useApi(ApiNames.SIGNUP);
+  const { onAuthenticated } = useAuth();
 
-  const handleCreate = React.useCallback(async (data: SignupFormFields) => {
-    console.log("create==>", data);
-    navigation.navigate(UNAUHTENTICATED_ROUTES.PERSONAL_INFO);
+  const handleCreate = React.useCallback(async (form: SignupFormFields) => {
+    const { data, message, status } = await commit({
+      email: form.email,
+      password: form.password,
+    } as AuthRequest);
+    if (!status) {
+      return alert(message);
+    }
+    await onAuthenticated(data as AuthResponse);
   }, []);
 
-  const handleOnSignupGmail = React.useCallback(() => {
-    console.log("Signup Gmail");
-  }, []);
+  const handleOnSignupGmail = React.useCallback(() => {}, []);
 
-  const handleOnSignupFacebook = React.useCallback(() => {
-    console.log("Signup Facebook");
-  }, []);
+  const handleOnSignupFacebook = React.useCallback(() => {}, []);
 
   return (
     <SafeAreaView style={styles.container}>
+      <Spinner visible={inFlight} />
       <KeyboardAvoidingView
         style={styles.container}
         behavior={isIos ? "padding" : undefined}
       >
-        <ScrollView style={styles.main}>
+        <ScrollView style={styles.main} keyboardShouldPersistTaps="handled">
           <SignupLogo />
           <SignupForm control={control} errors={errors} />
           <SignupButtonBox
