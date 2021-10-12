@@ -1,4 +1,4 @@
-import { Gender } from "src/constants/api";
+import { GENDER } from "src/constants/common";
 
 export type User = {
   id?: string;
@@ -8,7 +8,7 @@ export type User = {
   name?: string;
   username: string;
   password: string;
-  gender: Gender;
+  gender: GENDER;
   avatar: string;
   createdAt?: Date;
   updatedAt?: Date;

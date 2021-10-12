@@ -27,16 +27,22 @@ const ProfileInfo: React.FC = () => {
     mode: "onChange",
     resolver: yupResolver(validationSchema),
   });
-  const { inFlight, commit } = useApi(ApiNames.SIGNUP);
-  const { onAuthenticated } = useAuth();
+  const { inFlight, commit } = useApi(ApiNames.UPDATE_USER);
+  const { onAuthenticated, user } = useAuth();
 
-  const onSubmit = React.useCallback(async (form: ProfileInfoFormFields) => {
-    const res = await commit({
-      ...form,
-    } as UpdateUserRequest);
-    console.log("res==>", res);
-    onAuthenticated(res.data as AuthResponse);
-  }, []);
+  const onSubmit = React.useCallback(
+    async ({ avatar, username }: ProfileInfoFormFields) => {
+      const res = await commit({
+        avatar,
+        username,
+        gender: user?.gender,
+        firstName: user?.firstName,
+        lastName: user?.lastName,
+      } as UpdateUserRequest);
+      onAuthenticated(res.data as AuthResponse);
+    },
+    []
+  );
 
   return (
     <SafeAreaView style={styles.container}>

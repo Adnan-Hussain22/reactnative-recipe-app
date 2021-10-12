@@ -12,8 +12,15 @@ export const signinAsync = (payload: AuthRequest) =>
 export const signupAsync = (payload: AuthRequest) =>
   API.post<AuthResponse>("/auth/signup", payload);
 
-export const updateUserAsync = (payload: UpdateUserRequest) =>
-  API.post<UpdateUserResponse>("/auth/update", payload);
+export const updateUserAsync = (
+  payload: UpdateUserRequest,
+  accessToken: string
+) =>
+  API.post<UpdateUserResponse>("/auth/update", payload, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
 
 // export const resetPasswordAsync = (email: string) =>
 //   API.put<ResetPasswordResponse>("auth/forgot-password", { email });

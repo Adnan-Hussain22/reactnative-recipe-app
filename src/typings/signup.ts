@@ -6,3 +6,8 @@ export interface PersonalInfoFormFields {
   dateOfBirth: Date;
   gender: GENDER;
 }
+
+export interface ProfileInfoFormFields {
+  username: string;
+  avatar: string;
+}

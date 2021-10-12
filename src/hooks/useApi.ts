@@ -13,6 +13,7 @@ import {
   updateUserAsync,
 } from "src/services/api";
 import { CustomError } from "src/typings/error";
+import { useAuth } from "src/hooks";
 
 export function ReturnApiResponse<T>(
   data: T,
@@ -23,6 +24,7 @@ export function ReturnApiResponse<T>(
 }
 export const useApi = (apiName: ApiNames) => {
   const [inFlight, toggleInFlight] = useTogglState();
+  const { accessToken } = useAuth();
 
   const handleApi = useCallback(
     async (
@@ -46,7 +48,8 @@ export const useApi = (apiName: ApiNames) => {
           }
           case ApiNames.UPDATE_USER: {
             ({ data: res } = await updateUserAsync(
-              payload as UpdateUserRequest
+              payload as UpdateUserRequest,
+              accessToken ?? ""
             ));
             break;
           }

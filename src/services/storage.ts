@@ -15,6 +15,10 @@ async function SaveStorage<D = unknown>(key: StorageKeys, data: D) {
   await AsyncStorage.setItem(`@recipeApp_${key}`, JSON.stringify(data));
 }
 
+async function RemoveStorage(key: StorageKeys) {
+  await AsyncStorage.removeItem(`@recipeApp_${key}`);
+}
+
 export class StorageService {
   static async getToken() {
     return await GetStorage<Tokens>(StorageKeys.TOKEN);
@@ -24,11 +28,19 @@ export class StorageService {
     await SaveStorage<Tokens>(StorageKeys.TOKEN, data);
   }
 
+  static async removeToken() {
+    await RemoveStorage(StorageKeys.TOKEN);
+  }
+
   static async getUser() {
     return await GetStorage<User>(StorageKeys.CURRENT_USER);
   }
 
   static async saveUser(data: User) {
     await SaveStorage<User>(StorageKeys.CURRENT_USER, data);
+  }
+
+  static async removeUser() {
+    await RemoveStorage(StorageKeys.CURRENT_USER);
   }
 }
