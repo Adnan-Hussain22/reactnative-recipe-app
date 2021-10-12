@@ -2,9 +2,9 @@ import * as React from "react";
 import { Control, Controller } from "react-hook-form";
 import { View, StyleSheet } from "react-native";
 import { COLORS } from "src/constants/colors";
-import { formStyles, typographyStyles } from "src/constants/globalStyles";
+import { typographyStyles } from "src/constants/globalStyles";
 import { PersonalInfoFormFields } from "src/typings/signup";
-import { width } from "src/utils/scale";
+import { moderateScale, width } from "src/utils/scale";
 import TextInput from "../TextInput";
 
 interface PersonalInfoNameBoxProps {
@@ -51,11 +51,12 @@ export const PersonalInfoNameBox: React.FC<PersonalInfoNameBoxProps> = ({
 const styles = StyleSheet.create({
   nameContainer: { flexDirection: "row", justifyContent: "space-between" },
   name: {
-    ...formStyles.inputContainer,
     width: width * 0.4,
+    paddingVertical: moderateScale(0),
   },
   input: {
     ...typographyStyles.P,
     color: COLORS.textGrey,
+    height: moderateScale(40),
   },
 });

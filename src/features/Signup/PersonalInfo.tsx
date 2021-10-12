@@ -51,6 +51,7 @@ const PersonalInfo: React.FC = () => {
         contentContainerStyle={{
           paddingBottom: moderateScale(30),
           width: Math.min(360, width),
+          paddingHorizontal: moderateScale(15),
         }}
       >
         <Typography
@@ -64,8 +65,13 @@ const PersonalInfo: React.FC = () => {
         <Controller
           name="dateOfBirth"
           control={control}
-          render={({ field: { value, onChange } }) => (
-            <DatePicker date={value} onChange={onChange} />
+          render={({ field: { value, onChange }, fieldState: { error } }) => (
+            <DatePicker
+              date={value}
+              onChange={onChange}
+              error={error?.message}
+              errorStyle={{ marginLeft: moderateScale(8) }}
+            />
           )}
         />
         <Controller

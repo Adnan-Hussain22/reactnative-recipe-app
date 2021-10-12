@@ -6,14 +6,20 @@ import { COLORS } from "src/constants/colors";
 import { formStyles } from "src/constants/globalStyles";
 import InputWrapper from "../InputWrapper/InputWrapper";
 import Typography from "../Typography";
+import { moderateScale } from "src/utils";
+import { TextStyle } from "react-native";
 
 interface DatePickerProps {
-  onChange: (newDate: Date) => void;
   date: Date;
+  error?: string;
+  errorStyle?: TextStyle;
+  onChange: (newDate: Date) => void;
 }
 
 const DatePicker: React.FC<DatePickerProps> = ({
   date,
+  error,
+  errorStyle,
   onChange: propDateChange,
 }) => {
   const [showPicker, setShowPicker] = React.useState(false);
@@ -40,6 +46,15 @@ const DatePicker: React.FC<DatePickerProps> = ({
           {!date ? "Date of Birth" : moment(date).format("MMMM Do YYYY")}
         </Typography>
       </InputWrapper>
+      <Typography
+        variant="P"
+        color={COLORS.primaryRed}
+        opacity={error ? 1 : 0}
+        marginTop={moderateScale(5)}
+        {...errorStyle}
+      >
+        {error || "some error"}
+      </Typography>
       {showPicker ? (
         <DateTimePicker
           testID="dateTimePicker"
