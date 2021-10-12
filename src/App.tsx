@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { RelayEnvironmentProvider } from "react-relay";
@@ -8,10 +7,11 @@ import { RecoilRoot } from "recoil";
 import RootStackScreen from "src/stacks/Decider";
 import { CUSTOM_FONTS } from "src/constants/fonts";
 import { relayEnvironment } from "src/services/graphql/relayEnvironment";
+import AuthProvider from "src/providers/Auth";
+import { Spinner } from "src/components/Spinner";
 
 export default function App() {
-  const [userToken, setUserToken] = React.useState("");
-  const [loading, setLoading] = React.useState(true);
+  // const [loading, toggleLoading] = useTogglState();
   const [loaded] = useFonts({
     [CUSTOM_FONTS.PROXIMA_REGULAR]: require("../assets/fonts/FontsFree-Net-pr10.ttf"),
     [CUSTOM_FONTS.PROXIMA_SEMIBOLD]: require("../assets/fonts/FontsFree-Net-Proxima-Nova-Sbold.otf"),
@@ -19,20 +19,23 @@ export default function App() {
     [CUSTOM_FONTS.PROXIMA_BOLD]: require("../assets/fonts/FontsFree-Net-proxima_nova_bold-webfont.ttf"),
   });
 
-  React.useEffect(() => {
-    setTimeout(() => {
-      setUserToken("123");
-      setLoading(false);
-    }, 200);
-  });
+  // React.useEffect(() => {
+  //   if (loaded) {
+  //     setTimeout(() => {
+  //       toggleLoading();
+  //     }, 1200);
+  //   }
+  // }, [loaded]);
 
-  if (!loaded || loading) return <Text>Loading...</Text>;
+  if (!loaded) return <Spinner visible />;
 
   return (
     <RecoilRoot>
       <RelayEnvironmentProvider environment={relayEnvironment}>
         <NavigationContainer>
-          <RootStackScreen userToken={userToken} />
+          <AuthProvider>
+            <RootStackScreen />
+          </AuthProvider>
         </NavigationContainer>
       </RelayEnvironmentProvider>
     </RecoilRoot>

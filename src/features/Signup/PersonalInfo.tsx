@@ -16,6 +16,7 @@ import { PersonalInfoFormFields } from "src/typings/signup";
 import { moderateScale, width } from "src/utils/scale";
 import { ONBOARDING_VALIDATIONS as ERRORS } from "src/constants/Errors";
 import { GENDER } from "src/constants/common";
+import { useAuth } from "src/hooks";
 
 export const validationSchema = yup.object().shape({
   firstName: yup.string().required(ERRORS.REQUIRED_FIRSTNAME),
@@ -23,7 +24,7 @@ export const validationSchema = yup.object().shape({
     .date()
     .max(moment().subtract(14, "year").toDate(), ERRORS.MIN_DOB),
   gender: yup
-    .number()
+    .string()
     .oneOf([GENDER.MALE, GENDER.FEMALE], ERRORS.OPTION_REQUIRED),
 });
 
@@ -33,14 +34,14 @@ const PersonalInfo: React.FC = () => {
       firstName: "",
       lastName: "",
       dateOfBirth: new Date(),
-      gender: -1,
     },
     mode: "onChange",
     resolver: yupResolver(validationSchema),
   });
+  const { saveUser } = useAuth();
 
-  const handleNext = React.useCallback(() => {
-    //
+  const handleNext = React.useCallback(async (form: PersonalInfoFormFields) => {
+    await saveUser({ ...form });
   }, []);
 
   return (
@@ -50,6 +51,7 @@ const PersonalInfo: React.FC = () => {
         contentContainerStyle={{
           paddingBottom: moderateScale(30),
           width: Math.min(360, width),
+          paddingHorizontal: moderateScale(15),
         }}
       >
         <Typography
@@ -57,14 +59,19 @@ const PersonalInfo: React.FC = () => {
           marginBottom={moderateScale(15)}
           marginTop={moderateScale(60)}
         >
-          Tell me about yourself
+          Tell us about yourself
         </Typography>
         <PersonalInfoNameBox control={control} />
         <Controller
           name="dateOfBirth"
           control={control}
-          render={({ field: { value, onChange } }) => (
-            <DatePicker date={value} onChange={onChange} />
+          render={({ field: { value, onChange }, fieldState: { error } }) => (
+            <DatePicker
+              date={value}
+              onChange={onChange}
+              error={error?.message}
+              errorStyle={{ marginLeft: moderateScale(8) }}
+            />
           )}
         />
         <Controller

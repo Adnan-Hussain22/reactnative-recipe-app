@@ -1,8 +1,9 @@
 import { verticalScale } from "src/utils/scale";
 
 export enum GENDER {
-  MALE,
-  FEMALE,
+  MALE = "MALE",
+  FEMALE = "FEMALE",
+  OTHER = "OTHER",
 }
 
 export const APP_NAME = "SnapChef";
